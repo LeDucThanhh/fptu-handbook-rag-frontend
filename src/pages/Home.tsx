@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/qa?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -78,7 +86,7 @@ const Home: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
