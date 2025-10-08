@@ -1,190 +1,73 @@
-# 📚 FPTU Handbook RAG - Frontend
+# React + TypeScript + Vite
 
-Hệ thống hỏi đáp sổ tay học vụ và hoạt động cho tân sinh viên Đại học FPT sử dụng công nghệ RAG (Retrieval-Augmented Generation).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🚀 Tech Stack
+Currently, two official plugins are available:
 
-- **Framework**: React 19.1.1 với TypeScript
-- **Build Tool**: Vite 7.1.9
-- **Styling**: Tailwind CSS
-- **Routing**: React Router DOM
-- **HTTP Client**: Axios
-- **Language**: TypeScript 5.9.3
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 📁 Cấu trúc Project
+## React Compiler
 
-```
-fptu-handbook-rag-frontend/
-├── src/
-│   ├── components/       # Các component tái sử dụng
-│   │   └── Navbar.tsx
-│   ├── pages/           # Các trang chính
-│   │   ├── Home.tsx
-│   │   ├── QA.tsx
-│   │   └── Clubs.tsx
-│   ├── services/        # API services
-│   │   └── api.service.ts
-│   ├── types/           # TypeScript type definitions
-│   │   └── index.ts
-│   ├── config/          # Configuration files
-│   │   └── api.config.ts
-│   ├── hooks/           # Custom React hooks
-│   ├── contexts/        # React Context providers
-│   ├── utils/           # Utility functions
-│   ├── assets/          # Static assets (images, fonts)
-│   ├── App.tsx          # Main App component
-│   ├── main.tsx         # Entry point
-│   └── index.css        # Global styles with Tailwind
-├── public/              # Public static files
-├── .gitignore
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── tailwind.config.js
-└── README.md
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-## 🛠️ Cài đặt và Chạy Project
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-### Prerequisites
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
 
-- Node.js >= 18.x
-- npm hoặc yarn
-
-### Bước 1: Clone repository
-
-```bash
-git clone <repository-url>
-cd fptu-handbook-rag-frontend
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-### Bước 2: Cài đặt dependencies
-
-```bash
-npm install
-```
-
-### Bước 3: Cấu hình environment variables
-
-Tạo file `.env` từ `.env.example`:
-
-```bash
-# API Configuration
-VITE_API_BASE_URL=http://localhost:5000/api
-```
-
-### Bước 4: Chạy development server
-
-```bash
-npm run dev
-```
-
-Mở trình duyệt và truy cập: `http://localhost:5173`
-
-## 📜 Available Scripts
-
-```bash
-# Chạy development server
-npm run dev
-
-# Build cho production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Chạy ESLint
-npm run lint
-```
-
-## 🎨 Features
-
-### Cho Sinh viên (Freshmen)
-
-- ✅ Hỏi đáp qua AI với natural language processing
-- ✅ Tìm kiếm thông tin câu lạc bộ
-- ✅ Hỗ trợ đa ngôn ngữ (Tiếng Việt & English)
-- ✅ Đánh giá chất lượng câu trả lời
-- ✅ Nhận thông báo về lịch học và sự kiện CLB
-
-### Cho Mentors/Academic Advisors
-
-- 📊 Dashboard theo dõi câu hỏi của sinh viên
-- 📈 Xem thống kê usage và popular queries
-- 💬 Xem feedback từ sinh viên
-
-### Cho University Staff
-
-- 📤 Upload và index tài liệu handbook
-- ✏️ Cập nhật thông tin câu lạc bộ
-- 📊 Dashboard analytics
-- 🔔 Quản lý thông báo
-
-### Cho System Administrator
-
-- 👥 Quản lý users và roles
-- ⚙️ Cấu hình AI system và RAG
-- 🔒 Quản lý bảo mật
-- 📊 Monitor system performance
-
-## 🎯 Main Pages
-
-- **Home** (`/`) - Landing page với search box và quick links
-- **Q&A** (`/qa`) - Chat interface với AI assistant
-- **Clubs** (`/clubs`) - Danh sách và chi tiết các câu lạc bộ
-- **Handbook** (`/handbook`) - Sổ tay sinh viên
-
-## 🔧 Deployment
-
-### Vercel (Recommended)
-
-```bash
-# Install Vercel CLI
-npm install -g vercel
-
-# Deploy
-vercel
-```
-
-### Manual Build
-
-```bash
-# Build project
-npm run build
-
-# Folder dist/ sẽ chứa static files để deploy
-```
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 Development Guidelines
-
-- Sử dụng TypeScript cho type safety
-- Follow React best practices và hooks
-- Component names sử dụng PascalCase
-- File names sử dụng kebab-case hoặc PascalCase
-- Sử dụng Tailwind CSS cho styling
-- Write clean, readable code với comments khi cần
-
-## 🐛 Known Issues
-
-- [ ] Chưa integrate với backend API
-- [ ] Chưa implement authentication
-- [ ] Chưa có unit tests
-
-## 📞 Contact
-
-- **Project Lead**: [Your Name]
-- **Email**: [your.email@fpt.edu.vn]
-- **University**: FPT University
-
-## 📄 License
-
-This project is part of Capstone Project - FPT University
