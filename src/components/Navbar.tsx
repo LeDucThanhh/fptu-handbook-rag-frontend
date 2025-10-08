@@ -1,34 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import LoginModal from "./LoginModal";
 
 const Navbar: React.FC = () => {
-  return (
-    <nav className="bg-white border-b sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-orange-500 rounded flex items-center justify-center text-white font-bold">
-              F
-            </div>
-            <span className="font-bold text-lg">FPTU Handbook</span>
-          </Link>
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [language, setLanguage] = useState<"VN" | "EN">("VN");
 
-          {/* Nav Links */}
-          <div className="flex items-center gap-6">
-            <Link to="/" className="text-gray-700 hover:text-orange-500">
-              Trang chủ
+  return (
+    <>
+      <nav className="bg-white border-b sticky top-0 z-50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center gap-2">
+              <span className="font-bold text-xl text-orange-500">
+                FPTU Handbook RAG
+              </span>
             </Link>
-            <Link to="/qa" className="text-gray-700 hover:text-orange-500">
-              Hỏi đáp
-            </Link>
-            <Link to="/clubs" className="text-gray-700 hover:text-orange-500">
-              Câu lạc bộ
-            </Link>
+
+            {/* Nav Links */}
+            <div className="hidden md:flex items-center gap-8">
+              <Link
+                to="/"
+                className="text-gray-700 hover:text-orange-500 transition"
+              >
+                Trang chủ
+              </Link>
+              <Link
+                to="/clubs"
+                className="text-gray-700 hover:text-orange-500 transition"
+              >
+                Câu lạc bộ
+              </Link>
+              <Link
+                to="/handbook"
+                className="text-gray-700 hover:text-orange-500 transition"
+              >
+                Sổ tay A-Z
+              </Link>
+              <Link
+                to="/qa"
+                className="text-gray-700 hover:text-orange-500 transition"
+              >
+                FAQ
+              </Link>
+            </div>
+
+            {/* Right section */}
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition font-semibold"
+              >
+                Đăng nhập
+              </button>
+              <div className="flex items-center gap-1 text-sm text-gray-600">
+                <button
+                  onClick={() => setLanguage("VN")}
+                  className={`${
+                    language === "VN"
+                      ? "text-orange-500 font-semibold"
+                      : "hover:text-orange-500"
+                  }`}
+                >
+                  VN
+                </button>
+                <span>/</span>
+                <button
+                  onClick={() => setLanguage("EN")}
+                  className={`${
+                    language === "EN"
+                      ? "text-orange-500 font-semibold"
+                      : "hover:text-orange-500"
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
+    </>
   );
 };
 

@@ -94,3 +94,4 @@ export interface UsageData {
   queries: number;
   users: number;
 }
+
