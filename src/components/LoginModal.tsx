@@ -29,7 +29,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       onClick={handleBackdropClick}
     >
       {/* Modal Container with slide animation */}
-      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-2xl p-12 max-w-lg w-full animate-slideInUp relative overflow-hidden">
+      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-2xl p-12 max-w-2xl w-full animate-slideInUp relative overflow-hidden">
         {/* Beautiful Static Background Decorations */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-orange-200/40 via-orange-100/30 to-transparent rounded-full -mr-20 -mt-20 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-200/40 via-orange-100/30 to-transparent rounded-full -ml-16 -mb-16 blur-3xl"></div>
@@ -38,7 +38,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         {/* Close Button with Hover Effect - Smaller size */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 transition-all duration-200 hover:scale-110 z-50"
+          className="absolute top-4 right-4 w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 z-50"
           aria-label="Close"
         >
           <svg
@@ -59,12 +59,9 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         {/* Content */}
         <div className="text-center relative z-10">
           {/* Logo with Elegant Glow Effect */}
-          <div
-            className="mb-8 relative animate-slideInDown"
-            style={{ animationDelay: "0.1s" }}
-          >
+          <div className="mb-6 relative -mt-4">
             <div className="absolute inset-0 bg-gradient-to-r from-orange-200/60 to-orange-300/60 rounded-2xl blur-2xl scale-110"></div>
-            <div className="relative bg-white rounded-2xl p-4 shadow-lg">
+            <div className="relative p-4">
               <img
                 src="/images/Logo_FPT_Education.png"
                 alt="FPT Education"
@@ -74,27 +71,25 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Title with Gradient Text */}
-          <div
-            className="mb-10 animate-slideInLeft"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
-              Đăng nhập vào
+          <div className="mb-10">
+            <h1 className="text-3xl font-bold px-4 py-2 rounded-lg inline-block">
+              <span className="bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                Đăng nhập vào
+              </span>
+              <span className="bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
+                {" "}FPTU Handbook
+              </span>
             </h1>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-              FPTU Handbook
-            </h2>
           </div>
 
           {/* Google Login Button with Enhanced Design */}
           <button
             ref={googleButtonGlare}
             onClick={handleGoogleLogin}
-            className="glare-effect w-full bg-white border-2 border-gray-200 hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-white transition-all duration-300 rounded-2xl py-6 px-8 flex items-center justify-center gap-4 group shadow-lg hover:shadow-2xl transform hover:-translate-y-2 relative overflow-hidden animate-slideInRight"
-            style={{ animationDelay: "0.3s" }}
+            className="glare-effect w-full bg-white border-2 border-gray-200 hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-white rounded-2xl py-6 px-8 flex items-center justify-center gap-4 group shadow-lg hover:shadow-2xl relative overflow-hidden"
           >
             {/* Button Shine Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 group-hover:translate-x-full transition-all duration-1000 transform -translate-x-full"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 group-hover:translate-x-full transform -translate-x-full"></div>
 
             <svg
               className="w-8 h-8 flex-shrink-0 drop-shadow-sm"
@@ -118,16 +113,13 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                 fill="#EA4335"
               />
             </svg>
-            <span className="font-bold text-gray-700 group-hover:text-orange-600 transition-colors text-xl relative z-10">
+            <span className="font-bold text-gray-700 group-hover:text-orange-600 text-xl relative z-10">
               Đăng nhập với Google
             </span>
           </button>
 
           {/* Security Message */}
-          <p
-            className="text-center text-sm text-gray-500 mt-8 animate-slideInUp"
-            style={{ animationDelay: "0.4s" }}
-          >
+          <p className="text-center text-sm text-gray-500 mt-8">
             Kết nối an toàn với tài khoản Google của bạn.
           </p>
         </div>

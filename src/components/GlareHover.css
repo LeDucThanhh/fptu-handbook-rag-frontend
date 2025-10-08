@@ -27,10 +27,12 @@
     background-position:
         -100% -100%,
         0 0;
+    border-radius: var(--gh-br);
 }
 
 .glare-hover:hover {
     cursor: pointer;
+    border-radius: var(--gh-br);
 }
 
 .glare-hover:hover::before {

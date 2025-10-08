@@ -29,7 +29,7 @@ const SlideCard: React.FC<{ item: SlideItem; index: number }> = ({
     >
       <div
         ref={glareRef}
-        className="glare-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out group border border-orange-100/50"
+        className="glare-hover bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 ease-out group border border-orange-100/50 hover:border-orange-200/70"
       >
         <div className="relative h-52 overflow-hidden">
           <img
@@ -92,8 +92,11 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
-  const intervalRef = useRef<ReturnType<typeof setInterval>>();
-  const userInteractionTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, scrollLeft: 0 });
+  const animationRef = useRef<number | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const userInteractionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Create infinite loop by duplicating items
   const infiniteItems = [...items, ...items, ...items]; // Triple for smooth infinite scroll
@@ -101,7 +104,7 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
 
   // Auto scroll function with infinite loop
   const autoScroll = useCallback(() => {
-    if (!isPaused && !isUserInteracting && containerRef.current) {
+    if (!isPaused && !isUserInteracting && !isDragging && containerRef.current) {
       const container = containerRef.current;
 
       setCurrentIndex((prev) => {
@@ -126,7 +129,7 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
         return nextIndex;
       });
     }
-  }, [items.length, isPaused, isUserInteracting, cardWidth]);
+  }, [items.length, isPaused, isUserInteracting, isDragging, cardWidth]);
 
   // Initialize scroll position to the middle set
   useEffect(() => {
@@ -151,6 +154,9 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
     };
   }, [autoScroll]);
 
@@ -161,6 +167,103 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
 
   const handleMouseLeave = () => {
     setIsPaused(false);
+  };
+
+  // Drag handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+
+    setIsDragging(true);
+    setIsUserInteracting(true);
+    setDragStart({
+      x: e.pageX - containerRef.current.offsetLeft,
+      scrollLeft: containerRef.current.scrollLeft,
+    });
+
+    // Prevent text selection during drag
+    e.preventDefault();
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - dragStart.x) * 2; // Scroll speed multiplier
+    const targetScrollLeft = dragStart.scrollLeft - walk;
+
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    // Use requestAnimationFrame for smooth dragging
+    animationRef.current = requestAnimationFrame(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollLeft = targetScrollLeft;
+      }
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+
+    // Resume auto-scroll after 3 seconds of no interaction
+    if (userInteractionTimeoutRef.current) {
+      clearTimeout(userInteractionTimeoutRef.current);
+    }
+    userInteractionTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 3000);
+  };
+
+  const handleMouseLeaveDrag = () => {
+    setIsDragging(false);
+  };
+
+  // Touch handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+
+    setIsDragging(true);
+    setIsUserInteracting(true);
+    setDragStart({
+      x: e.touches[0].pageX - containerRef.current.offsetLeft,
+      scrollLeft: containerRef.current.scrollLeft,
+    });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !containerRef.current) return;
+
+    e.preventDefault();
+    const x = e.touches[0].pageX - containerRef.current.offsetLeft;
+    const walk = (x - dragStart.x) * 2;
+    const targetScrollLeft = dragStart.scrollLeft - walk;
+
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
+
+    // Use requestAnimationFrame for smooth dragging
+    animationRef.current = requestAnimationFrame(() => {
+      if (containerRef.current) {
+        containerRef.current.scrollLeft = targetScrollLeft;
+      }
+    });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+
+    // Resume auto-scroll after 3 seconds of no interaction
+    if (userInteractionTimeoutRef.current) {
+      clearTimeout(userInteractionTimeoutRef.current);
+    }
+    userInteractionTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 3000);
   };
 
   // Handle user scroll
@@ -235,9 +338,19 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
       {/* Slider Container */}
       <div
         ref={containerRef}
-        className="flex gap-6 overflow-x-scroll pb-4 scrollbar-hide cursor-grab active:cursor-grabbing"
+        className={`flex gap-6 overflow-x-scroll pb-4 scrollbar-hide select-none transition-all duration-150 ease-out ${isDragging ? 'cursor-grabbing' : 'cursor-grab'
+          }`}
         onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseLeave={() => {
+          handleMouseLeave();
+          handleMouseLeaveDrag();
+        }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onScroll={handleScroll}
         style={{
           scrollSnapType: "x mandatory",
@@ -261,16 +374,14 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`relative transition-all duration-300 ease-out ${
-                isActive ? "w-8 h-3" : "w-3 h-3"
-              }`}
+              className={`relative transition-all duration-300 ease-out ${isActive ? "w-8 h-3" : "w-3 h-3"
+                }`}
             >
               <div
-                className={`w-full h-full rounded-full transition-all duration-300 ease-out ${
-                  isActive
-                    ? "bg-orange-500 shadow-md"
-                    : "bg-orange-200 hover:bg-orange-300"
-                }`}
+                className={`w-full h-full rounded-full transition-all duration-300 ease-out ${isActive
+                  ? "bg-orange-500 shadow-md"
+                  : "bg-orange-200 hover:bg-orange-300"
+                  }`}
               ></div>
             </button>
           );

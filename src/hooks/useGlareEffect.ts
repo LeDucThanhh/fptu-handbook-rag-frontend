@@ -1,13 +1,13 @@
 import { useRef, useEffect, MouseEvent } from "react";
 
-export const useGlareEffect = () => {
-  const glareRef = useRef<HTMLDivElement>(null);
+export const useGlareEffect = <T extends HTMLElement = HTMLDivElement>() => {
+  const glareRef = useRef<T>(null);
 
   useEffect(() => {
     const element = glareRef.current;
     if (!element) return;
 
-    const handleMouseMove = (e: MouseEvent<HTMLDivElement> | any) => {
+    const handleMouseMove = (e: MouseEvent<T> | any) => {
       const rect = element.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;

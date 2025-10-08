@@ -1,41 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AutoSlider from "../components/AutoSlider";
 import { useGlareEffect } from "../hooks/useGlareEffect";
+import {
+  GraduationCap,
+  PartyPopper,
+  Gamepad2,
+  Bot,
+  Briefcase,
+  Bell,
+  ChevronRight,
+  Users,
+  Target,
+  MessageCircle,
+  Sparkles,
+  Search
+} from "lucide-react";
 
 // Notice Board Component
 const NoticeBoard: React.FC = () => {
-  const noticeBoardGlare = useGlareEffect();
+  const noticeBoardGlare = useGlareEffect<HTMLDivElement>();
 
   const notices = [
     {
       date: "15/10",
       title: "Tuần lễ định hướng tân sinh viên",
-      icon: "🎓",
+      icon: GraduationCap,
       category: "Học vụ",
     },
     {
       date: "20/10",
       title: "Ngày hội Câu lạc bộ 2024",
-      icon: "🎉",
+      icon: PartyPopper,
       category: "Sự kiện",
     },
     {
       date: "25/10",
       title: "Giải đấu E-Sports FPT Arena",
-      icon: "🎮",
+      icon: Gamepad2,
       category: "Thể thao",
     },
     {
       date: "28/10",
       title: "Workshop AI & Machine Learning",
-      icon: "🤖",
+      icon: Bot,
       category: "Công nghệ",
     },
     {
       date: "30/10",
       title: "Ngày hội việc làm FPTU",
-      icon: "💼",
+      icon: Briefcase,
       category: "Sự kiện",
     },
   ];
@@ -47,19 +61,7 @@ const NoticeBoard: React.FC = () => {
     >
       <div className="flex items-center gap-3 mb-6">
         <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-3 rounded-xl shadow-md">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-            />
-          </svg>
+          <Bell className="w-6 h-6 text-white" />
         </div>
         <div>
           <h3 className="text-2xl font-bold text-gray-900">Bảng thông báo</h3>
@@ -86,7 +88,9 @@ const NoticeBoard: React.FC = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xl">{notice.icon}</span>
+                  <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2 rounded-lg">
+                    <notice.icon className="w-5 h-5 text-white" />
+                  </div>
                   <span className="px-2 py-1 bg-orange-100 text-orange-600 text-xs font-semibold rounded-full">
                     {notice.category}
                   </span>
@@ -95,19 +99,7 @@ const NoticeBoard: React.FC = () => {
                   {notice.title}
                 </h4>
               </div>
-              <svg
-                className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-300" />
             </div>
           </div>
         ))}
@@ -146,7 +138,7 @@ const ClubActivities: React.FC = () => {
     <div className="space-y-4">
       {clubs.map((club, index) => {
         const ClubCard = () => {
-          const clubGlare = useGlareEffect();
+          const clubGlare = useGlareEffect<HTMLDivElement>();
 
           return (
             <div
@@ -178,13 +170,7 @@ const ClubActivities: React.FC = () => {
                         {club.name}
                       </h3>
                       <div className="flex items-center gap-2 text-gray-200 text-sm">
-                        <svg
-                          className="w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                        </svg>
+                        <Users className="w-4 h-4" />
                         <span>{club.members}</span>
                       </div>
                     </div>
@@ -212,7 +198,7 @@ const ClubActivities: React.FC = () => {
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const heroCardGlare = useGlareEffect();
+  const heroCardGlare = useGlareEffect<HTMLDivElement>();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -245,19 +231,7 @@ const Home: React.FC = () => {
               {/* Search Box */}
               <form onSubmit={handleSearch} className="relative">
                 <div className="flex items-center bg-white border-2 border-gray-300 rounded-full px-4 py-3 focus-within:border-orange-500 transition">
-                  <svg
-                    className="w-5 h-5 text-gray-400 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                    />
-                  </svg>
+                  <Search className="w-5 h-5 text-gray-400 mr-3" />
                   <input
                     type="text"
                     value={searchQuery}
@@ -283,7 +257,9 @@ const Home: React.FC = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-200/50 to-orange-100/30 rounded-3xl blur-2xl"></div>
                 <div className="relative bg-white rounded-2xl p-8 flex flex-col justify-center items-center transform -rotate-3 shadow-inner">
-                  <div className="text-orange-500 text-6xl mb-4">🎯</div>
+                  <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-4 rounded-2xl mb-4">
+                    <Target className="w-12 h-12 text-white" />
+                  </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
                     Hỏi bất cứ điều gì về FPTU
                   </h3>
@@ -299,18 +275,18 @@ const Home: React.FC = () => {
                 </div>
                 {/* Static decorative elements */}
                 <div className="absolute top-0 right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 rounded-lg shadow-lg transform translate-x-4 -translate-y-4 opacity-90">
-                  <span className="text-white text-xl">💬</span>
+                  <MessageCircle className="w-6 h-6 text-white" />
                 </div>
                 <div className="absolute bottom-0 left-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 rounded-lg shadow-lg transform -translate-x-4 translate-y-4 opacity-90">
-                  <span className="text-white text-xl">✨</span>
+                  <Sparkles className="w-6 h-6 text-white" />
                 </div>
               </div>
             </div>
           </div>
         </div>
-    </div>
+      </section>
 
-      {/* Điểm nổi bật của FPTU - Horizontal Scrollable Gallery */ }
+      {/* Điểm nổi bật của FPTU - Horizontal Scrollable Gallery */}
       <section className="py-16 bg-white relative">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12 animate-fadeInUp">
@@ -385,30 +361,30 @@ const Home: React.FC = () => {
         }
       `}</style>
 
-  {/* Học vụ & Sự kiện nổi bật */ }
-  <section className="py-16 bg-gradient-to-br from-orange-50 to-white relative overflow-hidden">
-    {/* Background Decoration */}
-    <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-100/30 to-transparent rounded-full -mr-48 blur-3xl"></div>
-    <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-orange-100/30 to-transparent rounded-full -ml-48 blur-3xl"></div>
+      {/* Học vụ & Sự kiện nổi bật */}
+      <section className="py-16 bg-gradient-to-br from-orange-50 to-white relative overflow-hidden">
+        {/* Background Decoration */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-100/30 to-transparent rounded-full -mr-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-orange-100/30 to-transparent rounded-full -ml-48 blur-3xl"></div>
 
-    <div className="container mx-auto px-4 relative z-10">
-      <div className="text-center mb-12 animate-fadeInUp">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-          Học vụ & Sự kiện nổi bật
-        </h2>
-        <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full mx-auto"></div>
-      </div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-12 animate-fadeInUp">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+              Học vụ & Sự kiện nổi bật
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full mx-auto"></div>
+          </div>
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {/* Bảng thông báo - Enhanced */}
-        <NoticeBoard />
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Bảng thông báo - Enhanced */}
+            <NoticeBoard />
 
-        {/* Hoạt động CLB - Enhanced */}
-        <ClubActivities />
-      </div>
+            {/* Hoạt động CLB - Enhanced */}
+            <ClubActivities />
+          </div>
+        </div>
+      </section>
     </div>
-  </div>
-    </div >
   );
 };
 
