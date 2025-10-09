@@ -1,218 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AutoSlider from "../components/AutoSlider";
-import { useGlareEffect } from "../hooks/useGlareEffect";
-
-// Notice Board Component
-const NoticeBoard: React.FC = () => {
-  const noticeBoardGlare = useGlareEffect();
-
-  const notices = [
-    {
-      date: "15/10",
-      title: "Tuần lễ định hướng tân sinh viên",
-      icon: "🎓",
-      category: "Học vụ",
-    },
-    {
-      date: "20/10",
-      title: "Ngày hội Câu lạc bộ 2024",
-      icon: "🎉",
-      category: "Sự kiện",
-    },
-    {
-      date: "25/10",
-      title: "Giải đấu E-Sports FPT Arena",
-      icon: "🎮",
-      category: "Thể thao",
-    },
-    {
-      date: "28/10",
-      title: "Workshop AI & Machine Learning",
-      icon: "🤖",
-      category: "Công nghệ",
-    },
-    {
-      date: "30/10",
-      title: "Ngày hội việc làm FPTU",
-      icon: "💼",
-      category: "Sự kiện",
-    },
-  ];
-
-  return (
-    <div
-      ref={noticeBoardGlare}
-      className="glare-effect bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 border border-orange-100/50 h-full"
-    >
-      <div className="flex items-center gap-3 mb-6">
-        <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-3 rounded-xl shadow-md">
-          <svg
-            className="w-6 h-6 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-            />
-          </svg>
-        </div>
-        <div>
-          <h3 className="text-2xl font-bold text-gray-900">Bảng thông báo</h3>
-          <p className="text-sm text-gray-500">Cập nhật mới nhất</p>
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        {notices.map((notice, index) => (
-          <div
-            key={index}
-            className="group bg-gradient-to-r from-orange-50 to-white p-4 rounded-xl border border-orange-100 hover:border-orange-300 hover:shadow-md transition-all duration-300 cursor-pointer"
-          >
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
-                <div className="bg-gradient-to-br from-orange-400 to-orange-600 text-white w-14 h-14 rounded-xl flex flex-col items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-xs font-semibold">
-                    {notice.date.split("/")[0]}
-                  </span>
-                  <span className="text-lg font-bold">
-                    {notice.date.split("/")[1]}
-                  </span>
-                </div>
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xl">{notice.icon}</span>
-                  <span className="px-2 py-1 bg-orange-100 text-orange-600 text-xs font-semibold rounded-full">
-                    {notice.category}
-                  </span>
-                </div>
-                <h4 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
-                  {notice.title}
-                </h4>
-              </div>
-              <svg
-                className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Club Activities Component
-const ClubActivities: React.FC = () => {
-  const clubs = [
-    {
-      name: "CLB Bóng đá FPTU",
-      img: "/api/placeholder/400/300",
-      members: "150+ thành viên",
-      category: "Thể thao",
-      color: "from-blue-500 to-blue-600",
-    },
-    {
-      name: "CLB Coder Club",
-      img: "/api/placeholder/400/300",
-      members: "200+ thành viên",
-      category: "Công nghệ",
-      color: "from-purple-500 to-purple-600",
-    },
-    {
-      name: "CLB Novy",
-      img: "/api/placeholder/400/300",
-      members: "180+ thành viên",
-      category: "Tình nguyện",
-      color: "from-green-500 to-green-600",
-    },
-  ];
-
-  return (
-    <div className="space-y-4">
-      {clubs.map((club, index) => {
-        const ClubCard = () => {
-          const clubGlare = useGlareEffect();
-
-          return (
-            <div
-              ref={clubGlare}
-              className="glare-card bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group border border-orange-100/50"
-            >
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={club.img}
-                  alt={club.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-
-                {/* Category Badge */}
-                <div className="absolute top-4 right-4">
-                  <span
-                    className={`px-3 py-1 bg-gradient-to-r ${club.color} text-white text-xs font-semibold rounded-full shadow-lg`}
-                  >
-                    {club.category}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <div className="flex items-end justify-between">
-                    <div className="flex-1">
-                      <h3 className="font-bold text-xl text-white mb-1 group-hover:text-orange-200 transition-colors duration-300">
-                        {club.name}
-                      </h3>
-                      <div className="flex items-center gap-2 text-gray-200 text-sm">
-                        <svg
-                          className="w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                        </svg>
-                        <span>{club.members}</span>
-                      </div>
-                    </div>
-                    <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-xl transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 duration-300">
-                      Tìm hiểu
-                    </button>
-                  </div>
-                </div>
-
-                {/* Shine Effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                </div>
-              </div>
-            </div>
-          );
-        };
-
-        return <ClubCard key={index} />;
-      })}
-    </div>
-  );
-};
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const heroCardGlare = useGlareEffect();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -223,152 +14,302 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-orange-50 via-orange-25 to-white py-16 md:py-24 relative overflow-hidden">
-        {/* Beautiful Static Decorative Background Elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-orange-200/40 via-orange-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-orange-200/40 via-orange-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
-        <div className="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-gradient-to-r from-orange-100/20 to-yellow-100/20 rounded-full blur-3xl"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 animate-fadeInLeft">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-                CHÀO MỪNG TÂN SINH VIÊN
-                <br />
-                ĐẠI HỌC FPT!
-              </h1>
-              <p className="text-lg text-gray-700 mb-8">
-                Khám phá FPTU và trải nghiệm FPTU Handbook RAG - Sổ tay hỏi đáp
-                AI đồng hành cùng bạn.
-              </p>
+      {/* Hero Section - Full Viewport với Background FPT */}
+      <section className="h-screen relative overflow-hidden flex items-center justify-center">
+        {/* Background Image - Cắt vừa khung hình */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/images/bg_fpt.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
+            backgroundAttachment: "fixed",
+          }}
+        ></div>
 
-              {/* Search Box */}
-              <form onSubmit={handleSearch} className="relative">
-                <div className="flex items-center bg-white border-2 border-gray-300 rounded-full px-4 py-3 focus-within:border-orange-500 transition">
-                  <svg
-                    className="w-5 h-5 text-gray-400 mr-3"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                    />
-                  </svg>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Hỏi ngay điều bạn cần biết về trường..."
-                    className="flex-1 outline-none text-gray-700"
-                  />
-                  <button
-                    type="submit"
-                    className="bg-orange-500 text-white px-8 py-2 rounded-full hover:bg-orange-600 transition font-semibold ml-2"
-                  >
-                    Tìm kiếm
-                  </button>
+        {/* Enhanced Gradient Overlay - Mờ hơn */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/40 to-black/60"></div>
+
+        {/* Animated Background Elements */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-orange-300/15 via-orange-200/10 to-transparent rounded-full -mr-64 -mt-64 blur-3xl animate-pulse"></div>
+        <div
+          className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-blue-300/15 via-blue-200/10 to-transparent rounded-full -ml-48 -mb-48 blur-3xl animate-pulse"
+          style={{ animationDelay: "1s" }}
+        ></div>
+        <div
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-r from-orange-200/10 to-yellow-200/5 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: "2s" }}
+        ></div>
+
+        {/* Floating Particles Effect */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div
+            className="absolute top-1/4 left-1/4 w-2 h-2 bg-orange-400/60 rounded-full animate-bounce"
+            style={{ animationDelay: "0s", animationDuration: "3s" }}
+          ></div>
+          <div
+            className="absolute top-1/3 right-1/3 w-1 h-1 bg-white/80 rounded-full animate-bounce"
+            style={{ animationDelay: "1s", animationDuration: "4s" }}
+          ></div>
+          <div
+            className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-orange-300/70 rounded-full animate-bounce"
+            style={{ animationDelay: "2s", animationDuration: "3.5s" }}
+          ></div>
+          <div
+            className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-white/60 rounded-full animate-bounce"
+            style={{ animationDelay: "0.5s", animationDuration: "4.5s" }}
+          ></div>
+        </div>
+
+        {/* Hero Content - Enhanced Layout */}
+        <div className="relative z-10 w-full h-full flex items-center">
+          <div className="container mx-auto px-4">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Content - Đẩy về phải */}
+              <div className="text-center lg:text-left lg:ml-8 xl:ml-16">
+                {/* Main Heading */}
+                <h1
+                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fadeInUp"
+                  style={{
+                    animationDelay: "0.1s",
+                    fontFamily: "Inter, system-ui, sans-serif",
+                    textShadow:
+                      "0 4px 20px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  Chào mừng bạn đến với{" "}
+                  <span className="bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent drop-shadow-md">
+                    Đại học FPT
+                  </span>
+                </h1>
+
+                <p
+                  className="text-lg md:text-xl text-white/95 mb-8 leading-relaxed animate-fadeInUp"
+                  style={{
+                    animationDelay: "0.2s",
+                    textShadow: "0 2px 12px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  Trợ lý AI sẵn sàng giải đáp mọi thắc mắc cho khởi đầu mới của
+                  bạn.
+                </p>
+
+                {/* Search Bar - Đồng bộ với text */}
+                <form
+                  onSubmit={handleSearch}
+                  className="mb-8 animate-fadeInUp"
+                  style={{ animationDelay: "0.3s" }}
+                >
+                  <div className="group relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-orange-400/30 via-orange-300/20 to-orange-500/30 rounded-2xl blur-md opacity-60 group-hover:opacity-80 transition-all duration-300"></div>
+                    <div className="relative flex items-center bg-white/90 backdrop-blur-md rounded-xl p-2 shadow-xl border border-white/30 hover:shadow-2xl transition-all duration-300">
+                      <div className="flex items-center px-3">
+                        <svg
+                          className="w-5 h-5 text-orange-500"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                          />
+                        </svg>
+                      </div>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Hỏi về học bổng, ký túc xá, lịch học, quy chế..."
+                        className="flex-1 outline-none text-gray-700 text-base py-3 px-2 bg-transparent"
+                        style={{ fontFamily: "Inter, system-ui, sans-serif" }}
+                      />
+                      <button
+                        type="submit"
+                        className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-2 relative overflow-hidden group"
+                        style={{ fontFamily: "Inter, system-ui, sans-serif" }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <span>Hỏi ngay!</span>
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M13 7l5 5m0 0l-5 5m5-5H6"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              {/* Right Content - Empty for now */}
+              <div className="hidden lg:block">
+                {/* Có thể thêm visual elements sau này */}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tin tức & Sự kiện - Enhanced */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-white relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-72 h-72 bg-gradient-to-bl from-orange-100/20 to-transparent rounded-full -mr-36 -mt-36 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-gradient-to-tr from-blue-100/20 to-transparent rounded-full -ml-36 -mb-36 blur-3xl"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              <span>✨</span>
+              <span>Cập nhật mới nhất</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Tin tức & Sự kiện
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Theo dõi thông tin mới nhất về học vụ, sự kiện và hoạt động tại
+              FPT University
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Thông báo */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <span className="text-orange-500">📢</span>
+                Thông báo
+              </h3>
+              <div className="space-y-4">
+                <div className="glare-card bg-gradient-to-r from-orange-50 to-orange-100 p-5 rounded-xl border border-orange-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-bold flex-shrink-0">
+                      <div>09</div>
+                      <div className="text-xs">THG 10</div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 mb-2">
+                        Hướng dẫn sử dụng FPTU Handbook RAG
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        Tân sinh viên nên tìm hiểu cách sử dụng hệ thống hỏi đáp
+                        AI...
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </form>
+
+                <div className="glare-card bg-white p-5 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-blue-500 text-white px-3 py-2 rounded-lg text-sm font-bold flex-shrink-0">
+                      <div>12</div>
+                      <div className="text-xs">THG 10</div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 mb-2">
+                        Lịch đăng ký môn học kỳ Fall 2024
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        Sinh viên năm nhất đăng ký môn học từ 12/10 đến 15/10...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="glare-card bg-white p-5 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-green-500 text-white px-3 py-2 rounded-lg text-sm font-bold flex-shrink-0">
+                      <div>15</div>
+                      <div className="text-xs">THG 10</div>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900 mb-2">
+                        Mở đăng ký học bổng tân sinh viên
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        Học bổng dành cho tân sinh viên có thành tích học tập
+                        xuất sắc...
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Illustration */}
-            <div className="flex justify-center animate-fadeInRight">
-              <div className="relative">
-                {/* Main Image Card */}
-                <div
-                  ref={heroCardGlare}
-                  className="glare-effect-orange relative bg-white rounded-3xl shadow-2xl overflow-hidden transform rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-500"
-                >
-                  <div className="relative h-80 w-full">
-                    <img
-                      src="/images/Modern_facilities.jpeg"
-                      alt="FPTU Campus"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-
-                    {/* Overlay Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="bg-orange-500 p-2 rounded-lg">
-                          <svg
-                            className="w-6 h-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                            />
-                          </svg>
-                        </div>
-                        <h3 className="text-2xl font-bold">AI Assistant</h3>
-                      </div>
-                      <p className="text-orange-200 mb-4">
-                        Hỏi bất cứ điều gì về FPTU
+            {/* Sự kiện */}
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                <span className="text-blue-500">📅</span>
+                Sự kiện
+              </h3>
+              <div className="space-y-4">
+                <div className="glare-card bg-gradient-to-r from-blue-50 to-blue-100 p-5 rounded-xl border border-blue-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                      🎓
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900">
+                        Orientation Day 2024
+                      </h4>
+                      <p className="text-sm text-blue-600">
+                        Thứ 7, 12/10/2024 - 8:00 AM
                       </p>
                     </div>
                   </div>
+                  <p className="text-sm text-gray-600">
+                    Chào mừng tân sinh viên K19. Giới thiệu về trường, ngành
+                    học...
+                  </p>
                 </div>
 
-                {/* Floating Chat Bubbles */}
-                <div
-                  className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-lg p-4 max-w-xs animate-bounce"
-                  style={{ animationDelay: "0.5s" }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm">👨‍🎓</span>
+                <div className="glare-card bg-white p-5 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="bg-orange-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                      💼
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">
-                        "Làm thế nào để đăng ký môn học?"
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900">
+                        Tech Talk: AI in Education
+                      </h4>
+                      <p className="text-sm text-orange-600">
+                        Thứ 3, 15/10/2024 - 2:00 PM
                       </p>
-                      <div className="flex items-center gap-1 mt-1">
-                        <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                        <span className="text-xs text-gray-400">
-                          Đang trả lời...
-                        </span>
-                      </div>
                     </div>
                   </div>
+                  <p className="text-sm text-gray-600">
+                    Hội thảo về ứng dụng AI trong giáo dục và nghề nghiệp tương
+                    lai.
+                  </p>
                 </div>
 
-                <div
-                  className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-lg p-4 max-w-xs animate-bounce"
-                  style={{ animationDelay: "1s" }}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm">⚽</span>
+                <div className="glare-card bg-white p-5 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+                  <div className="flex items-center gap-4 mb-3">
+                    <div className="bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold flex-shrink-0">
+                      ⚽
                     </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">
-                        "Tôi muốn tham gia CLB bóng đá"
+                    <div className="flex-1">
+                      <h4 className="font-bold text-gray-900">
+                        Ngày hội Câu lạc bộ
+                      </h4>
+                      <p className="text-sm text-green-600">
+                        Thứ 6, 18/10/2024 - 9:00 AM
                       </p>
-                      <div className="flex items-center gap-1 mt-1">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span className="text-xs text-gray-400">
-                          Đã trả lời
-                        </span>
-                      </div>
                     </div>
                   </div>
-                </div>
-
-                {/* Floating Icons */}
-                <div className="absolute top-4 right-4 bg-gradient-to-br from-orange-400 to-orange-500 p-3 rounded-xl shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300">
-                  <span className="text-white text-2xl">💡</span>
-                </div>
-                <div className="absolute bottom-4 left-4 bg-gradient-to-br from-blue-400 to-blue-500 p-3 rounded-xl shadow-lg transform -rotate-12 hover:rotate-0 transition-transform duration-300">
-                  <span className="text-white text-2xl">🎓</span>
+                  <p className="text-sm text-gray-600">
+                    Giới thiệu và tuyển thành viên mới cho 50+ câu lạc bộ sinh
+                    viên.
+                  </p>
                 </div>
               </div>
             </div>
@@ -376,101 +317,243 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Điểm nổi bật của FPTU - Horizontal Scrollable Gallery */}
-      <section className="py-16 bg-white relative">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12 animate-fadeInUp">
-            Điểm nổi bật của FPTU
-          </h2>
+      {/* Clubs Introduction - Enhanced */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-100/20 to-transparent rounded-full -mr-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-orange-100/20 to-transparent rounded-full -ml-48 blur-3xl"></div>
 
-          {/* Auto Slider */}
-          <AutoSlider
-            items={[
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-600 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+              <span>🎯</span>
+              <span>Tham gia ngay</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Tìm Cộng Đồng Của Bạn
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Hơn 50+ câu lạc bộ đang chờ đón bạn. Khám phá sở thích, phát triển
+              kỹ năng và kết nối với những người bạn mới
+            </p>
+          </div>
+
+          {/* Club Preview Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+            {[
               {
-                image: "/images/Modern_facilities.jpeg",
-                title: "Cơ sở vật chất hiện đại",
-                desc: "Campus với trang thiết bị tiên tiến, phòng lab xịn xò",
+                name: "FPTU Code",
+                icon: "💻",
+                color: "from-blue-500 to-blue-600",
               },
               {
-                image: "/images/Quality_lecturers.png",
-                title: "Giảng viên chất lượng",
-                desc: "Đội ngũ giảng dạy giàu kinh nghiệm, nhiều thạc sĩ, tiến sĩ",
+                name: "FPTU Football",
+                icon: "⚽",
+                color: "from-green-500 to-green-600",
               },
               {
-                image: "/images/International_environment.jpg",
-                title: "Môi trường quốc tế",
-                desc: "Cơ hội học tập và làm việc toàn cầu, exchange program",
+                name: "FPTU Music",
+                icon: "🎵",
+                color: "from-purple-500 to-purple-600",
               },
               {
-                image: "/images/Diverse_programs.jpg",
-                title: "Chương trình đa dạng",
-                desc: "Nhiều ngành hot: IT, AI, Business, Digital Marketing",
+                name: "FPTU Dance",
+                icon: "💃",
+                color: "from-pink-500 to-pink-600",
               },
               {
-                image: "/images/Business_Connection.jpg",
-                title: "Kết nối doanh nghiệp",
-                desc: "Thực tập tại Google, Microsoft, FPT, Viettel...",
+                name: "FPTU Business",
+                icon: "💼",
+                color: "from-orange-500 to-orange-600",
               },
               {
-                image: "/images/Modern_library.jpg",
-                title: "Thư viện hiện đại",
-                desc: "Không gian học tập yên tĩnh, sách báo phong phú",
+                name: "FPTU Photo",
+                icon: "📸",
+                color: "from-yellow-500 to-yellow-600",
               },
-              {
-                image: "/images/Attractive_scholarships.jpg",
-                title: "Học bổng hấp dẫn",
-                desc: "Nhiều suất học bổng toàn phần, bán phần cho SV giỏi",
-              },
-              {
-                image: "/images/Comfortable_dormitory.jpg",
-                title: "Ký túc xá tiện nghi",
-                desc: "Phòng đôi, phòng đơn, đầy đủ tiện ích, an ninh 24/7",
-              },
-              {
-                image: "/images/Startup_Incubator.jpg",
-                title: "Hỗ trợ khởi nghiệp",
-                desc: "FPT Ventures đầu tư dự án SV, ecosystem startup mạnh",
-              },
-              {
-                image: "/images/Alumni_Network.jpg",
-                title: "Mạng lưới Alumni",
-                desc: "20.000+ cựu sinh viên làm việc tại big tech companies",
-              },
-            ]}
-          />
+            ].map((club, index) => (
+              <div
+                key={index}
+                className="glare-card bg-white rounded-2xl p-6 text-center hover:shadow-xl transition-all duration-300 cursor-pointer group border border-gray-200 hover:border-orange-300"
+              >
+                <div
+                  className={`w-16 h-16 bg-gradient-to-r ${club.color} rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}
+                >
+                  <span className="text-2xl">{club.icon}</span>
+                </div>
+                <h3 className="font-bold text-gray-900 text-sm">{club.name}</h3>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <button
+              onClick={() => navigate("/clubs")}
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-xl font-bold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              Khám phá tất cả CLB →
+            </button>
+          </div>
         </div>
       </section>
 
-      <style>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
-
-      {/* Học vụ & Sự kiện nổi bật */}
-      <section className="py-16 bg-gradient-to-br from-orange-50 to-white relative overflow-hidden">
-        {/* Background Decoration */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-100/30 to-transparent rounded-full -mr-48 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-orange-100/30 to-transparent rounded-full -ml-48 blur-3xl"></div>
+      {/* Final CTA Section - Professional White Design */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        {/* Subtle Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-orange-100/30 to-transparent rounded-full -ml-48 -mb-48 blur-3xl"></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12 animate-fadeInUp">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-              Học vụ & Sự kiện nổi bật
-            </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full mx-auto"></div>
-          </div>
+          <div className="max-w-4xl mx-auto">
+            {/* Content Card */}
+            <div className="bg-gradient-to-br from-orange-50 to-white rounded-3xl p-12 border-2 border-orange-100 shadow-xl">
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
+                  <span>🎓</span>
+                  <span>Hành trình của bạn bắt đầu từ đây</span>
+                </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Bảng thông báo - Enhanced */}
-            <NoticeBoard />
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Sẵn sàng khám phá FPTU?
+                </h2>
+                <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                  Để trợ lý AI đồng hành cùng bạn trong hành trình học tập tại
+                  FPT University
+                </p>
 
-            {/* Hoạt động CLB - Enhanced */}
-            <ClubActivities />
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                  <button
+                    onClick={() => navigate("/qa")}
+                    className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                    <span>Bắt đầu hỏi AI ngay</span>
+                    <svg
+                      className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+
+                  <button
+                    onClick={() => navigate("/handbook")}
+                    className="bg-white text-orange-600 border-2 border-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-orange-50 transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                      />
+                    </svg>
+                    <span>Xem cẩm nang</span>
+                  </button>
+                </div>
+
+                {/* Trust Indicators - Compact */}
+                <div className="flex flex-wrap justify-center gap-8 pt-8 border-t border-orange-200">
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-5 h-5 text-orange-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-bold text-gray-900">
+                        10,000+
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Sinh viên tin dùng
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-5 h-5 text-orange-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-bold text-gray-900">
+                        24/7
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        Hỗ trợ nhanh chóng
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                      <svg
+                        className="w-5 h-5 text-orange-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="text-left">
+                      <div className="text-sm font-bold text-gray-900">99%</div>
+                      <div className="text-xs text-gray-500">Độ chính xác</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

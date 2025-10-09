@@ -14,7 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCircle,
-  Star
+  Star,
 } from "lucide-react";
 
 const Introduction: React.FC = () => {
@@ -24,64 +24,80 @@ const Introduction: React.FC = () => {
     {
       icon: Target,
       title: "Sứ mệnh",
-      description: "Đào tạo nguồn nhân lực chất lượng cao trong lĩnh vực công nghệ thông tin và kinh tế số, góp phần xây dựng nền kinh tế tri thức của Việt Nam.",
-      color: "from-blue-500 to-blue-600"
+      description:
+        "Đào tạo nguồn nhân lực chất lượng cao trong lĩnh vực công nghệ thông tin và kinh tế số, góp phần xây dựng nền kinh tế tri thức của Việt Nam.",
+      color: "from-blue-500 to-blue-600",
     },
     {
       icon: Eye,
       title: "Tầm nhìn",
-      description: "Trở thành trường đại học hàng đầu Việt Nam về đào tạo công nghệ thông tin và kinh tế số, được công nhận quốc tế.",
-      color: "from-green-500 to-green-600"
+      description:
+        "Trở thành trường đại học hàng đầu Việt Nam về đào tạo công nghệ thông tin và kinh tế số, được công nhận quốc tế.",
+      color: "from-green-500 to-green-600",
     },
     {
       icon: Heart,
       title: "Giá trị cốt lõi",
-      description: "Tôn trọng, trung thực, sáng tạo, hợp tác và phát triển bền vững. Luôn đặt sinh viên làm trung tâm của mọi hoạt động.",
-      color: "from-purple-500 to-purple-600"
-    }
+      description:
+        "Tôn trọng, trung thực, sáng tạo, hợp tác và phát triển bền vững. Luôn đặt sinh viên làm trung tâm của mọi hoạt động.",
+      color: "from-purple-500 to-purple-600",
+    },
   ];
 
   const achievements = [
     {
       title: "20+ năm kinh nghiệm",
-      description: "Thành lập từ năm 2006, FPTU đã có hơn 20 năm kinh nghiệm trong đào tạo CNTT"
+      description:
+        "Thành lập từ năm 2006, FPTU đã có hơn 20 năm kinh nghiệm trong đào tạo CNTT",
     },
     {
       title: "50,000+ sinh viên",
-      description: "Đã đào tạo hơn 50,000 sinh viên, trong đó có nhiều người thành công trong lĩnh vực công nghệ"
+      description:
+        "Đã đào tạo hơn 50,000 sinh viên, trong đó có nhiều người thành công trong lĩnh vực công nghệ",
     },
     {
       title: "95% có việc làm",
-      description: "Tỷ lệ sinh viên có việc làm sau tốt nghiệp đạt trên 95%"
+      description: "Tỷ lệ sinh viên có việc làm sau tốt nghiệp đạt trên 95%",
     },
     {
       title: "Top 1 Việt Nam",
-      description: "Được xếp hạng số 1 Việt Nam về đào tạo CNTT theo nhiều bảng xếp hạng uy tín"
-    }
+      description:
+        "Được xếp hạng số 1 Việt Nam về đào tạo CNTT theo nhiều bảng xếp hạng uy tín",
+    },
   ];
 
   const programs = [
     {
       title: "Công nghệ thông tin",
-      specializations: ["Khoa học máy tính", "Kỹ thuật phần mềm", "An toàn thông tin", "Trí tuệ nhân tạo"]
+      specializations: [
+        "Khoa học máy tính",
+        "Kỹ thuật phần mềm",
+        "An toàn thông tin",
+        "Trí tuệ nhân tạo",
+      ],
     },
     {
       title: "Kinh tế số",
-      specializations: ["Quản trị kinh doanh", "Marketing số", "Tài chính ngân hàng", "Kế toán"]
+      specializations: [
+        "Quản trị kinh doanh",
+        "Marketing số",
+        "Tài chính ngân hàng",
+        "Kế toán",
+      ],
     },
     {
       title: "Ngoại ngữ",
-      specializations: ["Tiếng Anh", "Tiếng Nhật", "Tiếng Hàn", "Tiếng Trung"]
-    }
+      specializations: ["Tiếng Anh", "Tiếng Nhật", "Tiếng Hàn", "Tiếng Trung"],
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-50 via-blue-25 to-white py-16 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-orange-100/50 via-orange-50/30 to-white py-16 relative overflow-hidden">
         {/* Background Decoration */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-200/40 via-blue-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-200/40 via-blue-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-orange-200/40 via-orange-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-orange-200/40 via-orange-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
@@ -98,7 +114,8 @@ const Introduction: React.FC = () => {
               Giới thiệu chung
             </h1>
             <p className="text-xl text-gray-700 mb-8">
-              Tìm hiểu về FPT University - Trường đại học hàng đầu về công nghệ thông tin tại Việt Nam
+              Tìm hiểu về FPT University - Trường đại học hàng đầu về công nghệ
+              thông tin tại Việt Nam
             </p>
           </div>
         </div>
@@ -134,7 +151,8 @@ const Introduction: React.FC = () => {
               Sứ mệnh, Tầm nhìn & Giá trị
             </h2>
             <p className="text-lg text-gray-600">
-              Những nguyên tắc cốt lõi định hướng mọi hoạt động của FPT University
+              Những nguyên tắc cốt lõi định hướng mọi hoạt động của FPT
+              University
             </p>
           </div>
 
@@ -149,7 +167,9 @@ const Introduction: React.FC = () => {
                   ref={valueGlare}
                   className="glare-effect bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
                 >
-                  <div className={`bg-gradient-to-br ${value.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}>
+                  <div
+                    className={`bg-gradient-to-br ${value.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
+                  >
                     <ValueIcon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -173,7 +193,8 @@ const Introduction: React.FC = () => {
               Thành tựu nổi bật
             </h2>
             <p className="text-lg text-gray-600">
-              Những con số ấn tượng thể hiện chất lượng đào tạo của FPT University
+              Những con số ấn tượng thể hiện chất lượng đào tạo của FPT
+              University
             </p>
           </div>
 
@@ -203,7 +224,8 @@ const Introduction: React.FC = () => {
               Chương trình đào tạo
             </h2>
             <p className="text-lg text-gray-600">
-              Đa dạng các ngành học và chuyên ngành phù hợp với xu hướng thời đại
+              Đa dạng các ngành học và chuyên ngành phù hợp với xu hướng thời
+              đại
             </p>
           </div>
 
@@ -258,7 +280,8 @@ const Introduction: React.FC = () => {
                     Chương trình đào tạo tiên tiến
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Cập nhật liên tục theo xu hướng công nghệ mới nhất, đảm bảo sinh viên có kiến thức thực tế và ứng dụng cao.
+                    Cập nhật liên tục theo xu hướng công nghệ mới nhất, đảm bảo
+                    sinh viên có kiến thức thực tế và ứng dụng cao.
                   </p>
                 </div>
               </div>
@@ -272,7 +295,8 @@ const Introduction: React.FC = () => {
                     Môi trường quốc tế
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Cơ hội học tập và trao đổi với sinh viên quốc tế, chương trình đào tạo bằng tiếng Anh.
+                    Cơ hội học tập và trao đổi với sinh viên quốc tế, chương
+                    trình đào tạo bằng tiếng Anh.
                   </p>
                 </div>
               </div>
@@ -286,7 +310,8 @@ const Introduction: React.FC = () => {
                     Cơ hội việc làm cao
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Mạng lưới đối tác rộng lớn với các công ty công nghệ hàng đầu, tỷ lệ có việc làm sau tốt nghiệp trên 95%.
+                    Mạng lưới đối tác rộng lớn với các công ty công nghệ hàng
+                    đầu, tỷ lệ có việc làm sau tốt nghiệp trên 95%.
                   </p>
                 </div>
               </div>
@@ -321,7 +346,9 @@ const Introduction: React.FC = () => {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">Địa chỉ</p>
-                    <p className="text-gray-600 leading-relaxed">Khu Công nghệ cao Hòa Lạc, Thạch Thất, Hà Nội</p>
+                    <p className="text-gray-600 leading-relaxed">
+                      Khu Công nghệ cao Hòa Lạc, Thạch Thất, Hà Nội
+                    </p>
                   </div>
                 </div>
               </div>
