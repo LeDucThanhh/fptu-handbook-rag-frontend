@@ -2,54 +2,40 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AutoSlider from "../components/AutoSlider";
 import { useGlareEffect } from "../hooks/useGlareEffect";
-import {
-  GraduationCap,
-  PartyPopper,
-  Gamepad2,
-  Bot,
-  Briefcase,
-  Bell,
-  ChevronRight,
-  Users,
-  Target,
-  MessageCircle,
-  Sparkles,
-  Search
-} from "lucide-react";
 
 // Notice Board Component
 const NoticeBoard: React.FC = () => {
-  const noticeBoardGlare = useGlareEffect<HTMLDivElement>();
+  const noticeBoardGlare = useGlareEffect();
 
   const notices = [
     {
       date: "15/10",
       title: "Tuần lễ định hướng tân sinh viên",
-      icon: GraduationCap,
+      icon: "🎓",
       category: "Học vụ",
     },
     {
       date: "20/10",
       title: "Ngày hội Câu lạc bộ 2024",
-      icon: PartyPopper,
+      icon: "🎉",
       category: "Sự kiện",
     },
     {
       date: "25/10",
       title: "Giải đấu E-Sports FPT Arena",
-      icon: Gamepad2,
+      icon: "🎮",
       category: "Thể thao",
     },
     {
       date: "28/10",
       title: "Workshop AI & Machine Learning",
-      icon: Bot,
+      icon: "🤖",
       category: "Công nghệ",
     },
     {
       date: "30/10",
       title: "Ngày hội việc làm FPTU",
-      icon: Briefcase,
+      icon: "💼",
       category: "Sự kiện",
     },
   ];
@@ -61,7 +47,19 @@ const NoticeBoard: React.FC = () => {
     >
       <div className="flex items-center gap-3 mb-6">
         <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-3 rounded-xl shadow-md">
-          <Bell className="w-6 h-6 text-white" />
+          <svg
+            className="w-6 h-6 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+            />
+          </svg>
         </div>
         <div>
           <h3 className="text-2xl font-bold text-gray-900">Bảng thông báo</h3>
@@ -88,9 +86,7 @@ const NoticeBoard: React.FC = () => {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2 rounded-lg">
-                    <notice.icon className="w-5 h-5 text-white" />
-                  </div>
+                  <span className="text-xl">{notice.icon}</span>
                   <span className="px-2 py-1 bg-orange-100 text-orange-600 text-xs font-semibold rounded-full">
                     {notice.category}
                   </span>
@@ -99,7 +95,19 @@ const NoticeBoard: React.FC = () => {
                   {notice.title}
                 </h4>
               </div>
-              <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-300" />
+              <svg
+                className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
             </div>
           </div>
         ))}
@@ -138,7 +146,7 @@ const ClubActivities: React.FC = () => {
     <div className="space-y-4">
       {clubs.map((club, index) => {
         const ClubCard = () => {
-          const clubGlare = useGlareEffect<HTMLDivElement>();
+          const clubGlare = useGlareEffect();
 
           return (
             <div
@@ -170,7 +178,13 @@ const ClubActivities: React.FC = () => {
                         {club.name}
                       </h3>
                       <div className="flex items-center gap-2 text-gray-200 text-sm">
-                        <Users className="w-4 h-4" />
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                        </svg>
                         <span>{club.members}</span>
                       </div>
                     </div>
@@ -198,7 +212,7 @@ const ClubActivities: React.FC = () => {
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const heroCardGlare = useGlareEffect<HTMLDivElement>();
+  const heroCardGlare = useGlareEffect();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -231,7 +245,19 @@ const Home: React.FC = () => {
               {/* Search Box */}
               <form onSubmit={handleSearch} className="relative">
                 <div className="flex items-center bg-white border-2 border-gray-300 rounded-full px-4 py-3 focus-within:border-orange-500 transition">
-                  <Search className="w-5 h-5 text-gray-400 mr-3" />
+                  <svg
+                    className="w-5 h-5 text-gray-400 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                    />
+                  </svg>
                   <input
                     type="text"
                     value={searchQuery}
@@ -251,34 +277,98 @@ const Home: React.FC = () => {
 
             {/* Illustration */}
             <div className="flex justify-center animate-fadeInRight">
-              <div
-                ref={heroCardGlare}
-                className="glare-effect-orange relative p-4 bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-500"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-200/50 to-orange-100/30 rounded-3xl blur-2xl"></div>
-                <div className="relative bg-white rounded-2xl p-8 flex flex-col justify-center items-center transform -rotate-3 shadow-inner">
-                  <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-4 rounded-2xl mb-4">
-                    <Target className="w-12 h-12 text-white" />
+              <div className="relative">
+                {/* Main Image Card */}
+                <div
+                  ref={heroCardGlare}
+                  className="glare-effect-orange relative bg-white rounded-3xl shadow-2xl overflow-hidden transform rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-500"
+                >
+                  <div className="relative h-80 w-full">
+                    <img
+                      src="/images/Modern_facilities.jpeg"
+                      alt="FPTU Campus"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+
+                    {/* Overlay Content */}
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="bg-orange-500 p-2 rounded-lg">
+                          <svg
+                            className="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                            />
+                          </svg>
+                        </div>
+                        <h3 className="text-2xl font-bold">AI Assistant</h3>
+                      </div>
+                      <p className="text-orange-200 mb-4">
+                        Hỏi bất cứ điều gì về FPTU
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
-                    Hỏi bất cứ điều gì về FPTU
-                  </h3>
-                  <p className="text-base text-gray-600 text-center">
-                    "Làm thế nào để đăng ký môn học?"
-                  </p>
-                  <p className="text-base text-gray-600 mt-2 text-center">
-                    "Tôi muốn tham gia CLB bóng đá"
-                  </p>
-                  <p className="text-base text-gray-600 mt-2 text-center">
-                    "Điều kiện xét học bổng là gì?"
-                  </p>
                 </div>
-                {/* Static decorative elements */}
-                <div className="absolute top-0 right-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 rounded-lg shadow-lg transform translate-x-4 -translate-y-4 opacity-90">
-                  <MessageCircle className="w-6 h-6 text-white" />
+
+                {/* Floating Chat Bubbles */}
+                <div
+                  className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-lg p-4 max-w-xs animate-bounce"
+                  style={{ animationDelay: "0.5s" }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm">👨‍🎓</span>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium">
+                        "Làm thế nào để đăng ký môn học?"
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                        <span className="text-xs text-gray-400">
+                          Đang trả lời...
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute bottom-0 left-0 bg-gradient-to-br from-orange-400 to-orange-500 p-3 rounded-lg shadow-lg transform -translate-x-4 translate-y-4 opacity-90">
-                  <Sparkles className="w-6 h-6 text-white" />
+
+                <div
+                  className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-lg p-4 max-w-xs animate-bounce"
+                  style={{ animationDelay: "1s" }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm">⚽</span>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600 font-medium">
+                        "Tôi muốn tham gia CLB bóng đá"
+                      </p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-xs text-gray-400">
+                          Đã trả lời
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Icons */}
+                <div className="absolute top-4 right-4 bg-gradient-to-br from-orange-400 to-orange-500 p-3 rounded-xl shadow-lg transform rotate-12 hover:rotate-0 transition-transform duration-300">
+                  <span className="text-white text-2xl">💡</span>
+                </div>
+                <div className="absolute bottom-4 left-4 bg-gradient-to-br from-blue-400 to-blue-500 p-3 rounded-xl shadow-lg transform -rotate-12 hover:rotate-0 transition-transform duration-300">
+                  <span className="text-white text-2xl">🎓</span>
                 </div>
               </div>
             </div>

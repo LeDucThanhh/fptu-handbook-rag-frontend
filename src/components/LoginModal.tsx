@@ -1,5 +1,4 @@
 import React from "react";
-import { useGlareEffect } from "../hooks/useGlareEffect";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -7,8 +6,6 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
-  const googleButtonGlare = useGlareEffect();
-
   if (!isOpen) return null;
 
   const handleGoogleLogin = () => {
@@ -84,7 +81,6 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
 
           {/* Google Login Button with Enhanced Design */}
           <button
-            ref={googleButtonGlare}
             onClick={handleGoogleLogin}
             className="glare-effect w-full bg-white border-2 border-gray-200 hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-white rounded-2xl py-6 px-8 flex items-center justify-center gap-4 group shadow-lg hover:shadow-2xl relative overflow-hidden"
           >

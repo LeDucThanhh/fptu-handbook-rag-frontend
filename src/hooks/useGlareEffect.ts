@@ -42,3 +42,5 @@ export const useGlareEffect = <T extends HTMLElement = HTMLDivElement>() => {
 
   return glareRef;
 };
+
+

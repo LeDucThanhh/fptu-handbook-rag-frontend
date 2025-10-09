@@ -146,7 +146,7 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
   useEffect(() => {
     // Start auto-scroll after 2 seconds delay
     const startDelay = setTimeout(() => {
-      intervalRef.current = setInterval(autoScroll, 4000); // 4 seconds per slide
+      intervalRef.current = setInterval(autoScroll, 1000); // 1 seconds per slide
     }, 2000);
 
     return () => {
@@ -356,6 +356,7 @@ const AutoSlider: React.FC<AutoSliderProps> = ({ items }) => {
           scrollSnapType: "x mandatory",
           scrollBehavior: "smooth",
           WebkitOverflowScrolling: "touch",
+          transition: "scroll-left 0.3s ease-out",
         }}
       >
         {infiniteItems.map((item, index) => (
