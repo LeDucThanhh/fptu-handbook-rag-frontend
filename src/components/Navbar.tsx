@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import LoginModal from "./LoginModal";
+import { ChevronDown } from "lucide-react";
 
 const Navbar: React.FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [language, setLanguage] = useState<"VN" | "EN">("VN");
+  const [isHandbookDropdownOpen, setIsHandbookDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsHandbookDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -33,17 +50,62 @@ const Navbar: React.FC = () => {
                 >
                   Câu lạc bộ
                 </Link>
+
+                {/* Handbook Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setIsHandbookDropdownOpen(!isHandbookDropdownOpen)}
+                    className="flex items-center gap-1 text-gray-700 hover:text-orange-500 transition"
+                  >
+                    Sổ tay A-Z
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+
+                  {isHandbookDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                      <Link
+                        to="/handbook"
+                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        onClick={() => setIsHandbookDropdownOpen(false)}
+                      >
+                        Tổng quan
+                      </Link>
+                      <Link
+                        to="/handbook/introduction"
+                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        onClick={() => setIsHandbookDropdownOpen(false)}
+                      >
+                        Giới thiệu chung
+                      </Link>
+                      <Link
+                        to="/handbook/admission"
+                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        onClick={() => setIsHandbookDropdownOpen(false)}
+                      >
+                        Quy chế tuyển sinh
+                      </Link>
+                      <Link
+                        to="/handbook/tuition"
+                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        onClick={() => setIsHandbookDropdownOpen(false)}
+                      >
+                        Học phí & Học bổng
+                      </Link>
+                    </div>
+                  )}
+                </div>
+
                 <Link
-                  to="/handbook"
+                  to="/faq"
                   className="text-gray-700 hover:text-orange-500 transition"
                 >
-                  Sổ tay A-Z
+                  FAQ
                 </Link>
                 <Link
                   to="/qa"
                   className="text-gray-700 hover:text-orange-500 transition"
                 >
-                  FAQ
+                  Hỏi đáp AI
                 </Link>
               </div>
 
@@ -57,22 +119,20 @@ const Navbar: React.FC = () => {
               <div className="flex items-center gap-1 text-sm text-gray-600">
                 <button
                   onClick={() => setLanguage("VN")}
-                  className={`${
-                    language === "VN"
+                  className={`${language === "VN"
                       ? "text-orange-500 font-semibold"
                       : "hover:text-orange-500"
-                  }`}
+                    }`}
                 >
                   VN
                 </button>
                 <span>/</span>
                 <button
                   onClick={() => setLanguage("EN")}
-                  className={`${
-                    language === "EN"
+                  className={`${language === "EN"
                       ? "text-orange-500 font-semibold"
                       : "hover:text-orange-500"
-                  }`}
+                    }`}
                 >
                   EN
                 </button>
