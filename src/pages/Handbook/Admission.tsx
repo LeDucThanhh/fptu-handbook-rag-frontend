@@ -7,8 +7,6 @@ import {
   FileText,
   CheckCircle,
   Clock,
-  Users,
-  Award,
   ChevronLeft,
   ChevronRight,
   AlertCircle,

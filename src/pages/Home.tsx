@@ -81,7 +81,7 @@ const Home: React.FC = () => {
                   <span className="bg-gradient-to-r from-orange-300 to-orange-400 bg-clip-text text-transparent drop-shadow-md">
                     Đại học FPT
                   </span>
-                </h1>
+              </h1>
 
                 <p
                   className="text-lg md:text-xl text-white/95 mb-8 leading-relaxed animate-fadeInUp"
@@ -106,28 +106,28 @@ const Home: React.FC = () => {
                       <div className="flex items-center px-3">
                         <svg
                           className="w-5 h-5 text-orange-500"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
                             d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                          />
-                        </svg>
+                    />
+                  </svg>
                       </div>
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Hỏi về học bổng, ký túc xá, lịch học, quy chế..."
                         className="flex-1 outline-none text-gray-700 text-base py-3 px-2 bg-transparent"
                         style={{ fontFamily: "Inter, system-ui, sans-serif" }}
-                      />
-                      <button
-                        type="submit"
+                  />
+                  <button
+                    type="submit"
                         className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 flex items-center gap-2 relative overflow-hidden group"
                         style={{ fontFamily: "Inter, system-ui, sans-serif" }}
                       >
@@ -135,17 +135,17 @@ const Home: React.FC = () => {
                         <span>Hỏi ngay!</span>
                         <svg
                           className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
                             d="M13 7l5 5m0 0l-5 5m5-5H6"
-                          />
-                        </svg>
+                            />
+                          </svg>
                       </button>
                     </div>
                   </div>
@@ -180,7 +180,7 @@ const Home: React.FC = () => {
               Theo dõi thông tin mới nhất về học vụ, sự kiện và hoạt động tại
               FPT University
             </p>
-          </div>
+                        </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
             {/* Thông báo */}
@@ -195,7 +195,7 @@ const Home: React.FC = () => {
                     <div className="bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-bold flex-shrink-0">
                       <div>09</div>
                       <div className="text-xs">THG 10</div>
-                    </div>
+                      </div>
                     <div className="flex-1">
                       <h4 className="font-bold text-gray-900 mb-2">
                         Hướng dẫn sử dụng FPTU Handbook RAG
@@ -330,7 +330,7 @@ const Home: React.FC = () => {
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Tìm Cộng Đồng Của Bạn
-            </h2>
+          </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               Hơn 50+ câu lạc bộ đang chờ đón bạn. Khám phá sở thích, phát triển
               kỹ năng và kết nối với những người bạn mới
@@ -410,7 +410,7 @@ const Home: React.FC = () => {
                 <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-600 px-4 py-2 rounded-full text-sm font-semibold mb-6">
                   <span>🎓</span>
                   <span>Hành trình của bạn bắt đầu từ đây</span>
-                </div>
+          </div>
 
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   Sẵn sàng khám phá FPTU?
@@ -422,20 +422,20 @@ const Home: React.FC = () => {
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                  <button
+            <button
                     onClick={() => navigate("/qa")}
                     className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
                         d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                       />
                     </svg>
@@ -451,29 +451,29 @@ const Home: React.FC = () => {
                         strokeLinejoin="round"
                         strokeWidth={2}
                         d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+                />
+              </svg>
+            </button>
 
-                  <button
+            <button
                     onClick={() => navigate("/handbook")}
                     className="bg-white text-orange-600 border-2 border-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-orange-50 transition-all duration-300 flex items-center justify-center gap-2"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
                         d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                      />
-                    </svg>
+                />
+              </svg>
                     <span>Xem cẩm nang</span>
-                  </button>
+            </button>
                 </div>
 
                 {/* Trust Indicators - Compact */}
@@ -501,8 +501,8 @@ const Home: React.FC = () => {
                       <div className="text-xs text-gray-500">
                         Sinh viên tin dùng
                       </div>
-                    </div>
-                  </div>
+          </div>
+        </div>
 
                   <div className="flex items-center gap-2 text-gray-600">
                     <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">

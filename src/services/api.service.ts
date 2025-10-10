@@ -1,4 +1,8 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  type AxiosResponse,
+} from "axios";
 import { API_CONFIG } from "../config/api.config";
 
 class ApiService {
@@ -87,4 +91,3 @@ class ApiService {
 }
 
 export default new ApiService();
-

@@ -13,10 +13,7 @@ import {
   Code,
   Music,
   Heart,
-  Dumbbell,
-  Camera,
   Book,
-  Filter,
 } from "lucide-react";
 
 interface Club {

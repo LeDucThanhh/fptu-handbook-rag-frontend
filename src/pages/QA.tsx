@@ -137,7 +137,7 @@ const QA: React.FC = () => {
     }
   };
 
-  const handleSubmitFeedback = (messageId: string) => {
+  const handleSubmitFeedback = () => {
     // TODO: Send negative feedback to API
     alert(
       `Cảm ơn phản hồi của bạn! Chúng tôi sẽ cải thiện. Nội dung: ${feedbackText}`
@@ -292,7 +292,7 @@ const QA: React.FC = () => {
                           />
                           <div className="flex gap-2">
                             <button
-                              onClick={() => handleSubmitFeedback(msg.id)}
+                              onClick={() => handleSubmitFeedback()}
                               className="flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition text-sm font-semibold"
                             >
                               Gửi phản hồi
