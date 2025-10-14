@@ -63,3 +63,5 @@ export interface UnresolvedQuery {
   createdAt: string;
   updatedAt: string;
 }
+
+

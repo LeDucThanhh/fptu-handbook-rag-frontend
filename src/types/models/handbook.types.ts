@@ -45,3 +45,5 @@ export interface RebuildIndexResponse {
   progress: number;
   message: string;
 }
+
+

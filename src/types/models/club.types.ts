@@ -49,3 +49,5 @@ export interface ClubMember {
   role: "member" | "leader" | "coordinator";
   joinedAt: string;
 }
+
+

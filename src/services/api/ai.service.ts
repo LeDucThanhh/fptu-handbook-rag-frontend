@@ -101,3 +101,5 @@ export const aiService = {
     return response.data.data;
   },
 };
+
+

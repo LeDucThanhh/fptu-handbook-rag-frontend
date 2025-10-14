@@ -40,3 +40,5 @@ export interface PopularQuery {
   createdAt: string;
   updatedAt: string;
 }
+
+
