@@ -9,11 +9,15 @@ import Handbook from "./pages/Handbook";
 import Introduction from "./pages/Handbook/Introduction";
 import Admission from "./pages/Handbook/Admission";
 import Tuition from "./pages/Handbook/Tuition";
+import Dashboard from "./pages/Mentor/Dashboard";
+import Analytics from "./pages/Mentor/Analytics";
+import ResourceRecommendation from "./pages/Mentor/ResourceRecommendation";
+import UnresolvedQueue from "./pages/Mentor/UnresolvedQueue";
 
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col">
         <Navbar />
         <main className="flex-grow">
           <Routes>
@@ -25,6 +29,10 @@ function App() {
             <Route path="/handbook/introduction" element={<Introduction />} />
             <Route path="/handbook/admission" element={<Admission />} />
             <Route path="/handbook/tuition" element={<Tuition />} />
+            <Route path="/mentor" element={<Dashboard />} />
+            <Route path="/mentor/analytics" element={<Analytics />} />
+            <Route path="/mentor/recommendations" element={<ResourceRecommendation />} />
+            <Route path="/mentor/queue" element={<UnresolvedQueue />} />
           </Routes>
         </main>
         <Footer />

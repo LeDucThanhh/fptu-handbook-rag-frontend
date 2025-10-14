@@ -43,10 +43,10 @@ const NoticeBoard: React.FC = () => {
   return (
     <div
       ref={noticeBoardGlare}
-      className="glare-effect bg-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 border border-orange-100/50 h-full"
+      className="glare-effect-green bg-card rounded-2xl shadow-medium p-8 hover:shadow-large transition-all duration-300 border border-border h-full"
     >
       <div className="flex items-center gap-3 mb-6">
-        <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-3 rounded-xl shadow-md">
+        <div className="bg-gradient-primary p-3 rounded-xl shadow-soft">
           <svg
             className="w-6 h-6 text-white"
             fill="none"
@@ -62,8 +62,8 @@ const NoticeBoard: React.FC = () => {
           </svg>
         </div>
         <div>
-          <h3 className="text-2xl font-bold text-gray-900">Bảng thông báo</h3>
-          <p className="text-sm text-gray-500">Cập nhật mới nhất</p>
+          <h3 className="text-2xl font-bold text-card-foreground">Bảng thông báo</h3>
+          <p className="text-sm text-muted-foreground">Cập nhật mới nhất</p>
         </div>
       </div>
 
@@ -71,11 +71,11 @@ const NoticeBoard: React.FC = () => {
         {notices.map((notice, index) => (
           <div
             key={index}
-            className="group bg-gradient-to-r from-orange-50 to-white p-4 rounded-xl border border-orange-100 hover:border-orange-300 hover:shadow-md transition-all duration-300 cursor-pointer"
+            className="group bg-gradient-to-r from-primary/5 to-card p-4 rounded-xl border border-border hover:border-primary/30 hover:shadow-soft transition-all duration-300 cursor-pointer"
           >
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0">
-                <div className="bg-gradient-to-br from-orange-400 to-orange-600 text-white w-14 h-14 rounded-xl flex flex-col items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                <div className="bg-gradient-primary text-primary-foreground w-14 h-14 rounded-xl flex flex-col items-center justify-center shadow-soft group-hover:scale-110 transition-transform duration-300">
                   <span className="text-xs font-semibold">
                     {notice.date.split("/")[0]}
                   </span>
@@ -87,16 +87,16 @@ const NoticeBoard: React.FC = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xl">{notice.icon}</span>
-                  <span className="px-2 py-1 bg-orange-100 text-orange-600 text-xs font-semibold rounded-full">
+                  <span className="px-2 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
                     {notice.category}
                   </span>
                 </div>
-                <h4 className="font-semibold text-gray-900 group-hover:text-orange-600 transition-colors duration-300">
+                <h4 className="font-semibold text-card-foreground group-hover:text-primary transition-colors duration-300">
                   {notice.title}
                 </h4>
               </div>
               <svg
-                className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transform group-hover:translate-x-1 transition-all duration-300"
+                className="w-5 h-5 text-muted-foreground group-hover:text-primary transform group-hover:translate-x-1 transition-all duration-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
