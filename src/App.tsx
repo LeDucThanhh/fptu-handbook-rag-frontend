@@ -1,107 +1,143 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import MentorLayout from "./components/MentorLayout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ProtectedRoute, RoleRoute } from "./routes";
+import MainLayout from "./components/MainLayout";
+import RoleBasedLayout from "./components/RoleBasedLayout";
+import { UserRole } from "./types";
+
+// Public pages
 import Home from "./pages/Home";
 import QA from "./pages/QA";
 import Clubs from "./pages/Clubs";
-import FAQ from "./pages/FAQ";
 import Handbook from "./pages/Handbook";
 import Introduction from "./pages/Handbook/Introduction";
 import Admission from "./pages/Handbook/Admission";
 import Tuition from "./pages/Handbook/Tuition";
-import Analytics from "./pages/Mentor/Analytics";
-import ResourceRecommendation from "./pages/Mentor/ResourceRecommendation";
-import UnresolvedQueue from "./pages/Mentor/UnresolvedQueue";
+
+// Student protected pages
+import Profile from "./pages/student/Profile";
+import History from "./pages/student/History";
+import NotificationCenter from "./pages/student/NotificationCenter";
+
+// Mentor pages (from dev - detailed UI by teammate)
+import MentorDashboard from "./pages/mentor/Dashboard";
+import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
+import MentorAnalytics from "./pages/mentor/Analytics";
+import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
+import MentorPosts from "./pages/mentor/Posts";
+
+// Academic Staff pages
+import AcademicDashboard from "./pages/academic/Dashboard";
+import HandbookManagement from "./pages/academic/HandbookManagement";
+import RebuildIndex from "./pages/academic/RebuildIndex";
+
+// Student Affairs pages
+import AffairsDashboard from "./pages/affairs/Dashboard";
+import NotificationManagement from "./pages/affairs/NotificationManagement";
+import ClubManagement from "./pages/affairs/ClubManagement";
+import EngagementDashboard from "./pages/affairs/EngagementDashboard";
+
+// Club Coordinator pages
+import ClubList from "./pages/club/ClubList";
+import ClubDetail from "./pages/club/ClubDetail";
+
+// Admin pages
+import AdminDashboard from "./pages/admin/Dashboard";
+import UserManagement from "./pages/admin/UserManagement";
+import SystemConfig from "./pages/admin/SystemConfig";
+import AuditLogs from "./pages/admin/AuditLogs";
+import SystemHealth from "./pages/admin/SystemHealth";
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Student Routes with Navbar and Footer */}
-        <Route path="/home" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Home />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/qa" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <QA />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/clubs" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Clubs />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/faq" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <FAQ />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/handbook" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Handbook />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/handbook/introduction" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Introduction />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/handbook/admission" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Admission />
-            </main>
-            <Footer />
-          </div>
-        } />
-        <Route path="/handbook/tuition" element={
-          <div className="min-h-screen bg-background flex flex-col">
-            <Navbar />
-            <main className="flex-grow">
-              <Tuition />
-            </main>
-            <Footer />
-          </div>
-        } />
+        {/* Public routes - Accessible to everyone */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/qa" element={<QA />} />
+          <Route path="/clubs" element={<Clubs />} />
+          <Route path="/handbook" element={<Handbook />} />
+          <Route path="/handbook/introduction" element={<Introduction />} />
+          <Route path="/handbook/admission" element={<Admission />} />
+          <Route path="/handbook/tuition" element={<Tuition />} />
 
-        {/* Mentor Routes with Sidebar Layout */}
-        <Route path="/mentor" element={<MentorLayout />}>
-          <Route index element={<Navigate to="/mentor/analytics" replace />} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="recommendations" element={<ResourceRecommendation />} />
-          <Route path="queue" element={<UnresolvedQueue />} />
+          {/* Student pages (Require login) */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/notifications" element={<NotificationCenter />} />
+          </Route>
         </Route>
 
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        {/* Role-based routes with Sidebar Navigation */}
+        <Route element={<RoleBasedLayout />}>
+          {/* Admin routes */}
+          <Route element={<RoleRoute allowedRoles={[UserRole.ADMIN]} />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<UserManagement />} />
+            <Route path="/admin/config" element={<SystemConfig />} />
+            <Route path="/admin/logs" element={<AuditLogs />} />
+            <Route path="/admin/health" element={<SystemHealth />} />
+          </Route>
+
+          {/* Mentor routes */}
+          <Route
+            element={
+              <RoleRoute allowedRoles={[UserRole.MENTOR, UserRole.ADMIN]} />
+            }
+          >
+            <Route path="/mentor/dashboard" element={<MentorDashboard />} />
+            <Route path="/mentor/unresolved" element={<UnresolvedQueue />} />
+            <Route path="/mentor/analytics" element={<MentorAnalytics />} />
+            <Route path="/mentor/recommendations" element={<ResourceRecommendation />} />
+            <Route path="/mentor/posts" element={<MentorPosts />} />
+          </Route>
+
+          {/* Academic Staff routes */}
+          <Route
+            element={
+              <RoleRoute
+                allowedRoles={[UserRole.ACADEMIC_STAFF, UserRole.ADMIN]}
+              />
+            }
+          >
+            <Route path="/academic/dashboard" element={<AcademicDashboard />} />
+            <Route path="/academic/handbook" element={<HandbookManagement />} />
+            <Route path="/academic/rebuild" element={<RebuildIndex />} />
+          </Route>
+
+          {/* Student Affairs routes */}
+          <Route
+            element={
+              <RoleRoute
+                allowedRoles={[UserRole.STUDENT_AFFAIRS, UserRole.ADMIN]}
+              />
+            }
+          >
+            <Route path="/affairs/dashboard" element={<AffairsDashboard />} />
+            <Route
+              path="/affairs/notifications"
+              element={<NotificationManagement />}
+            />
+            <Route path="/affairs/clubs" element={<ClubManagement />} />
+            <Route
+              path="/affairs/engagement"
+              element={<EngagementDashboard />}
+            />
+          </Route>
+
+          {/* Club Coordinator routes */}
+          <Route
+            element={
+              <RoleRoute
+                allowedRoles={[UserRole.CLUB_COORDINATOR, UserRole.ADMIN]}
+              />
+            }
+          >
+            <Route path="/club/dashboard" element={<ClubList />} />
+            <Route path="/club/detail/:clubId" element={<ClubDetail />} />
+          </Route>
+        </Route>
       </Routes>
     </Router>
   );

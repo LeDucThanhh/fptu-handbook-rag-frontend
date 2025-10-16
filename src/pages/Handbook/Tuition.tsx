@@ -12,7 +12,7 @@ import {
   ChevronRight,
   Info,
   TrendingUp,
-  Shield
+  Shield,
 } from "lucide-react";
 
 const Tuition: React.FC = () => {
@@ -23,20 +23,20 @@ const Tuition: React.FC = () => {
       program: "Công nghệ thông tin",
       rate: "28-32 triệu/kỳ",
       description: "Tùy theo chuyên ngành và năm học",
-      color: "from-blue-500 to-blue-600"
+      color: "from-blue-500 to-blue-600",
     },
     {
       program: "Kinh tế số",
       rate: "25-30 triệu/kỳ",
       description: "Bao gồm các ngành quản trị, marketing",
-      color: "from-green-500 to-green-600"
+      color: "from-green-500 to-green-600",
     },
     {
       program: "Ngoại ngữ",
       rate: "22-28 triệu/kỳ",
       description: "Chương trình đào tạo ngôn ngữ",
-      color: "from-purple-500 to-purple-600"
-    }
+      color: "from-purple-500 to-purple-600",
+    },
   ];
 
   const scholarships = [
@@ -46,10 +46,10 @@ const Tuition: React.FC = () => {
       requirements: [
         "GPA >= 3.5",
         "Điểm thi THPT >= 24",
-        "Có thành tích nổi bật"
+        "Có thành tích nổi bật",
       ],
       color: "from-yellow-500 to-yellow-600",
-      icon: Star
+      icon: Star,
     },
     {
       name: "Học bổng khuyến khích",
@@ -57,31 +57,51 @@ const Tuition: React.FC = () => {
       requirements: [
         "GPA >= 3.0",
         "Tham gia hoạt động tích cực",
-        "Có hoàn cảnh khó khăn"
+        "Có hoàn cảnh khó khăn",
       ],
       color: "from-green-500 to-green-600",
-      icon: Award
+      icon: Award,
     },
     {
       name: "Học bổng ngoại ngữ",
       amount: "20-40% học phí",
-      requirements: [
-        "IELTS >= 6.5",
-        "TOEFL >= 80",
-        "Chứng chỉ quốc tế khác"
-      ],
+      requirements: ["IELTS >= 6.5", "TOEFL >= 80", "Chứng chỉ quốc tế khác"],
       color: "from-blue-500 to-blue-600",
-      icon: Shield
-    }
+      icon: Shield,
+    },
   ];
 
   const additionalFees = [
-    { name: "Phí ký túc xá", amount: "2-4 triệu/kỳ", description: "Tùy loại phòng" },
-    { name: "Phí thực tập", amount: "5-10 triệu", description: "Một lần trong quá trình học" },
-    { name: "Phí tốt nghiệp", amount: "2 triệu", description: "Nộp khi làm luận văn" },
-    { name: "Bảo hiểm y tế", amount: "500k/năm", description: "Bắt buộc cho tất cả SV" },
-    { name: "Phí đồng phục", amount: "500k", description: "Mua một lần khi nhập học" },
-    { name: "Phí thẻ sinh viên", amount: "100k", description: "Làm mới mỗi năm" }
+    {
+      name: "Phí ký túc xá",
+      amount: "2-4 triệu/kỳ",
+      description: "Tùy loại phòng",
+    },
+    {
+      name: "Phí thực tập",
+      amount: "5-10 triệu",
+      description: "Một lần trong quá trình học",
+    },
+    {
+      name: "Phí tốt nghiệp",
+      amount: "2 triệu",
+      description: "Nộp khi làm luận văn",
+    },
+    {
+      name: "Bảo hiểm y tế",
+      amount: "500k/năm",
+      description: "Bắt buộc cho tất cả SV",
+    },
+    {
+      name: "Phí đồng phục",
+      amount: "500k",
+      description: "Mua một lần khi nhập học",
+    },
+    {
+      name: "Phí thẻ sinh viên",
+      amount: "100k",
+      description: "Làm mới mỗi năm",
+    },
   ];
 
   const paymentMethods = [
@@ -89,29 +109,29 @@ const Tuition: React.FC = () => {
       method: "Trả góp qua ngân hàng",
       description: "Hỗ trợ trả góp 0% lãi suất",
       banks: ["Vietcombank", "BIDV", "Agribank", "Techcombank"],
-      color: "from-green-500 to-green-600"
+      color: "from-green-500 to-green-600",
     },
     {
       method: "Thanh toán online",
       description: "Qua cổng thanh toán điện tử",
       banks: ["VNPay", "Momo", "ZaloPay", "Banking"],
-      color: "from-blue-500 to-blue-600"
+      color: "from-blue-500 to-blue-600",
     },
     {
       method: "Chuyển khoản trực tiếp",
       description: "Chuyển khoản đến tài khoản trường",
       banks: ["Tất cả ngân hàng", "ATM", "Internet Banking"],
-      color: "from-purple-500 to-purple-600"
-    }
+      color: "from-purple-500 to-purple-600",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-yellow-50 via-yellow-25 to-white py-16 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-yellow-200/40 via-yellow-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-yellow-200/40 via-yellow-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
-        
+      <section className="bg-gradient-to-br from-orange-100/50 via-orange-50/30 to-white py-16 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-orange-200/40 via-orange-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-orange-200/40 via-orange-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div
@@ -122,7 +142,7 @@ const Tuition: React.FC = () => {
                 <CreditCard className="w-12 h-12 text-white mx-auto" />
               </div>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Học phí & Học bổng
             </h1>
@@ -177,7 +197,9 @@ const Tuition: React.FC = () => {
                   ref={programGlare}
                   className="glare-effect bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
                 >
-                  <div className={`bg-gradient-to-br ${program.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}>
+                  <div
+                    className={`bg-gradient-to-br ${program.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
+                  >
                     <DollarSign className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -221,7 +243,9 @@ const Tuition: React.FC = () => {
                   ref={scholarshipGlare}
                   className="glare-effect bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
                 >
-                  <div className={`bg-gradient-to-br ${scholarship.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}>
+                  <div
+                    className={`bg-gradient-to-br ${scholarship.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
+                  >
                     <ScholarshipIcon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -233,7 +257,9 @@ const Tuition: React.FC = () => {
                     </span>
                   </div>
                   <div className="space-y-3">
-                    <h4 className="font-semibold text-gray-900 mb-3">Điều kiện:</h4>
+                    <h4 className="font-semibold text-gray-900 mb-3">
+                      Điều kiện:
+                    </h4>
                     {scholarship.requirements.map((req, reqIndex) => (
                       <div key={reqIndex} className="flex items-start gap-3">
                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -263,17 +289,24 @@ const Tuition: React.FC = () => {
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-200">
             <div className="space-y-6">
               {additionalFees.map((fee, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-4 bg-gray-50 rounded-xl"
+                >
                   <div className="flex items-center gap-4">
                     <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2 rounded-lg">
                       <Calculator className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{fee.name}</h3>
+                      <h3 className="font-semibold text-gray-900">
+                        {fee.name}
+                      </h3>
                       <p className="text-gray-600 text-sm">{fee.description}</p>
                     </div>
                   </div>
-                  <span className="font-bold text-orange-600">{fee.amount}</span>
+                  <span className="font-bold text-orange-600">
+                    {fee.amount}
+                  </span>
                 </div>
               ))}
             </div>
@@ -303,7 +336,9 @@ const Tuition: React.FC = () => {
                   ref={methodGlare}
                   className="glare-effect bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
                 >
-                  <div className={`bg-gradient-to-br ${method.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}>
+                  <div
+                    className={`bg-gradient-to-br ${method.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
+                  >
                     <CreditCard className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">

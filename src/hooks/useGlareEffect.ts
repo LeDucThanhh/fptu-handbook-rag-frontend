@@ -1,4 +1,4 @@
-import { useRef, useEffect, MouseEvent } from "react";
+import { useRef, useEffect, type MouseEvent } from "react";
 
 export const useGlareEffect = <T extends HTMLElement = HTMLDivElement>() => {
   const glareRef = useRef<T>(null);
@@ -42,5 +42,3 @@ export const useGlareEffect = <T extends HTMLElement = HTMLDivElement>() => {
 
   return glareRef;
 };
-
-
