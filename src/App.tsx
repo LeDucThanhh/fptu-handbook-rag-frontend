@@ -6,9 +6,6 @@ import { UserRole } from "./types";
 
 // Public pages
 import Home from "./pages/Home";
-import FAQ from "./pages/FAQ";
-
-// Public pages
 import QA from "./pages/QA";
 import Clubs from "./pages/Clubs";
 import Handbook from "./pages/Handbook";
@@ -21,11 +18,12 @@ import Profile from "./pages/student/Profile";
 import History from "./pages/student/History";
 import NotificationCenter from "./pages/student/NotificationCenter";
 
-// Mentor pages
+// Mentor pages (from dev - detailed UI by teammate)
 import MentorDashboard from "./pages/mentor/Dashboard";
 import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
-import MentorPosts from "./pages/mentor/Posts";
 import MentorAnalytics from "./pages/mentor/Analytics";
+import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
+import MentorPosts from "./pages/mentor/Posts";
 
 // Academic Staff pages
 import AcademicDashboard from "./pages/academic/Dashboard";
@@ -39,9 +37,8 @@ import ClubManagement from "./pages/affairs/ClubManagement";
 import EngagementDashboard from "./pages/affairs/EngagementDashboard";
 
 // Club Coordinator pages
-import ClubDashboard from "./pages/club/Dashboard";
-import ClubProfile from "./pages/club/Profile";
-import ActivityManagement from "./pages/club/Activities";
+import ClubList from "./pages/club/ClubList";
+import ClubDetail from "./pages/club/ClubDetail";
 
 // Admin pages
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -57,7 +54,6 @@ function App() {
         {/* Public routes - Accessible to everyone */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/faq" element={<FAQ />} />
           <Route path="/qa" element={<QA />} />
           <Route path="/clubs" element={<Clubs />} />
           <Route path="/handbook" element={<Handbook />} />
@@ -92,8 +88,9 @@ function App() {
           >
             <Route path="/mentor/dashboard" element={<MentorDashboard />} />
             <Route path="/mentor/unresolved" element={<UnresolvedQueue />} />
-            <Route path="/mentor/posts" element={<MentorPosts />} />
             <Route path="/mentor/analytics" element={<MentorAnalytics />} />
+            <Route path="/mentor/recommendations" element={<ResourceRecommendation />} />
+            <Route path="/mentor/posts" element={<MentorPosts />} />
           </Route>
 
           {/* Academic Staff routes */}
@@ -137,9 +134,8 @@ function App() {
               />
             }
           >
-            <Route path="/club/dashboard" element={<ClubDashboard />} />
-            <Route path="/club/profile" element={<ClubProfile />} />
-            <Route path="/club/activities" element={<ActivityManagement />} />
+            <Route path="/club/dashboard" element={<ClubList />} />
+            <Route path="/club/detail/:clubId" element={<ClubDetail />} />
           </Route>
         </Route>
       </Routes>

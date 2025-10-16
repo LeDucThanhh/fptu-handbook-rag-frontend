@@ -68,8 +68,9 @@ export default function RoleNavigation() {
           href: "/mentor/unresolved",
           icon: AlertCircle,
         },
-        { label: "Quản lý Posts", href: "/mentor/posts", icon: FileText },
         { label: "Analytics", href: "/mentor/analytics", icon: BarChart },
+        { label: "Resource Recommendations", href: "/mentor/recommendations", icon: BookOpen },
+        { label: "Quản lý Posts", href: "/mentor/posts", icon: FileText },
       ];
     }
 
@@ -111,13 +112,7 @@ export default function RoleNavigation() {
     // CLUB COORDINATOR
     if (user.roles.includes(UserRole.CLUB_COORDINATOR)) {
       return [
-        { label: "Club Dashboard", href: "/club/dashboard", icon: Home },
-        { label: "Quản lý hồ sơ CLB", href: "/club/profile", icon: User },
-        {
-          label: "Quản lý hoạt động",
-          href: "/club/activities",
-          icon: Calendar,
-        },
+        { label: "Quản lý Câu lạc bộ", href: "/club/dashboard", icon: Home },
       ];
     }
 

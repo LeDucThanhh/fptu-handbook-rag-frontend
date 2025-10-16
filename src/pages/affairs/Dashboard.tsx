@@ -122,39 +122,31 @@ export default function AffairsDashboard() {
           </CardContent>
         </Card>
 
-        {/* Upcoming Events */}
+        {/* Recent Activities */}
         <Card>
           <CardHeader>
-            <CardTitle>Sự kiện sắp tới</CardTitle>
+            <CardTitle>Hoạt động gần đây</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-orange-50 to-orange-100 rounded-lg border border-orange-200">
-                <div className="w-12 h-12 bg-orange-500 text-white rounded-lg flex flex-col items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-bold">15</span>
-                  <span className="text-xs">THG 10</span>
+            <div className="space-y-3">
+              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
+                  <Bell className="w-5 h-5 text-teal-600" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-bold text-gray-900">Tech Talk: AI in Education</p>
-                  <p className="text-sm text-gray-600">14:00 - 16:00 • Hội trường A</p>
+                <div>
+                  <p className="font-semibold text-gray-900">Gửi thông báo "Lịch thi kỳ Fall 2024"</p>
+                  <p className="text-sm text-gray-600">Gửi đến: Tất cả sinh viên • 2 giờ trước</p>
                 </div>
-                <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">
-                  Upcoming
-                </span>
               </div>
 
-              <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200">
-                <div className="w-12 h-12 bg-blue-500 text-white rounded-lg flex flex-col items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-bold">18</span>
-                  <span className="text-xs">THG 10</span>
+              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-blue-600" />
                 </div>
-                <div className="flex-1">
-                  <p className="font-bold text-gray-900">Ngày hội Câu lạc bộ</p>
-                  <p className="text-sm text-gray-600">09:00 - 17:00 • Toàn bộ campus</p>
+                <div>
+                  <p className="font-semibold text-gray-900">Tạo sự kiện "Ngày hội CLB 2024"</p>
+                  <p className="text-sm text-gray-600">18/10/2024 • 1 ngày trước</p>
                 </div>
-                <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
-                  Upcoming
-                </span>
               </div>
             </div>
           </CardContent>

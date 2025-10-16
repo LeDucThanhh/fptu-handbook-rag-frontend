@@ -128,12 +128,6 @@ const Navbar: React.FC = () => {
                 </div>
 
                 <Link
-                  to="/faq"
-                  className="text-gray-700 hover:text-orange-500 transition"
-                >
-                  FAQ
-                </Link>
-                <Link
                   to="/qa"
                   className="text-gray-700 hover:text-orange-500 transition"
                 >

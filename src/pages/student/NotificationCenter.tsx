@@ -1,16 +1,31 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, Calendar, CheckCircle, X } from "lucide-react";
-import { mockNotifications } from "@/services/mock/mockData";
+import { Bell, Calendar, CheckCircle, MapPin } from "lucide-react";
+import { mockNotifications, mockSchoolEvents } from "@/services/mock/mockData";
 
 export default function NotificationCenter() {
+  // Combine notifications and events
   const [notifications, setNotifications] = useState(mockNotifications);
-  const [filter, setFilter] = useState<"all" | "unread" | "read">("all");
+  const [filter, setFilter] = useState<"all" | "notifications" | "events">("all");
 
-  const filteredNotifications = notifications.filter((notif) => {
+  // Convert events to notification format
+  const eventsAsNotifications = mockSchoolEvents.map(event => ({
+    id: event.id,
+    title: event.title,
+    content: `${event.description}\n📍 ${event.location}\n🕐 ${event.time}`,
+    type: event.type,
+    priority: event.priority,
+    date: event.date,
+    isRead: false,
+    targetAudience: event.targetAudience,
+  }));
+
+  const allItems = [...notifications, ...eventsAsNotifications];
+
+  const filteredNotifications = allItems.filter((item) => {
     if (filter === "all") return true;
-    if (filter === "unread") return !notif.isRead;
-    if (filter === "read") return notif.isRead;
+    if (filter === "notifications") return item.type !== "Sự kiện";
+    if (filter === "events") return item.type === "Sự kiện";
     return true;
   });
 
@@ -52,27 +67,27 @@ export default function NotificationCenter() {
                 : "text-gray-600 hover:bg-gray-100"
             }`}
           >
-            Tất cả ({notifications.length})
+            Tất cả ({allItems.length})
           </button>
           <button
-            onClick={() => setFilter("unread")}
+            onClick={() => setFilter("notifications")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-              filter === "unread"
+              filter === "notifications"
                 ? "bg-orange-500 text-white"
                 : "text-gray-600 hover:bg-gray-100"
             }`}
           >
-            Chưa đọc ({notifications.filter((n) => !n.isRead).length})
+            📢 Thông báo ({notifications.length})
           </button>
           <button
-            onClick={() => setFilter("read")}
+            onClick={() => setFilter("events")}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
-              filter === "read"
+              filter === "events"
                 ? "bg-orange-500 text-white"
                 : "text-gray-600 hover:bg-gray-100"
             }`}
           >
-            Đã đọc ({notifications.filter((n) => n.isRead).length})
+            📅 Sự kiện ({eventsAsNotifications.length})
           </button>
         </div>
 
@@ -89,21 +104,27 @@ export default function NotificationCenter() {
               <CardContent className="pt-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-start gap-3 mb-3">
+                      <div className="flex items-start gap-3 mb-3">
                       <div
                         className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                          notification.priority === "high"
+                          notification.type === "Sự kiện"
+                            ? "bg-blue-100"
+                            : notification.priority === "high"
                             ? "bg-red-100"
-                            : "bg-blue-100"
+                            : "bg-orange-100"
                         }`}
                       >
-                        <Bell
-                          className={`w-6 h-6 ${
-                            notification.priority === "high"
-                              ? "text-red-600"
-                              : "text-blue-600"
-                          }`}
-                        />
+                        {notification.type === "Sự kiện" ? (
+                          <Calendar className="w-6 h-6 text-blue-600" />
+                        ) : (
+                          <Bell
+                            className={`w-6 h-6 ${
+                              notification.priority === "high"
+                                ? "text-red-600"
+                                : "text-orange-600"
+                            }`}
+                          />
+                        )}
                       </div>
 
                       <div className="flex-1">

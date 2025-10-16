@@ -30,6 +30,21 @@ export const getDashboardRoute = (user: User | null): string => {
     return "/club/dashboard";
   }
 
-  // Student không có dashboard riêng, về home
+  // Student không có dashboard riêng, về home page
   return "/";
+};
+
+/**
+ * Get role display name in Vietnamese
+ */
+export const getRoleDisplayName = (role: UserRole): string => {
+  const roleNames: Record<UserRole, string> = {
+    [UserRole.STUDENT]: "Sinh viên",
+    [UserRole.MENTOR]: "Mentor / Cố vấn",
+    [UserRole.ACADEMIC_STAFF]: "Phòng Đào tạo",
+    [UserRole.STUDENT_AFFAIRS]: "Phòng Công tác SV",
+    [UserRole.CLUB_COORDINATOR]: "Điều phối viên CLB",
+    [UserRole.ADMIN]: "Quản trị viên",
+  };
+  return roleNames[role] || role;
 };
