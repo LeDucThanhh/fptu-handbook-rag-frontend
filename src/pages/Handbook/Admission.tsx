@@ -7,12 +7,10 @@ import {
   FileText,
   CheckCircle,
   Clock,
-  Users,
-  Award,
   ChevronLeft,
   ChevronRight,
   AlertCircle,
-  Info
+  Info,
 } from "lucide-react";
 
 const Admission: React.FC = () => {
@@ -25,9 +23,9 @@ const Admission: React.FC = () => {
       requirements: [
         "Tốt nghiệp THPT",
         "Điểm TB lớp 12 ≥ 6.5",
-        "Hạnh kiểm Khá trở lên"
+        "Hạnh kiểm Khá trở lên",
       ],
-      color: "from-blue-500 to-blue-600"
+      color: "from-blue-500 to-blue-600",
     },
     {
       title: "Xét tuyển điểm thi THPT",
@@ -35,9 +33,9 @@ const Admission: React.FC = () => {
       requirements: [
         "Tốt nghiệp THPT",
         "Điểm thi THPT ≥ 15 điểm",
-        "Không có môn nào dưới 3 điểm"
+        "Không có môn nào dưới 3 điểm",
       ],
-      color: "from-green-500 to-green-600"
+      color: "from-green-500 to-green-600",
     },
     {
       title: "Xét tuyển thẳng",
@@ -45,38 +43,38 @@ const Admission: React.FC = () => {
       requirements: [
         "Học sinh giỏi cấp tỉnh/thành phố",
         "Đạt giải trong các kỳ thi quốc tế",
-        "Có chứng chỉ ngoại ngữ quốc tế"
+        "Có chứng chỉ ngoại ngữ quốc tế",
       ],
-      color: "from-purple-500 to-purple-600"
-    }
+      color: "from-purple-500 to-purple-600",
+    },
   ];
 
   const timeline = [
     {
       month: "Tháng 3-4",
       title: "Bắt đầu nhận hồ sơ",
-      description: "Mở cổng đăng ký xét tuyển online"
+      description: "Mở cổng đăng ký xét tuyển online",
     },
     {
       month: "Tháng 5-6",
       title: "Hạn nộp hồ sơ",
-      description: "Kết thúc nhận hồ sơ xét tuyển học bạ"
+      description: "Kết thúc nhận hồ sơ xét tuyển học bạ",
     },
     {
       month: "Tháng 7",
       title: "Công bố kết quả",
-      description: "Thông báo kết quả xét tuyển học bạ"
+      description: "Thông báo kết quả xét tuyển học bạ",
     },
     {
       month: "Tháng 8",
       title: "Xét tuyển THPT",
-      description: "Xét tuyển dựa trên điểm thi THPT"
+      description: "Xét tuyển dựa trên điểm thi THPT",
     },
     {
       month: "Tháng 9",
       title: "Nhập học",
-      description: "Làm thủ tục nhập học cho tân sinh viên"
-    }
+      description: "Làm thủ tục nhập học cho tân sinh viên",
+    },
   ];
 
   const documents = [
@@ -86,16 +84,16 @@ const Admission: React.FC = () => {
     "Bản sao CMND/CCCD",
     "Ảnh 3x4 (4 ảnh)",
     "Giấy chứng nhận ưu tiên (nếu có)",
-    "Chứng chỉ ngoại ngữ (nếu có)"
+    "Chứng chỉ ngoại ngữ (nếu có)",
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-50 via-green-25 to-white py-16 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-green-200/40 via-green-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-green-200/40 via-green-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
-        
+      <section className="bg-gradient-to-br from-orange-100/50 via-orange-50/30 to-white py-16 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-orange-200/40 via-orange-100/30 to-transparent rounded-full -mr-48 -mt-48 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-orange-200/40 via-orange-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
+
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-4xl mx-auto">
             <div
@@ -106,12 +104,13 @@ const Admission: React.FC = () => {
                 <GraduationCap className="w-12 h-12 text-white mx-auto" />
               </div>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
               Quy chế tuyển sinh
             </h1>
             <p className="text-xl text-gray-700 mb-8">
-              Thông tin chi tiết về các phương thức xét tuyển và quy trình đăng ký
+              Thông tin chi tiết về các phương thức xét tuyển và quy trình đăng
+              ký
             </p>
           </div>
         </div>
@@ -161,7 +160,9 @@ const Admission: React.FC = () => {
                   ref={methodGlare}
                   className="glare-effect bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200"
                 >
-                  <div className={`bg-gradient-to-br ${method.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}>
+                  <div
+                    className={`bg-gradient-to-br ${method.color} w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
+                  >
                     <FileText className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">
@@ -171,7 +172,9 @@ const Admission: React.FC = () => {
                     {method.description}
                   </p>
                   <div className="space-y-3">
-                    <h4 className="font-semibold text-gray-900 mb-3">Điều kiện:</h4>
+                    <h4 className="font-semibold text-gray-900 mb-3">
+                      Điều kiện:
+                    </h4>
                     {method.requirements.map((req, reqIndex) => (
                       <div key={reqIndex} className="flex items-start gap-3">
                         <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
@@ -200,17 +203,28 @@ const Admission: React.FC = () => {
 
           <div className="relative">
             <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-orange-400 to-orange-600 rounded-full"></div>
-            
+
             <div className="space-y-12">
               {timeline.map((item, index) => (
-                <div key={index} className={`flex items-center ${index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'}`}>
-                  <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8 text-left'}`}>
+                <div
+                  key={index}
+                  className={`flex items-center ${
+                    index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+                  }`}
+                >
+                  <div
+                    className={`w-1/2 ${
+                      index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"
+                    }`}
+                  >
                     <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2 rounded-lg">
                           <Calendar className="w-5 h-5 text-white" />
                         </div>
-                        <span className="font-bold text-orange-600">{item.month}</span>
+                        <span className="font-bold text-orange-600">
+                          {item.month}
+                        </span>
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         {item.title}
@@ -220,11 +234,11 @@ const Admission: React.FC = () => {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center relative z-10">
                     <Clock className="w-4 h-4 text-white" />
                   </div>
-                  
+
                   <div className="w-1/2"></div>
                 </div>
               ))}
