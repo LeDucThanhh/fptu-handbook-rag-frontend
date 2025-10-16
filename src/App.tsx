@@ -12,6 +12,9 @@ import Handbook from "./pages/Handbook";
 import Introduction from "./pages/Handbook/Introduction";
 import Admission from "./pages/Handbook/Admission";
 import Tuition from "./pages/Handbook/Tuition";
+import Analytics from "./pages/Mentor/Analytics";
+import ResourceRecommendation from "./pages/Mentor/ResourceRecommendation";
+import UnresolvedQueue from "./pages/Mentor/UnresolvedQueue";
 
 // Student protected pages
 import Profile from "./pages/student/Profile";

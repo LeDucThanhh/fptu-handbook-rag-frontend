@@ -8,9 +8,9 @@
 @layer base {
 :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 25 95% 53%; /* Orange-500 */
@@ -30,25 +30,25 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 142 76% 36%;
   }
 }
 
@@ -247,7 +247,7 @@
     }
   }
 
-  /* Glare Effect - inspired by https://reactbits.dev/animations/glare-hover */
+  /* Electroverse-inspired Glare Effects */
   .glare-effect {
     position: relative;
     overflow: hidden;
@@ -271,7 +271,7 @@
     z-index: 10;
   }
 
-  .glare-effect-orange {
+  .glare-effect-green {
     position: relative;
     overflow: hidden;
     --mouse-x: 50%;
@@ -279,7 +279,7 @@
     --glare-opacity: 0;
   }
 
-  .glare-effect-orange::before {
+  .glare-effect-green::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -295,7 +295,7 @@
     z-index: 10;
   }
 
-  /* Glare for cards with stronger effect */
+  /* Glare for cards with Electroverse styling */
   .glare-card {
     position: relative;
     overflow: hidden;

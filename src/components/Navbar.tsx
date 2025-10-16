@@ -55,13 +55,13 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-white border-b sticky top-0 z-50">
+      <nav className="bg-background border-b border-border sticky top-0 z-50 shadow-soft">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Left side: Logo only */}
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="absolute inset-0 bg-orange-200 rounded-xl blur opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
+                <div className="absolute inset-0 bg-primary/20 rounded-xl blur opacity-0 group-hover:opacity-30 transition-all duration-300"></div>
                 <img
                   src="/images/Logo_FPT_Education.png"
                   alt="FPT Education"
@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
               <div className="hidden md:flex items-center gap-6">
                 <Link
                   to="/clubs"
-                  className="text-gray-700 hover:text-orange-500 transition"
+                  className="text-foreground hover:text-primary transition-colors duration-200"
                 >
                   Câu lạc bộ
                 </Link>
@@ -94,31 +94,31 @@ const Navbar: React.FC = () => {
                   </button>
 
                   {isHandbookDropdownOpen && (
-                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-card rounded-lg shadow-medium border border-border py-2 z-50">
                       <Link
                         to="/handbook"
-                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        className="block px-4 py-2 text-card-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                         onClick={() => setIsHandbookDropdownOpen(false)}
                       >
                         Tổng quan
                       </Link>
                       <Link
                         to="/handbook/introduction"
-                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        className="block px-4 py-2 text-card-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                         onClick={() => setIsHandbookDropdownOpen(false)}
                       >
                         Giới thiệu chung
                       </Link>
                       <Link
                         to="/handbook/admission"
-                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        className="block px-4 py-2 text-card-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                         onClick={() => setIsHandbookDropdownOpen(false)}
                       >
                         Quy chế tuyển sinh
                       </Link>
                       <Link
                         to="/handbook/tuition"
-                        className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-600 transition"
+                        className="block px-4 py-2 text-card-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200"
                         onClick={() => setIsHandbookDropdownOpen(false)}
                       >
                         Học phí & Học bổng
@@ -129,7 +129,7 @@ const Navbar: React.FC = () => {
 
                 <Link
                   to="/qa"
-                  className="text-gray-700 hover:text-orange-500 transition"
+                  className="text-foreground hover:text-primary transition-colors duration-200"
                 >
                   Hỏi đáp AI
                 </Link>
@@ -243,7 +243,7 @@ const Navbar: React.FC = () => {
                 </button>
               )}
 
-              <div className="flex items-center gap-1 text-sm text-gray-600">
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
                 <button
                   onClick={() => setLanguage("VN")}
                   className={`${
