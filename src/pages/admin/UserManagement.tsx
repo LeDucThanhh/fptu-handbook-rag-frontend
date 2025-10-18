@@ -7,13 +7,21 @@ export default function UserManagement() {
   const [users] = useState(mockUsersData);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Quản lý người dùng & roles</h1>
-          <p className="text-purple-100">
-            Quản lý tài khoản, phân quyền và reset password
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}
+            >
+              Quản lý người dùng & roles
+            </h1>
+            <p className="text-orange-100">
+              Quản lý tài khoản, phân quyền và reset password
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center justify-between mb-6">
@@ -22,11 +30,11 @@ export default function UserManagement() {
             <input
               type="text"
               placeholder="Tìm người dùng..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500 w-80"
+              className="pl-10 pr-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all w-80"
             />
           </div>
 
-          <button className="bg-purple-500 text-white px-6 py-2.5 rounded-lg hover:bg-purple-600 transition font-semibold inline-flex items-center gap-2">
+          <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2.5 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold inline-flex items-center gap-2 shadow-lg">
             <Plus className="w-4 h-4" />
             Thêm người dùng
           </button>
@@ -101,6 +109,3 @@ export default function UserManagement() {
     </div>
   );
 }
-
-
-

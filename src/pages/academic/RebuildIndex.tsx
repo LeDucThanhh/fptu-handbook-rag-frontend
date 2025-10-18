@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   RefreshCw,
   CheckCircle,
-  XCircle,
   Clock,
   Database,
   Loader,
@@ -55,59 +54,73 @@ export default function RebuildIndex() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Rebuild Index (RAG Sync)</h1>
-          <p className="text-purple-100">
-            Tái lập chỉ mục AI, theo dõi tiến trình và lỗi
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Rebuild Index (RAG Sync)
+            </h1>
+            <p className="text-orange-100">
+              Tái lập chỉ mục AI, theo dõi tiến trình và lỗi
+            </p>
+          </div>
         </div>
 
         {/* Current Status */}
-        <Card className="mb-8">
+        <Card className="mb-8 border-orange-200 shadow-lg">
           <CardHeader>
-            <CardTitle>Trạng thái hệ thống</CardTitle>
+            <CardTitle style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Trạng thái hệ thống
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border-2 border-blue-200">
-                <Database className="w-12 h-12 text-blue-600 mx-auto mb-3" />
-                <p className="text-sm text-gray-600 mb-1">Total Documents</p>
-                <p className="text-3xl font-bold text-blue-600">156</p>
+              <div className="glare-card">
+                <div className="text-center p-6 bg-gradient-to-br from-orange-50 to-white rounded-xl border-2 border-orange-200">
+                  <Database className="w-14 h-14 text-orange-600 mx-auto mb-3" />
+                  <p className="text-sm text-gray-600 mb-1">Total Documents</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">156</p>
+                </div>
               </div>
 
-              <div className="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-green-200">
-                <CheckCircle className="w-12 h-12 text-green-600 mx-auto mb-3" />
-                <p className="text-sm text-gray-600 mb-1">Index Status</p>
-                <p className="text-lg font-bold text-green-600">Up to date</p>
+              <div className="glare-card">
+                <div className="text-center p-6 bg-gradient-to-br from-green-50 to-white rounded-xl border-2 border-green-200">
+                  <CheckCircle className="w-14 h-14 text-green-600 mx-auto mb-3" />
+                  <p className="text-sm text-gray-600 mb-1">Index Status</p>
+                  <p className="text-lg font-bold text-green-600">Up to date</p>
+                </div>
               </div>
 
-              <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-purple-200">
-                <Clock className="w-12 h-12 text-purple-600 mx-auto mb-3" />
-                <p className="text-sm text-gray-600 mb-1">Last Rebuild</p>
-                <p className="text-lg font-bold text-purple-600">2 hours ago</p>
+              <div className="glare-card">
+                <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-white rounded-xl border-2 border-blue-200">
+                  <Clock className="w-14 h-14 text-blue-600 mx-auto mb-3" />
+                  <p className="text-sm text-gray-600 mb-1">Last Rebuild</p>
+                  <p className="text-lg font-bold text-blue-600">2 hours ago</p>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Rebuild Control */}
-        <Card className="mb-8">
+        <Card className="mb-8 border-orange-200 shadow-lg">
           <CardHeader>
-            <CardTitle>Rebuild Index</CardTitle>
+            <CardTitle style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Rebuild Index
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {status === "idle" && (
               <div className="text-center py-8">
                 <p className="text-gray-600 mb-6">
-                  Nhấn nút bên dưới để tái tạo chỉ mục AI. Quá trình sẽ mất khoảng
-                  3-5 phút.
+                  Nhấn nút bên dưới để tái tạo chỉ mục AI. Quá trình sẽ mất khoảng 3-5 phút.
                 </p>
                 <button
                   onClick={handleRebuild}
-                  className="bg-purple-500 text-white px-8 py-3 rounded-lg hover:bg-purple-600 transition font-semibold inline-flex items-center gap-2"
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-3 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold shadow-lg hover:shadow-xl inline-flex items-center gap-2"
                 >
                   <RefreshCw className="w-5 h-5" />
                   Bắt đầu Rebuild
@@ -118,20 +131,20 @@ export default function RebuildIndex() {
             {status === "processing" && (
               <div className="py-8">
                 <div className="flex items-center justify-center mb-6">
-                  <Loader className="w-12 h-12 text-purple-500 animate-spin" />
+                  <Loader className="w-12 h-12 text-orange-500 animate-spin" />
                 </div>
                 <div className="mb-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-gray-700">
                       Đang xử lý...
                     </span>
-                    <span className="text-sm font-bold text-purple-600">
+                    <span className="text-sm font-bold text-orange-600">
                       {progress}%
                     </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-4">
                     <div
-                      className="bg-gradient-to-r from-purple-500 to-purple-600 h-4 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-orange-500 to-orange-600 h-4 rounded-full transition-all duration-300"
                       style={{ width: `${progress}%` }}
                     ></div>
                   </div>
@@ -153,7 +166,7 @@ export default function RebuildIndex() {
                 </p>
                 <button
                   onClick={() => setStatus("idle")}
-                  className="bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 transition font-semibold"
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold shadow-lg"
                 >
                   Hoàn tất
                 </button>
@@ -163,31 +176,35 @@ export default function RebuildIndex() {
         </Card>
 
         {/* Rebuild History */}
-        <Card>
+        <Card className="border-orange-200 shadow-lg">
           <CardHeader>
-            <CardTitle>Lịch sử Rebuild</CardTitle>
+            <CardTitle style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Lịch sử Rebuild
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-3">
               {lastRebuildLogs.map((log, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                  className="glare-card"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
+                  <div className="flex items-center justify-between p-4 bg-white border-2 border-orange-100 rounded-xl hover:border-orange-300 hover:shadow-lg transition-all">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-md">
+                        <CheckCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-gray-900">{log.time}</p>
+                        <p className="text-sm text-gray-600">
+                          {log.documents} documents • {log.duration}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">{log.time}</p>
-                      <p className="text-sm text-gray-600">
-                        {log.documents} documents • {log.duration}
-                      </p>
-                    </div>
+                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                      Success
+                    </span>
                   </div>
-                  <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                    Success
-                  </span>
                 </div>
               ))}
             </div>
@@ -197,6 +214,3 @@ export default function RebuildIndex() {
     </div>
   );
 }
-
-
-

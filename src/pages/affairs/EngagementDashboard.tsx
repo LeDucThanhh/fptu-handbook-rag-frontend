@@ -28,14 +28,19 @@ export default function EngagementDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Engagement Dashboard</h1>
-          <p className="text-teal-100">
-            Theo dõi tương tác sinh viên và mức độ quan tâm câu lạc bộ
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Engagement Dashboard
+            </h1>
+            <p className="text-orange-100">
+              Theo dõi tương tác sinh viên và mức độ quan tâm câu lạc bộ
+            </p>
+          </div>
         </div>
 
         {/* Stats Overview */}

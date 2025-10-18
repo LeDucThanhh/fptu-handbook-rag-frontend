@@ -10,14 +10,19 @@ export default function ClubList() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-500 to-pink-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Quản lý Câu lạc bộ 🎭</h1>
-          <p className="text-pink-100">
-            Danh sách các câu lạc bộ bạn đang quản lý
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Quản lý Câu lạc bộ 🎭
+            </h1>
+            <p className="text-orange-100">
+              Danh sách các câu lạc bộ bạn đang quản lý
+            </p>
+          </div>
         </div>
 
         {/* Stats Overview */}
@@ -25,8 +30,8 @@ export default function ClubList() {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-1">CLB quản lý</p>
-                <p className="text-4xl font-bold text-pink-600">{myClubs.length}</p>
+                  <p className="text-sm text-gray-600 mb-1">CLB quản lý</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">{myClubs.length}</p>
               </div>
             </CardContent>
           </Card>
@@ -108,7 +113,7 @@ export default function ClubList() {
                         e.stopPropagation();
                         navigate(`/club/detail/${club.id}`);
                       }}
-                      className="w-full bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition font-semibold inline-flex items-center justify-center gap-2"
+                      className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold inline-flex items-center justify-center gap-2 shadow-lg"
                     >
                       <Edit className="w-4 h-4" />
                       Quản lý CLB này
@@ -123,4 +128,6 @@ export default function ClubList() {
     </div>
   );
 }
+
+
 

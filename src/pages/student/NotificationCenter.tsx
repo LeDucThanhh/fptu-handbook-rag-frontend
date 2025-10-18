@@ -6,10 +6,12 @@ import { mockNotifications, mockSchoolEvents } from "@/services/mock/mockData";
 export default function NotificationCenter() {
   // Combine notifications and events
   const [notifications, setNotifications] = useState(mockNotifications);
-  const [filter, setFilter] = useState<"all" | "notifications" | "events">("all");
+  const [filter, setFilter] = useState<"all" | "notifications" | "events">(
+    "all"
+  );
 
   // Convert events to notification format
-  const eventsAsNotifications = mockSchoolEvents.map(event => ({
+  const eventsAsNotifications = mockSchoolEvents.map((event) => ({
     id: event.id,
     title: event.title,
     content: `${event.description}\n📍 ${event.location}\n🕐 ${event.time}`,
@@ -40,21 +42,31 @@ export default function NotificationCenter() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-5xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <Bell className="w-8 h-8 text-orange-500" />
-            Trung tâm thông báo
-          </h1>
-          <button
-            onClick={markAllAsRead}
-            className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm font-semibold"
-          >
-            <CheckCircle className="w-4 h-4" />
-            Đánh dấu tất cả đã đọc
-          </button>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative flex items-center justify-between">
+            <div>
+              <h1
+                className="text-3xl font-bold mb-2"
+                style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}
+              >
+                Trung tâm thông báo 🔔
+              </h1>
+              <p className="text-orange-100">
+                Thông báo và sự kiện từ nhà trường
+              </p>
+            </div>
+            <button
+              onClick={markAllAsRead}
+              className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-lg hover:bg-white/30 transition-all text-sm font-semibold"
+            >
+              <CheckCircle className="w-4 h-4" />
+              Đánh dấu đã đọc
+            </button>
+          </div>
         </div>
 
         {/* Filter Tabs */}
@@ -104,7 +116,7 @@ export default function NotificationCenter() {
               <CardContent className="pt-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                      <div className="flex items-start gap-3 mb-3">
+                    <div className="flex items-start gap-3 mb-3">
                       <div
                         className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
                           notification.type === "Sự kiện"
@@ -197,5 +209,3 @@ export default function NotificationCenter() {
     </div>
   );
 }
-
-

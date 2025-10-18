@@ -19,11 +19,21 @@ export default function History() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-5xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Lịch sử hỏi đáp
-        </h1>
+        {/* Header */}
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}
+            >
+              Lịch sử hỏi đáp 📝
+            </h1>
+            <p className="text-orange-100">Xem lại các câu hỏi bạn đã đặt</p>
+          </div>
+        </div>
 
         <Card>
           <CardHeader>
@@ -110,5 +120,3 @@ export default function History() {
     </div>
   );
 }
-
-

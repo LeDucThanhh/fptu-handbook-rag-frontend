@@ -37,26 +37,29 @@ export default function ClubDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Back Button */}
         <button
           onClick={() => navigate("/club/dashboard")}
-          className="flex items-center gap-2 text-gray-600 hover:text-pink-600 mb-6 transition"
+          className="flex items-center gap-2 text-gray-600 hover:text-orange-600 mb-6 transition-all font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Quay lại danh sách</span>
         </button>
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-500 to-pink-600 rounded-2xl p-8 mb-8 text-white">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl backdrop-blur-sm">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative flex items-center gap-4">
+            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl backdrop-blur-sm shadow-lg">
               {initialClub.icon}
             </div>
             <div>
-              <h1 className="text-3xl font-bold mb-1">Chi tiết Câu lạc bộ</h1>
-              <p className="text-pink-100">{clubData.name}</p>
+              <h1 className="text-3xl font-bold mb-1" style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+                Chi tiết Câu lạc bộ
+              </h1>
+              <p className="text-orange-100">{clubData.name}</p>
             </div>
           </div>
         </div>
@@ -68,7 +71,7 @@ export default function ClubDetail() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Tổng thành viên</p>
-                  <p className="text-4xl font-bold text-pink-600">{clubData.members}</p>
+                  <p className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">{clubData.members}</p>
                 </div>
                 <Users className="w-12 h-12 text-pink-300" />
               </div>
@@ -136,7 +139,7 @@ export default function ClubDetail() {
                   </button>
                   <button
                     onClick={handleSave}
-                    className="flex items-center gap-2 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition font-semibold"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold shadow-lg"
                   >
                     <Save className="w-4 h-4" />
                     Lưu thay đổi
@@ -158,7 +161,7 @@ export default function ClubDetail() {
                     value={clubData.name}
                     onChange={(e) => setClubData({ ...clubData, name: e.target.value })}
                     disabled={!isEditing}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 disabled:text-gray-700"
+                    className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all disabled:bg-gray-50 disabled:text-gray-700"
                   />
                 </div>
 
@@ -441,4 +444,6 @@ export default function ClubDetail() {
     </div>
   );
 }
+
+
 

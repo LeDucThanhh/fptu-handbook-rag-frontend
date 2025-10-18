@@ -1,23 +1,63 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Cpu, Database, Server, CheckCircle, XCircle } from "lucide-react";
+import {
+  Activity,
+  Cpu,
+  Database,
+  Server,
+  CheckCircle,
+  XCircle,
+} from "lucide-react";
 
 export default function SystemHealth() {
   const services = [
-    { name: "API Server", status: "online", uptime: "99.9%", responseTime: "45ms" },
-    { name: "Database", status: "online", uptime: "99.8%", responseTime: "12ms" },
-    { name: "AI Service", status: "online", uptime: "99.5%", responseTime: "1.2s" },
-    { name: "Email Service", status: "online", uptime: "100%", responseTime: "150ms" },
-    { name: "Storage", status: "online", uptime: "99.9%", responseTime: "30ms" },
+    {
+      name: "API Server",
+      status: "online",
+      uptime: "99.9%",
+      responseTime: "45ms",
+    },
+    {
+      name: "Database",
+      status: "online",
+      uptime: "99.8%",
+      responseTime: "12ms",
+    },
+    {
+      name: "AI Service",
+      status: "online",
+      uptime: "99.5%",
+      responseTime: "1.2s",
+    },
+    {
+      name: "Email Service",
+      status: "online",
+      uptime: "100%",
+      responseTime: "150ms",
+    },
+    {
+      name: "Storage",
+      status: "online",
+      uptime: "99.9%",
+      responseTime: "30ms",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">System Health</h1>
-          <p className="text-purple-100">
-            Giám sát hiệu năng và trạng thái server
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}
+            >
+              System Health
+            </h1>
+            <p className="text-orange-100">
+              Giám sát hiệu năng và trạng thái server
+            </p>
+          </div>
         </div>
 
         {/* Overall Status */}
@@ -26,8 +66,12 @@ export default function SystemHealth() {
             <div className="flex items-center justify-center gap-4 py-8">
               <CheckCircle className="w-16 h-16 text-green-500" />
               <div>
-                <p className="text-3xl font-bold text-gray-900">All Systems Operational</p>
-                <p className="text-gray-600 mt-1">All services are running normally</p>
+                <p className="text-3xl font-bold text-gray-900">
+                  All Systems Operational
+                </p>
+                <p className="text-gray-600 mt-1">
+                  All services are running normally
+                </p>
               </div>
             </div>
           </CardContent>
@@ -46,7 +90,10 @@ export default function SystemHealth() {
               </div>
               <div className="mt-4">
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: "45%" }}></div>
+                  <div
+                    className="bg-blue-500 h-2 rounded-full"
+                    style={{ width: "45%" }}
+                  ></div>
                 </div>
               </div>
             </CardContent>
@@ -63,7 +110,10 @@ export default function SystemHealth() {
               </div>
               <div className="mt-4">
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: "62%" }}></div>
+                  <div
+                    className="bg-purple-500 h-2 rounded-full"
+                    style={{ width: "62%" }}
+                  ></div>
                 </div>
               </div>
             </CardContent>
@@ -121,7 +171,9 @@ export default function SystemHealth() {
                   <div className="flex items-center gap-6">
                     <div className="text-right">
                       <p className="text-sm text-gray-600">Response Time</p>
-                      <p className="font-bold text-gray-900">{service.responseTime}</p>
+                      <p className="font-bold text-gray-900">
+                        {service.responseTime}
+                      </p>
                     </div>
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
                       Online
@@ -136,6 +188,3 @@ export default function SystemHealth() {
     </div>
   );
 }
-
-
-

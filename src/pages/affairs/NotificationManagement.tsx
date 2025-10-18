@@ -42,14 +42,19 @@ export default function NotificationManagement() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Quản lý Thông báo & Sự kiện</h1>
-          <p className="text-teal-100">
-            Gửi thông báo, tạo sự kiện và theo dõi mức độ tương tác
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}>
+              Quản lý Thông báo & Sự kiện
+            </h1>
+            <p className="text-orange-100">
+              Gửi thông báo, tạo sự kiện và theo dõi mức độ tương tác
+            </p>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -136,7 +141,7 @@ export default function NotificationManagement() {
                 setCreateType("notification");
                 setShowCreateModal(true);
               }}
-              className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition font-semibold inline-flex items-center gap-2"
+              className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold inline-flex items-center gap-2 shadow-lg"
             >
               <Bell className="w-4 h-4" />
               Tạo thông báo
@@ -335,7 +340,7 @@ export default function NotificationManagement() {
                         onClick={() => setCreateType("notification")}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                           createType === "notification"
-                            ? "bg-teal-500 text-white"
+                            ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white"
                             : "text-gray-600"
                         }`}
                       >
@@ -499,7 +504,7 @@ export default function NotificationManagement() {
                     <button
                       onClick={handleCreate}
                       disabled={!formData.title || !formData.content}
-                      className="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition font-semibold inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
                     >
                       <Send className="w-4 h-4" />
                       {createType === "notification" ? "Gửi thông báo" : "Tạo sự kiện"}

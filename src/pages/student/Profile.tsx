@@ -18,11 +18,23 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-4xl">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">
-          Thông tin cá nhân
-        </h1>
+        {/* Header */}
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}
+            >
+              Thông tin cá nhân 👤
+            </h1>
+            <p className="text-orange-100">
+              Quản lý thông tin tài khoản của bạn
+            </p>
+          </div>
+        </div>
 
         {/* Profile Card */}
         <Card className="mb-6">
@@ -43,7 +55,7 @@ export default function Profile() {
                   <h2 className="text-2xl font-bold text-gray-900">
                     {user.fullName}
                   </h2>
-                  <button className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition">
+                  <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg">
                     <Edit className="w-4 h-4" />
                     Chỉnh sửa
                   </button>
@@ -125,5 +137,3 @@ export default function Profile() {
     </div>
   );
 }
-
-

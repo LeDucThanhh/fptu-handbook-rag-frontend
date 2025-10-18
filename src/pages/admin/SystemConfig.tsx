@@ -3,13 +3,21 @@ import { Settings, Database, Key, Mail, Save } from "lucide-react";
 
 export default function SystemConfig() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8">
       <div className="container mx-auto px-4 max-w-5xl">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Cấu hình hệ thống</h1>
-          <p className="text-purple-100">
-            Cấu hình AI, API keys và chính sách truy cập
-          </p>
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="relative">
+            <h1
+              className="text-3xl font-bold mb-2"
+              style={{ fontFamily: "SVN-Product Sans, Inter, sans-serif" }}
+            >
+              Cấu hình hệ thống
+            </h1>
+            <p className="text-orange-100">
+              Cấu hình AI, API keys và chính sách truy cập
+            </p>
+          </div>
         </div>
 
         {/* AI Configuration */}
@@ -43,7 +51,7 @@ export default function SystemConfig() {
                   step="0.01"
                   min="0"
                   max="1"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                 />
                 <p className="text-xs text-gray-500 mt-1">
                   Câu trả lời dưới ngưỡng này sẽ được đánh dấu là "unresolved"
@@ -57,7 +65,7 @@ export default function SystemConfig() {
                 <input
                   type="number"
                   defaultValue="2048"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                 />
               </div>
             </div>
@@ -81,7 +89,7 @@ export default function SystemConfig() {
                 <input
                   type="password"
                   defaultValue="sk-****************************"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                 />
               </div>
 
@@ -92,7 +100,7 @@ export default function SystemConfig() {
                 <input
                   type="password"
                   defaultValue="****************************"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                 />
               </div>
             </div>
@@ -116,7 +124,7 @@ export default function SystemConfig() {
                 <input
                   type="text"
                   defaultValue="smtp.gmail.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                 />
               </div>
 
@@ -128,7 +136,7 @@ export default function SystemConfig() {
                   <input
                     type="number"
                     defaultValue="587"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                    className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                   />
                 </div>
 
@@ -139,7 +147,7 @@ export default function SystemConfig() {
                   <input
                     type="email"
                     defaultValue="noreply@fpt.edu.vn"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                    className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                   />
                 </div>
               </div>
@@ -164,7 +172,7 @@ export default function SystemConfig() {
                 <input
                   type="password"
                   defaultValue="Server=...;Database=...;User=...;Password=***"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                  className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                 />
               </div>
 
@@ -176,7 +184,7 @@ export default function SystemConfig() {
                   <input
                     type="number"
                     defaultValue="100"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                    className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                   />
                 </div>
 
@@ -187,7 +195,7 @@ export default function SystemConfig() {
                   <input
                     type="number"
                     defaultValue="30"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
+                    className="w-full px-4 py-2 border-2 border-orange-200 rounded-lg outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-200 transition-all"
                   />
                 </div>
               </div>
@@ -200,7 +208,7 @@ export default function SystemConfig() {
           <button className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
             Reset
           </button>
-          <button className="bg-purple-500 text-white px-6 py-2.5 rounded-lg hover:bg-purple-600 transition font-semibold inline-flex items-center gap-2">
+          <button className="bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-2.5 rounded-lg hover:from-orange-600 hover:to-orange-700 transition-all font-semibold inline-flex items-center gap-2 shadow-lg">
             <Save className="w-4 h-4" />
             Lưu cấu hình
           </button>
@@ -209,6 +217,3 @@ export default function SystemConfig() {
     </div>
   );
 }
-
-
-
