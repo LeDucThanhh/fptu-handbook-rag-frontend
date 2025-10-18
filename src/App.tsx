@@ -19,11 +19,9 @@ import History from "./pages/student/History";
 import NotificationCenter from "./pages/student/NotificationCenter";
 
 // Mentor pages (from dev - detailed UI by teammate)
-import MentorDashboard from "./pages/mentor/Dashboard";
-import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
-import MentorAnalytics from "./pages/mentor/Analytics";
-import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
-import MentorPosts from "./pages/mentor/Posts";
+import MentorAnalytics from "./pages/Mentor/Analytics";
+import ResourceRecommendation from "./pages/Mentor/ResourceRecommendation";
+import UnresolvedQueue from "./pages/Mentor/UnresolvedQueue";
 
 // Academic Staff pages
 import AcademicDashboard from "./pages/academic/Dashboard";
@@ -86,11 +84,9 @@ function App() {
               <RoleRoute allowedRoles={[UserRole.MENTOR, UserRole.ADMIN]} />
             }
           >
-            <Route path="/mentor/dashboard" element={<MentorDashboard />} />
             <Route path="/mentor/unresolved" element={<UnresolvedQueue />} />
             <Route path="/mentor/analytics" element={<MentorAnalytics />} />
             <Route path="/mentor/recommendations" element={<ResourceRecommendation />} />
-            <Route path="/mentor/posts" element={<MentorPosts />} />
           </Route>
 
           {/* Academic Staff routes */}

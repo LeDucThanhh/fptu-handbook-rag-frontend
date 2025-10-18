@@ -62,7 +62,6 @@ export default function RoleNavigation() {
     // MENTOR
     if (user.roles.includes(UserRole.MENTOR)) {
       return [
-        { label: "Mentor Dashboard", href: "/mentor/dashboard", icon: Home },
         {
           label: "Câu hỏi chưa giải quyết",
           href: "/mentor/unresolved",
@@ -70,7 +69,6 @@ export default function RoleNavigation() {
         },
         { label: "Analytics", href: "/mentor/analytics", icon: BarChart },
         { label: "Resource Recommendations", href: "/mentor/recommendations", icon: BookOpen },
-        { label: "Quản lý Posts", href: "/mentor/posts", icon: FileText },
       ];
     }
 
