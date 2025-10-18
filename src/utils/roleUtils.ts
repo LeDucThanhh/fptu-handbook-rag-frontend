@@ -15,7 +15,7 @@ export const getDashboardRoute = (user: User | null): string => {
   }
 
   if (user.roles.includes(UserRole.MENTOR)) {
-    return "/mentor/dashboard";
+    return "/mentor/unresolved";
   }
 
   if (user.roles.includes(UserRole.ACADEMIC_STAFF)) {
