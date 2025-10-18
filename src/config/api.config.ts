@@ -37,3 +37,13 @@ export const API_ENDPOINTS = {
   GET_TOP_QUERIES: "/analytics/top-queries",
   GET_USAGE_STATS: "/analytics/usage",
 };
+
+
+
+
+
+
+
+
+
+
