@@ -3,8 +3,8 @@ import { Settings, Database, Key, Mail, Save } from "lucide-react";
 
 export default function SystemConfig() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-5xl">
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
         <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
           <h1 className="text-3xl font-bold mb-2">Cấu hình hệ thống</h1>
           <p className="text-purple-100">
@@ -209,6 +209,3 @@ export default function SystemConfig() {
     </div>
   );
 }
-
-
-

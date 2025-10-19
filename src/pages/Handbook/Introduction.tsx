@@ -100,7 +100,7 @@ const Introduction: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-orange-200/40 via-orange-100/30 to-transparent rounded-full -ml-40 -mb-40 blur-3xl"></div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
+          <div className="text-center max-w-screen-2xl mx-auto">
             <div
               ref={heroGlare}
               className="glare-effect-orange inline-block p-2 bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg mb-6"

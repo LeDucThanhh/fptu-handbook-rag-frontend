@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Search,
-  Calendar,
-  Bell,
-  Users,
-  TrendingUp,
-  ArrowRight,
-  Sparkles,
-} from "lucide-react";
+import { Search, Calendar, Bell, ArrowRight, Sparkles } from "lucide-react";
+import { DESIGN_TOKENS, BUTTON_VARIANTS } from "@/design-system/tokens";
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -112,10 +105,9 @@ const Home: React.FC = () => {
               <div className="text-center lg:text-left lg:ml-8 xl:ml-16">
                 {/* Main Heading */}
                 <h1
-                  className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fadeInUp"
+                  className={`${DESIGN_TOKENS.typography.heading1} text-white mb-6 animate-fadeInUp`}
                   style={{
                     animationDelay: "0.1s",
-                    fontFamily: "Inter, system-ui, sans-serif",
                     textShadow:
                       "0 4px 20px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2)",
                   }}
@@ -131,7 +123,7 @@ const Home: React.FC = () => {
                 </h1>
 
                 <p
-                  className="text-lg md:text-xl text-white/95 mb-8 leading-relaxed animate-fadeInUp"
+                  className={`${DESIGN_TOKENS.typography.bodyLarge} text-white/95 mb-8 animate-fadeInUp`}
                   style={{
                     animationDelay: "0.2s",
                     textShadow: "0 2px 12px rgba(0,0,0,0.3)",
@@ -170,9 +162,8 @@ const Home: React.FC = () => {
                         />
                         <button
                           type="submit"
-                          className="bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 bg-size-200 bg-pos-0 hover:bg-pos-100 text-white px-8 py-4 rounded-xl transition-all duration-500 font-bold shadow-lg hover:shadow-2xl transform hover:scale-105 flex items-center gap-2 relative overflow-hidden group/btn"
+                          className={`${BUTTON_VARIANTS.primary} px-8 py-4 flex items-center gap-2 relative overflow-hidden group/btn`}
                           style={{
-                            fontFamily: "Inter, system-ui, sans-serif",
                             backgroundSize: "200% 100%",
                           }}
                         >
@@ -213,10 +204,14 @@ const Home: React.FC = () => {
               <Sparkles className="w-4 h-4" />
               <span>Câu hỏi phổ biến</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2
+              className={`${DESIGN_TOKENS.typography.heading2} ${DESIGN_TOKENS.colors.text.primary} mb-4`}
+            >
               Sinh viên thường hỏi gì?
             </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <p
+              className={`${DESIGN_TOKENS.typography.body} ${DESIGN_TOKENS.colors.text.secondary} max-w-2xl mx-auto`}
+            >
               Khám phá những câu hỏi phổ biến hoặc đặt câu hỏi riêng của bạn
             </p>
           </div>
@@ -262,10 +257,14 @@ const Home: React.FC = () => {
                   <Bell className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <h2
+                    className={`${DESIGN_TOKENS.typography.heading3} ${DESIGN_TOKENS.colors.text.primary}`}
+                  >
                     Thông báo
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p
+                    className={`${DESIGN_TOKENS.typography.caption} ${DESIGN_TOKENS.colors.text.secondary}`}
+                  >
                     Cập nhật mới nhất từ nhà trường
                   </p>
                 </div>
@@ -282,7 +281,7 @@ const Home: React.FC = () => {
                         className={`px-3 py-2 rounded-lg text-sm font-bold flex-shrink-0 ${
                           notif.priority === "high"
                             ? "bg-red-100 text-red-700"
-                            : "bg-blue-100 text-blue-700"
+                            : "bg-orange-100 text-orange-700"
                         }`}
                       >
                         <div>{notif.date}</div>
@@ -312,14 +311,18 @@ const Home: React.FC = () => {
             {/* Right: Events Timeline */}
             <div>
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
                   <Calendar className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <h2
+                    className={`${DESIGN_TOKENS.typography.heading3} ${DESIGN_TOKENS.colors.text.primary}`}
+                  >
                     Sự kiện sắp tới
                   </h2>
-                  <p className="text-sm text-gray-600">
+                  <p
+                    className={`${DESIGN_TOKENS.typography.caption} ${DESIGN_TOKENS.colors.text.secondary}`}
+                  >
                     Đừng bỏ lỡ những sự kiện quan trọng
                   </p>
                 </div>
@@ -386,10 +389,12 @@ const Home: React.FC = () => {
                 <span>Tìm cộng đồng của bạn</span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              <h2 className={`${DESIGN_TOKENS.typography.heading2} mb-4`}>
                 Hơn 50+ Câu lạc bộ đang chờ đón bạn
               </h2>
-              <p className="text-lg text-orange-100 mb-8 max-w-2xl mx-auto">
+              <p
+                className={`${DESIGN_TOKENS.typography.bodyLarge} text-orange-100 mb-8 max-w-2xl mx-auto`}
+              >
                 Khám phá sở thích, phát triển kỹ năng và kết nối với những người
                 bạn mới
               </p>
@@ -431,14 +436,18 @@ const Home: React.FC = () => {
               <span>Hành trình của bạn bắt đầu từ đây</span>
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2
+              className={`${DESIGN_TOKENS.typography.heading1} ${DESIGN_TOKENS.colors.text.primary} mb-4`}
+            >
               Sẵn sàng khám phá{" "}
               <span className="bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
                 FPTU
               </span>
               ?
             </h2>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p
+              className={`${DESIGN_TOKENS.typography.bodyLarge} ${DESIGN_TOKENS.colors.text.secondary} mb-8 max-w-2xl mx-auto`}
+            >
               Để trợ lý AI đồng hành cùng bạn trong hành trình học tập tại FPT
               University
             </p>
@@ -447,7 +456,7 @@ const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button
                 onClick={() => navigate("/qa")}
-                className="group bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2"
+                className={`${BUTTON_VARIANTS.primary} group px-8 py-4 flex items-center justify-center gap-2`}
               >
                 <Search className="w-5 h-5" />
                 <span>Bắt đầu hỏi AI ngay</span>
@@ -456,7 +465,7 @@ const Home: React.FC = () => {
 
               <button
                 onClick={() => navigate("/handbook")}
-                className="bg-white text-orange-600 border-2 border-orange-500 px-8 py-4 rounded-xl font-semibold hover:bg-orange-50 transition-all flex items-center justify-center gap-2"
+                className={`${BUTTON_VARIANTS.secondary} px-8 py-4 flex items-center justify-center gap-2`}
               >
                 <span>📖</span>
                 <span>Xem cẩm nang</span>
@@ -466,15 +475,15 @@ const Home: React.FC = () => {
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-600">
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
+                <span className="text-orange-500">✓</span>
                 <span>24/7 Hỗ trợ</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
+                <span className="text-orange-500">✓</span>
                 <span>10,000+ Câu hỏi đã giải đáp</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-green-500">✓</span>
+                <span className="text-orange-500">✓</span>
                 <span>99% Độ chính xác</span>
               </div>
             </div>

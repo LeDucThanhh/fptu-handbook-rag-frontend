@@ -12,10 +12,6 @@ import Handbook from "./pages/Handbook";
 import Introduction from "./pages/Handbook/Introduction";
 import Admission from "./pages/Handbook/Admission";
 import Tuition from "./pages/Handbook/Tuition";
-import Analytics from "./pages/Mentor/Analytics";
-import ResourceRecommendation from "./pages/Mentor/ResourceRecommendation";
-import UnresolvedQueue from "./pages/Mentor/UnresolvedQueue";
-
 // Student protected pages
 import Profile from "./pages/student/Profile";
 import History from "./pages/student/History";
@@ -23,9 +19,9 @@ import NotificationCenter from "./pages/student/NotificationCenter";
 
 // Mentor pages (from dev - detailed UI by teammate)
 import MentorDashboard from "./pages/mentor/Dashboard";
-import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
 import MentorAnalytics from "./pages/mentor/Analytics";
 import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
+import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
 import MentorPosts from "./pages/mentor/Posts";
 
 // Academic Staff pages
@@ -63,17 +59,16 @@ function App() {
           <Route path="/handbook/introduction" element={<Introduction />} />
           <Route path="/handbook/admission" element={<Admission />} />
           <Route path="/handbook/tuition" element={<Tuition />} />
-
-          {/* Student pages (Require login) */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/notifications" element={<NotificationCenter />} />
-          </Route>
         </Route>
 
         {/* Role-based routes with Sidebar Navigation */}
         <Route element={<RoleBasedLayout />}>
+          {/* Student routes */}
+          <Route element={<RoleRoute allowedRoles={[UserRole.STUDENT]} />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/notifications" element={<NotificationCenter />} />
+          </Route>
           {/* Admin routes */}
           <Route element={<RoleRoute allowedRoles={[UserRole.ADMIN]} />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -92,7 +87,10 @@ function App() {
             <Route path="/mentor/dashboard" element={<MentorDashboard />} />
             <Route path="/mentor/unresolved" element={<UnresolvedQueue />} />
             <Route path="/mentor/analytics" element={<MentorAnalytics />} />
-            <Route path="/mentor/recommendations" element={<ResourceRecommendation />} />
+            <Route
+              path="/mentor/recommendations"
+              element={<ResourceRecommendation />}
+            />
             <Route path="/mentor/posts" element={<MentorPosts />} />
           </Route>
 

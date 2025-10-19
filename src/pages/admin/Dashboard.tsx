@@ -41,18 +41,8 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">
-            Admin Dashboard - {user?.fullName} 👑
-          </h1>
-          <p className="text-purple-100">
-            Quản trị và giám sát toàn bộ hệ thống FPTU Handbook
-          </p>
-        </div>
-
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
         {/* System Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
@@ -178,6 +168,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-
-
-

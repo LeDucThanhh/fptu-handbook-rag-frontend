@@ -1,70 +1,173 @@
-/* Electroverse-inspired Glare Hover Effects */
-.glare-hover {
-    width: var(--gh-width);
-    height: var(--gh-height);
-    background: var(--gh-bg);
-    border-radius: var(--gh-br);
-    border: 1px solid var(--gh-border);
-    overflow: hidden;
-    position: relative;
-    display: grid;
-    place-items: center;
-    transition: all 0.3s ease;
+/* FPTU Handbook RAG - Professional Glare Effects */
+/* Orange-White Theme với Professional Look */
+
+/* Base Glare Card */
+.glare-card {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
-.glare-hover::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(var(--gh-angle),
-            hsla(0, 0%, 0%, 0) 60%,
-            var(--gh-rgba) 70%,
-            hsla(0, 0%, 0%, 0),
-            hsla(0, 0%, 0%, 0) 100%);
-    transition: var(--gh-duration) ease;
-    background-size:
-        var(--gh-size) var(--gh-size),
-        100% 100%;
-    background-repeat: no-repeat;
-    background-position:
-        -100% -100%,
-        0 0;
-    border-radius: var(--gh-br);
+.glare-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(249, 115, 22, 0.1),
+    transparent
+  );
+  transition: left 0.6s ease;
+  z-index: 1;
 }
 
-.glare-hover:hover {
-    cursor: pointer;
-    border-radius: var(--gh-br);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+.glare-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.1),
+    0 10px 10px -5px rgba(249, 115, 22, 0.04),
+    0 0 0 1px rgba(249, 115, 22, 0.05);
+  border-color: rgba(249, 115, 22, 0.2);
 }
 
-.glare-hover:hover::before {
-    background-position:
-        100% 100%,
-        0 0;
+.glare-card:hover::before {
+  left: 100%;
 }
 
-.glare-hover--play-once::before {
-    transition: none;
+/* Professional Button Glare */
+.glare-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
-.glare-hover--play-once:hover::before {
-    transition: var(--gh-duration) ease;
-    background-position:
-        100% 100%,
-        0 0;
+.glare-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
 }
 
-/* Electroverse green variant */
-.glare-hover--green {
-    --gh-rgba: rgba(34, 197, 94, 0.3);
+.glare-button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.3),
+    0 4px 6px -1px rgba(249, 115, 22, 0.1);
 }
 
-.glare-hover--green::before {
-    background: linear-gradient(var(--gh-angle),
-            hsla(0, 0%, 0%, 0) 60%,
-            rgba(34, 197, 94, 0.2) 70%,
-            hsla(0, 0%, 0%, 0),
-            hsla(0, 0%, 0%, 0) 100%);
+.glare-button:hover::before {
+  left: 100%;
+}
+
+/* Image Glare Effect */
+.glare-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.glare-image::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+  z-index: 2;
+}
+
+.glare-image:hover {
+  transform: scale(1.05);
+}
+
+.glare-image:hover::before {
+  left: 100%;
+}
+
+/* Card Content Glare */
+.glare-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Orange Theme Variants */
+.glare-card--orange {
+  border-color: rgba(249, 115, 22, 0.15);
+}
+
+.glare-card--orange:hover {
+  box-shadow: 0 20px 25px -5px rgba(249, 115, 22, 0.15),
+    0 10px 10px -5px rgba(249, 115, 22, 0.1);
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+/* Professional Glass Effect */
+.glare-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.glare-glass:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(249, 115, 22, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px -5px rgba(249, 115, 22, 0.1);
+}
+
+/* Animation Keyframes */
+@keyframes glare-sweep {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.glare-sweep {
+  animation: glare-sweep 0.6s ease-out;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .glare-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .glare-button:hover {
+    transform: translateY(-1px) scale(1.01);
+  }
 }
