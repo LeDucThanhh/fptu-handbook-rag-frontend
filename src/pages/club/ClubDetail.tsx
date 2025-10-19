@@ -80,10 +80,10 @@ export default function ClubDetail() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Tăng trưởng</p>
-                  <p className="text-4xl font-bold text-green-600">+15%</p>
+                  <p className="text-4xl font-bold text-orange-600">+15%</p>
                   <p className="text-xs text-gray-500 mt-1">So với tháng trước</p>
                 </div>
-                <TrendingUp className="w-12 h-12 text-green-300" />
+                <TrendingUp className="w-12 h-12 text-orange-300" />
               </div>
             </CardContent>
           </Card>
@@ -95,7 +95,7 @@ export default function ClubDetail() {
                   <p className="text-sm text-gray-600">Trạng thái</p>
                   <p
                     className={`text-lg font-bold ${
-                      clubData.isRecruiting ? "text-green-600" : "text-gray-600"
+                      clubData.isRecruiting ? "text-orange-600" : "text-gray-600"
                     }`}
                   >
                     {clubData.isRecruiting ? "Đang tuyển" : "Không tuyển"}
@@ -103,7 +103,7 @@ export default function ClubDetail() {
                 </div>
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    clubData.isRecruiting ? "bg-green-100" : "bg-gray-100"
+                    clubData.isRecruiting ? "bg-orange-100" : "bg-gray-100"
                   }`}
                 >
                   <span className="text-2xl">{clubData.isRecruiting ? "✅" : "⏸️"}</span>
@@ -237,7 +237,7 @@ export default function ClubDetail() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Facebook className="w-4 h-4 text-blue-500" />
+                      <Facebook className="w-4 h-4 text-orange-500" />
                       Facebook Group
                     </label>
                     <input
@@ -292,7 +292,7 @@ export default function ClubDetail() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-green-500" />
+                      <Globe className="w-4 h-4 text-orange-500" />
                       Website
                     </label>
                     <input
@@ -377,7 +377,7 @@ export default function ClubDetail() {
                 )}
                 {clubData.isRecruiting && (
                   <div className="col-span-2">
-                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                    <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">
                       ✅ Đang tuyển thành viên mới
                     </span>
                   </div>

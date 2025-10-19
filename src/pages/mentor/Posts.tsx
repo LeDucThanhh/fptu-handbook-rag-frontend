@@ -19,9 +19,9 @@ export default function MentorPosts() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl p-8 mb-8 text-white">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white">
           <h1 className="text-3xl font-bold mb-2">Quản lý Mentor Posts</h1>
-          <p className="text-green-100">
+          <p className="text-orange-100">
             Quản lý các bài viết và câu trả lời chính thức của bạn
           </p>
         </div>
@@ -34,7 +34,7 @@ export default function MentorPosts() {
               onClick={() => setFilter("all")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "all"
-                  ? "bg-green-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -44,7 +44,7 @@ export default function MentorPosts() {
               onClick={() => setFilter("public")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "public"
-                  ? "bg-green-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -54,7 +54,7 @@ export default function MentorPosts() {
               onClick={() => setFilter("draft")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "draft"
-                  ? "bg-green-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -63,7 +63,7 @@ export default function MentorPosts() {
           </div>
 
           {/* Create New Button */}
-          <button className="bg-green-500 text-white px-6 py-2.5 rounded-lg hover:bg-green-600 transition font-semibold flex items-center gap-2">
+          <button className="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition font-semibold flex items-center gap-2">
             <Plus className="w-4 h-4" />
             Tạo bài viết mới
           </button>
@@ -92,7 +92,7 @@ export default function MentorPosts() {
                           <span>•</span>
                           <span>{post.createdAt}</span>
                           <span>•</span>
-                          <span className="text-green-600 font-medium">
+                          <span className="text-orange-600 font-medium">
                             {post.category}
                           </span>
                         </div>
@@ -117,7 +117,7 @@ export default function MentorPosts() {
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${
                             post.status === "public"
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-orange-100 text-orange-700"
                               : "bg-gray-100 text-gray-700"
                           }`}
                         >
@@ -129,8 +129,8 @@ export default function MentorPosts() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-2 ml-4">
-                    <button className="p-2 hover:bg-blue-50 rounded-lg transition">
-                      <Edit className="w-5 h-5 text-blue-600" />
+                    <button className="p-2 hover:bg-orange-50 rounded-lg transition">
+                      <Edit className="w-5 h-5 text-orange-600" />
                     </button>
                     <button className="p-2 hover:bg-red-50 rounded-lg transition">
                       <Trash2 className="w-5 h-5 text-red-600" />
@@ -153,7 +153,7 @@ export default function MentorPosts() {
               <p className="text-sm text-gray-400 mb-6">
                 Tạo bài viết đầu tiên để chia sẻ kiến thức
               </p>
-              <button className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition font-semibold">
+              <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition font-semibold">
                 Tạo bài viết mới
               </button>
             </CardContent>

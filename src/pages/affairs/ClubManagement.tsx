@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, CheckCircle, XCircle, Eye, Search, Plus, Edit, Globe, Mail, Phone } from "lucide-react";
+import {
+  Users,
+  CheckCircle,
+  XCircle,
+  Eye,
+  Search,
+  Globe,
+  Mail,
+  Phone,
+} from "lucide-react";
 import { mockClubs } from "@/services/mock/mockData";
 
 export default function ClubManagement() {
@@ -10,7 +19,9 @@ export default function ClubManagement() {
   const [selectedClub, setSelectedClub] = useState<any>(null);
 
   const filteredClubs = clubs.filter((club) => {
-    const matchesSearch = club.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = club.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
     const matchesFilter =
       filter === "all" ||
       (filter === "active" && club.isActive) ||
@@ -19,31 +30,31 @@ export default function ClubManagement() {
   });
 
   const handleApprove = (clubId: string) => {
-    setClubs(clubs.map(c => c.id === clubId ? { ...c, isActive: true } : c));
+    setClubs(
+      clubs.map((c) => (c.id === clubId ? { ...c, isActive: true } : c))
+    );
     alert("Đã duyệt câu lạc bộ!");
   };
 
   const handleHide = (clubId: string) => {
-    setClubs(clubs.map(c => c.id === clubId ? { ...c, isActive: false } : c));
+    setClubs(
+      clubs.map((c) => (c.id === clubId ? { ...c, isActive: false } : c))
+    );
     alert("Đã ẩn câu lạc bộ!");
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Quản lý Câu lạc bộ</h1>
-          <p className="text-teal-100">Duyệt, ẩn và quản lý thông tin câu lạc bộ</p>
-        </div>
-
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <Card>
             <CardContent className="pt-6">
               <div className="text-center">
                 <p className="text-sm text-gray-600 mb-1">Tổng CLB</p>
-                <p className="text-4xl font-bold text-gray-900">{clubs.length}</p>
+                <p className="text-4xl font-bold text-gray-900">
+                  {clubs.length}
+                </p>
               </div>
             </CardContent>
           </Card>
@@ -52,7 +63,7 @@ export default function ClubManagement() {
             <CardContent className="pt-6">
               <div className="text-center">
                 <p className="text-sm text-gray-600 mb-1">Đang hoạt động</p>
-                <p className="text-4xl font-bold text-green-600">
+                <p className="text-4xl font-bold text-orange-600">
                   {clubs.filter((c) => c.isActive).length}
                 </p>
               </div>
@@ -89,7 +100,7 @@ export default function ClubManagement() {
               onClick={() => setFilter("all")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "all"
-                  ? "bg-teal-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -99,7 +110,7 @@ export default function ClubManagement() {
               onClick={() => setFilter("active")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "active"
-                  ? "bg-teal-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -109,7 +120,7 @@ export default function ClubManagement() {
               onClick={() => setFilter("pending")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "pending"
-                  ? "bg-teal-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -145,7 +156,9 @@ export default function ClubManagement() {
                   >
                     <span className="text-3xl">{club.icon}</span>
                   </div>
-                  <h3 className="font-bold text-gray-900 text-lg mb-1">{club.name}</h3>
+                  <h3 className="font-bold text-gray-900 text-lg mb-1">
+                    {club.name}
+                  </h3>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-xs px-3 py-1 bg-gray-100 text-gray-600 rounded-full font-medium">
                       {club.type}
@@ -153,7 +166,7 @@ export default function ClubManagement() {
                     <span
                       className={`text-xs px-3 py-1 rounded-full font-semibold ${
                         club.isActive
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-orange-100 text-orange-700"
                           : "bg-orange-100 text-orange-700"
                       }`}
                     >
@@ -168,7 +181,7 @@ export default function ClubManagement() {
 
                 <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-4 pb-4 border-b border-gray-200">
                   <div className="flex items-center gap-1">
-                    <Users className="w-4 h-4 text-teal-500" />
+                    <Users className="w-4 h-4 text-orange-500" />
                     <span className="font-semibold">{club.members}</span>
                   </div>
                 </div>
@@ -194,7 +207,7 @@ export default function ClubManagement() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setSelectedClub(club)}
-                    className="flex-1 bg-blue-50 text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-100 transition text-sm font-semibold inline-flex items-center justify-center gap-1"
+                    className="flex-1 bg-orange-50 text-orange-600 px-3 py-2 rounded-lg hover:bg-orange-100 transition text-sm font-semibold inline-flex items-center justify-center gap-1"
                   >
                     <Eye className="w-4 h-4" />
                     Chi tiết
@@ -210,7 +223,7 @@ export default function ClubManagement() {
                   ) : (
                     <button
                       onClick={() => handleApprove(club.id)}
-                      className="flex-1 bg-teal-500 text-white px-3 py-2 rounded-lg hover:bg-teal-600 transition text-sm font-semibold inline-flex items-center justify-center gap-1"
+                      className="flex-1 bg-orange-500 text-white px-3 py-2 rounded-lg hover:bg-orange-600 transition text-sm font-semibold inline-flex items-center justify-center gap-1"
                     >
                       <CheckCircle className="w-4 h-4" />
                       Duyệt
@@ -240,11 +253,15 @@ export default function ClubManagement() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className={`w-16 h-16 bg-gradient-to-r from-${selectedClub.color}-400 to-${selectedClub.color}-600 rounded-2xl flex items-center justify-center text-3xl`}>
+                    <div
+                      className={`w-16 h-16 bg-gradient-to-r from-${selectedClub.color}-400 to-${selectedClub.color}-600 rounded-2xl flex items-center justify-center text-3xl`}
+                    >
                       {selectedClub.icon}
                     </div>
                     <div>
-                      <h3 className="text-2xl font-bold text-gray-900">{selectedClub.name}</h3>
+                      <h3 className="text-2xl font-bold text-gray-900">
+                        {selectedClub.name}
+                      </h3>
                       <span className="text-sm px-3 py-1 bg-gray-100 text-gray-600 rounded-full">
                         {selectedClub.type}
                       </span>
@@ -254,18 +271,28 @@ export default function ClubManagement() {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="p-3 bg-gray-50 rounded-lg">
                       <p className="text-gray-600 mb-1">Thành viên</p>
-                      <p className="font-bold text-gray-900 text-lg">{selectedClub.members}</p>
+                      <p className="font-bold text-gray-900 text-lg">
+                        {selectedClub.members}
+                      </p>
                     </div>
                     <div className="p-3 bg-gray-50 rounded-lg">
                       <p className="text-gray-600 mb-1">Trạng thái</p>
-                      <p className={`font-bold text-lg ${selectedClub.isActive ? 'text-green-600' : 'text-orange-600'}`}>
+                      <p
+                        className={`font-bold text-lg ${
+                          selectedClub.isActive
+                            ? "text-orange-600"
+                            : "text-orange-600"
+                        }`}
+                      >
                         {selectedClub.isActive ? "Hoạt động" : "Chờ duyệt"}
                       </p>
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-sm font-medium text-gray-700 mb-2">Mô tả</p>
+                    <p className="text-sm font-medium text-gray-700 mb-2">
+                      Mô tả
+                    </p>
                     <p className="text-gray-600">{selectedClub.description}</p>
                   </div>
 
@@ -274,46 +301,72 @@ export default function ClubManagement() {
                       <p className="text-gray-600 mb-1 flex items-center gap-1">
                         <Users className="w-4 h-4" /> Điều phối viên
                       </p>
-                      <p className="font-semibold text-gray-900">{selectedClub.coordinator}</p>
+                      <p className="font-semibold text-gray-900">
+                        {selectedClub.coordinator}
+                      </p>
                     </div>
                     <div>
                       <p className="text-gray-600 mb-1 flex items-center gap-1">
                         <Mail className="w-4 h-4" /> Email
                       </p>
-                      <p className="font-semibold text-gray-900 truncate">{selectedClub.contactEmail}</p>
+                      <p className="font-semibold text-gray-900 truncate">
+                        {selectedClub.contactEmail}
+                      </p>
                     </div>
                     {selectedClub.phone && (
                       <div>
                         <p className="text-gray-600 mb-1 flex items-center gap-1">
                           <Phone className="w-4 h-4" /> Điện thoại
                         </p>
-                        <p className="font-semibold text-gray-900">{selectedClub.phone}</p>
+                        <p className="font-semibold text-gray-900">
+                          {selectedClub.phone}
+                        </p>
                       </div>
                     )}
                   </div>
 
                   {/* Social Links */}
-                  {(selectedClub.facebookGroup || selectedClub.zaloGroup || selectedClub.instagram || selectedClub.website) && (
+                  {(selectedClub.facebookGroup ||
+                    selectedClub.zaloGroup ||
+                    selectedClub.instagram ||
+                    selectedClub.website) && (
                     <div>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Social Media</p>
+                      <p className="text-sm font-medium text-gray-700 mb-2">
+                        Social Media
+                      </p>
                       <div className="flex flex-wrap gap-2">
                         {selectedClub.facebookGroup && (
-                          <a href={selectedClub.facebookGroup} target="_blank" rel="noopener noreferrer" className="text-xs px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition">
+                          <a
+                            href={selectedClub.facebookGroup}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 transition"
+                          >
                             Facebook Group
                           </a>
                         )}
                         {selectedClub.zaloGroup && (
-                          <span className="text-xs px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg">
+                          <span className="text-xs px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg">
                             Zalo Group
                           </span>
                         )}
                         {selectedClub.instagram && (
-                          <a href={selectedClub.instagram} target="_blank" rel="noopener noreferrer" className="text-xs px-3 py-1.5 bg-pink-50 text-pink-600 rounded-lg hover:bg-pink-100 transition">
+                          <a
+                            href={selectedClub.instagram}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs px-3 py-1.5 bg-pink-50 text-pink-600 rounded-lg hover:bg-pink-100 transition"
+                          >
                             Instagram
                           </a>
                         )}
                         {selectedClub.website && (
-                          <a href={selectedClub.website} target="_blank" rel="noopener noreferrer" className="text-xs px-3 py-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition flex items-center gap-1">
+                          <a
+                            href={selectedClub.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 transition flex items-center gap-1"
+                          >
                             <Globe className="w-3 h-3" />
                             Website
                           </a>
@@ -341,7 +394,7 @@ export default function ClubManagement() {
                           handleApprove(selectedClub.id);
                           setSelectedClub(null);
                         }}
-                        className="flex-1 bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition font-semibold inline-flex items-center justify-center gap-2"
+                        className="flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition font-semibold inline-flex items-center justify-center gap-2"
                       >
                         <CheckCircle className="w-4 h-4" />
                         Duyệt CLB

@@ -11,6 +11,10 @@ import {
   Search,
   MessageCircle,
 } from "lucide-react";
+import { PageContainer } from "@/components/layout/PageContainer";
+import { Section } from "@/components/layout/Section";
+import { ProfessionalCard } from "@/components/layout/ProfessionalCard";
+import { DESIGN_TOKENS, BUTTON_VARIANTS } from "@/design-system/tokens";
 
 interface Message {
   type: "user" | "bot";
@@ -147,10 +151,10 @@ const QA: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50">
-      {/* Header Search Bar */}
+    <PageContainer>
+      {/* Professional Header Search Bar */}
       <div className="bg-white border-b border-gray-200 sticky top-16 z-40">
-        <div className="container mx-auto px-4 py-4 max-w-5xl">
+        <div className="container mx-auto px-4 py-4 max-w-screen-2xl">
           <form onSubmit={handleSubmit} className="relative">
             <div className="flex items-center bg-gray-50 border-2 border-gray-300 rounded-xl px-4 py-3 focus-within:border-orange-500 focus-within:bg-white transition-all">
               <Search className="w-5 h-5 text-gray-400 mr-3" />
@@ -163,7 +167,7 @@ const QA: React.FC = () => {
               />
               <button
                 type="submit"
-                className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition font-semibold ml-2 flex items-center gap-2"
+                className={`${BUTTON_VARIANTS.primary} ml-2 flex items-center gap-2`}
                 disabled={isTyping}
               >
                 <Send className="w-4 h-4" />
@@ -174,24 +178,30 @@ const QA: React.FC = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-5xl">
-        {/* Welcome Screen when no messages */}
+      <Section>
+        {/* Professional Welcome Screen when no messages */}
         {messages.length === 0 && (
           <div className="text-center py-16 animate-fadeInUp">
             <div className="inline-block bg-gradient-to-br from-orange-400 to-orange-600 p-6 rounded-3xl shadow-2xl mb-6 transform hover:scale-105 transition-transform">
               <Bot className="w-16 h-16 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            <h1
+              className={`${DESIGN_TOKENS.typography.heading2} ${DESIGN_TOKENS.colors.text.primary} mb-4`}
+            >
               AI Assistant - FPTU Handbook RAG
             </h1>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p
+              className={`${DESIGN_TOKENS.typography.bodyLarge} ${DESIGN_TOKENS.colors.text.secondary} mb-8 max-w-2xl mx-auto`}
+            >
               Xin chào! Tôi là trợ lý AI của FPTU Handbook. Hãy hỏi tôi bất cứ
               điều gì về học vụ, hoạt động sinh viên, và cuộc sống tại FPTU.
             </p>
 
             {/* Suggested Questions Grid */}
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-lg font-semibold text-gray-700 mb-4 flex items-center justify-center gap-2">
+              <h2
+                className={`${DESIGN_TOKENS.typography.heading4} ${DESIGN_TOKENS.colors.text.primary} mb-4 flex items-center justify-center gap-2`}
+              >
                 <Sparkles className="w-5 h-5 text-orange-500" />
                 Câu hỏi gợi ý
               </h2>
@@ -215,7 +225,7 @@ const QA: React.FC = () => {
           </div>
         )}
 
-        {/* Messages Area */}
+        {/* Professional Messages Area */}
         {messages.length > 0 && (
           <div className="space-y-6">
             {messages.map((msg, index) => (
@@ -370,10 +380,12 @@ const QA: React.FC = () => {
 
             <div ref={messagesEndRef} />
 
-            {/* Related Questions */}
+            {/* Professional Related Questions */}
             {messages.length > 0 && !isTyping && (
-              <div className="bg-white border-2 border-orange-100 rounded-2xl p-6 shadow-lg animate-fadeInUp">
-                <h3 className="text-sm font-semibold text-gray-700 mb-4 flex items-center gap-2">
+              <ProfessionalCard className="animate-fadeInUp">
+                <h3
+                  className={`${DESIGN_TOKENS.typography.caption} ${DESIGN_TOKENS.colors.text.primary} mb-4 flex items-center gap-2`}
+                >
                   <Sparkles className="w-4 h-4 text-orange-500" />
                   Câu hỏi liên quan bạn có thể quan tâm
                 </h3>
@@ -390,12 +402,12 @@ const QA: React.FC = () => {
                     </button>
                   ))}
                 </div>
-              </div>
+              </ProfessionalCard>
             )}
           </div>
         )}
-      </div>
-    </div>
+      </Section>
+    </PageContainer>
   );
 };
 

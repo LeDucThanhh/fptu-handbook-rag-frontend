@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/contexts/AuthContext";
 import { UserRole } from "@/types";
 import {
@@ -18,6 +18,7 @@ import {
   Calendar,
   TrendingUp,
   RefreshCw,
+  LogOut,
 } from "lucide-react";
 
 interface NavItem {
@@ -27,8 +28,9 @@ interface NavItem {
 }
 
 export default function RoleNavigation() {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (!user) return null;
 
@@ -62,14 +64,17 @@ export default function RoleNavigation() {
     // MENTOR
     if (user.roles.includes(UserRole.MENTOR)) {
       return [
-        { label: "Mentor Dashboard", href: "/mentor/dashboard", icon: Home },
         {
           label: "Câu hỏi chưa giải quyết",
           href: "/mentor/unresolved",
           icon: AlertCircle,
         },
         { label: "Analytics", href: "/mentor/analytics", icon: BarChart },
-        { label: "Resource Recommendations", href: "/mentor/recommendations", icon: BookOpen },
+        {
+          label: "Resource Recommendations",
+          href: "/mentor/recommendations",
+          icon: BookOpen,
+        },
         { label: "Quản lý Posts", href: "/mentor/posts", icon: FileText },
       ];
     }
@@ -129,6 +134,11 @@ export default function RoleNavigation() {
     );
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <nav className="w-64 bg-white border-r border-gray-200 min-h-screen p-4">
       <div className="mb-6">
@@ -178,6 +188,17 @@ export default function RoleNavigation() {
             </Link>
           );
         })}
+      </div>
+
+      {/* Logout Button */}
+      <div className="mt-auto pt-6 border-t border-gray-200">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-600 transition-all"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="text-sm font-medium">Đăng xuất</span>
+        </button>
       </div>
     </nav>
   );

@@ -1,160 +1,209 @@
-import { useAuthStore } from "@/contexts/AuthContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Bell, Users, TrendingUp, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function AffairsDashboard() {
-  const { user } = useAuthStore();
-
-  const quickActions = [
+  const quickStats = [
     {
+      title: "Thông báo tháng này",
+      value: "45",
+      change: "+8",
       icon: Bell,
-      label: "Gửi thông báo",
-      href: "/affairs/notifications",
-      color: "bg-teal-500",
-      description: "Thông báo cho sinh viên",
+      color: "text-primary",
     },
     {
+      title: "Câu lạc bộ",
+      value: "52",
+      change: "+2",
       icon: Users,
-      label: "Quản lý CLB",
-      href: "/affairs/clubs",
-      color: "bg-purple-500",
-      description: "Duyệt và quản lý CLB",
+      color: "text-blue-600",
     },
     {
+      title: "Sự kiện sắp tới",
+      value: "12",
+      change: "+3",
+      icon: Calendar,
+      color: "text-green-600",
+    },
+    {
+      title: "Tương tác hôm nay",
+      value: "1,234",
+      change: "+15%",
       icon: TrendingUp,
-      label: "Thống kê",
+      color: "text-orange-600",
+    },
+  ];
+
+  const affairsPages = [
+    {
+      title: "Quản lý Thông báo",
+      description: "Tạo và quản lý thông báo cho sinh viên",
+      icon: Bell,
+      href: "/affairs/notifications",
+      color: "bg-primary/10 text-primary",
+      features: [
+        "Tạo thông báo mới",
+        "Lên lịch gửi thông báo",
+        "Theo dõi trạng thái đọc",
+      ],
+    },
+    {
+      title: "Quản lý CLB",
+      description: "Quản lý câu lạc bộ sinh viên",
+      icon: Users,
+      href: "/affairs/clubs",
+      color: "bg-blue-500/10 text-blue-600",
+      features: [
+        "Phê duyệt CLB mới",
+        "Quản lý thành viên",
+        "Theo dõi hoạt động",
+      ],
+    },
+    {
+      title: "Engagement Dashboard",
+      description: "Theo dõi tương tác sinh viên",
+      icon: TrendingUp,
       href: "/affairs/engagement",
-      color: "bg-orange-500",
-      description: "Engagement Dashboard",
+      color: "bg-green-500/10 text-green-600",
+      features: [
+        "Thống kê tương tác",
+        "Báo cáo hoạt động",
+        "Phân tích xu hướng",
+      ],
     },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Welcome Banner */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">
-            Affairs Dashboard - {user?.fullName} 🏢
-          </h1>
-          <p className="text-teal-100">
-            Quản lý hoạt động sinh viên và thông báo
-          </p>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Thông báo tháng này</p>
-                  <p className="text-3xl font-bold text-gray-900">45</p>
-                </div>
-                <Bell className="w-10 h-10 text-teal-300" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Câu lạc bộ</p>
-                  <p className="text-3xl font-bold text-gray-900">52</p>
-                </div>
-                <Users className="w-10 h-10 text-purple-300" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Sự kiện sắp tới</p>
-                  <p className="text-3xl font-bold text-gray-900">12</p>
-                </div>
-                <Calendar className="w-10 h-10 text-orange-300" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Engagement Rate</p>
-                  <p className="text-3xl font-bold text-gray-900">78%</p>
-                </div>
-                <TrendingUp className="w-10 h-10 text-green-300" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Actions */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Thao tác nhanh</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {quickActions.map((action, index) => (
-                <Link key={index} to={action.href}>
-                  <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-teal-500 hover:bg-teal-50 transition cursor-pointer group">
-                    <div
-                      className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition`}
-                    >
-                      <action.icon className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="font-bold text-gray-900 mb-2">
-                      {action.label}
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      {action.description}
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickStats.map((stat, index) => (
+            <Card key={index} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground">
+                      {stat.title}
+                    </p>
+                    <p className="text-2xl font-bold">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {stat.change} so với hôm qua
                     </p>
                   </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                  <div
+                    className={`w-12 h-12 rounded-lg ${stat.color
+                      .replace("text-", "bg-")
+                      .replace(
+                        "text",
+                        ""
+                      )}/10 flex items-center justify-center`}
+                  >
+                    <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-        {/* Recent Activities */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Hoạt động gần đây</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center">
-                  <Bell className="w-5 h-5 text-teal-600" />
-                </div>
-                <div>
-                  <p className="font-semibold text-gray-900">Gửi thông báo "Lịch thi kỳ Fall 2024"</p>
-                  <p className="text-sm text-gray-600">Gửi đến: Tất cả sinh viên • 2 giờ trước</p>
-                </div>
-              </div>
+        {/* Main Features - Horizontal Layout */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-center">
+            Các chức năng chính
+          </h2>
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            {affairsPages.map((page, index) => (
+              <Card
+                key={index}
+                className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              >
+                <CardHeader className="text-center">
+                  <div
+                    className={`w-16 h-16 rounded-2xl ${page.color} flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}
+                  >
+                    <page.icon className="w-8 h-8" />
+                  </div>
+                  <CardTitle className="text-xl">{page.title}</CardTitle>
+                  <CardDescription className="text-center">
+                    {page.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold mb-2">Tính năng:</h4>
+                    <ul className="space-y-1 text-sm text-muted-foreground">
+                      {page.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Link
+                    to={page.href}
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                  >
+                    Truy cập
+                    <page.icon className="w-4 h-4" />
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
 
-              <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-blue-600" />
+        {/* Recent Activities - Horizontal Layout */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-center">Hoạt động gần đây</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Bell className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-foreground mb-2">
+                      Thông báo mới: Lịch thi cuối kỳ
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Đã gửi thông báo cho 2,500 sinh viên
+                    </p>
+                    <p className="text-xs text-muted-foreground">1 giờ trước</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-900">Tạo sự kiện "Ngày hội CLB 2024"</p>
-                  <p className="text-sm text-gray-600">18/10/2024 • 1 ngày trước</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Users className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-foreground mb-2">
+                      CLB mới: FPTU Photography
+                    </h4>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Đã phê duyệt câu lạc bộ nhiếp ảnh
+                    </p>
+                    <p className="text-xs text-muted-foreground">3 giờ trước</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
-
-
-

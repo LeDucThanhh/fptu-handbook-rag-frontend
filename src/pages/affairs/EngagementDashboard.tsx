@@ -1,5 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp, Users, Eye, MessageCircle, BarChart, Calendar, Bell } from "lucide-react";
+import {
+  TrendingUp,
+  Users,
+  Eye,
+  MessageCircle,
+  BarChart,
+  Calendar,
+  Bell,
+} from "lucide-react";
 
 export default function EngagementDashboard() {
   const topClubs = [
@@ -28,16 +36,8 @@ export default function EngagementDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Engagement Dashboard</h1>
-          <p className="text-teal-100">
-            Theo dõi tương tác sinh viên và mức độ quan tâm câu lạc bộ
-          </p>
-        </div>
-
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
         {/* Stats Overview */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card>
@@ -46,7 +46,9 @@ export default function EngagementDashboard() {
                 <div>
                   <p className="text-sm text-gray-600">Lượt xem tuần này</p>
                   <p className="text-3xl font-bold text-gray-900">12.5K</p>
-                  <p className="text-xs text-green-600 mt-1">+18% so với tuần trước</p>
+                  <p className="text-xs text-green-600 mt-1">
+                    +18% so với tuần trước
+                  </p>
                 </div>
                 <Eye className="w-10 h-10 text-blue-300" />
               </div>
@@ -111,11 +113,17 @@ export default function EngagementDashboard() {
                         <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
                           {index + 1}
                         </div>
-                        <span className="text-sm font-medium text-gray-700">{club.name}</span>
+                        <span className="text-sm font-medium text-gray-700">
+                          {club.name}
+                        </span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold text-gray-900">{club.members}</span>
-                        <span className="text-xs font-semibold text-green-600">{club.growth}</span>
+                        <span className="text-sm font-bold text-gray-900">
+                          {club.members}
+                        </span>
+                        <span className="text-xs font-semibold text-green-600">
+                          {club.growth}
+                        </span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -125,7 +133,9 @@ export default function EngagementDashboard() {
                           style={{ width: `${(club.members / 250) * 100}%` }}
                         ></div>
                       </div>
-                      <span className="text-xs text-gray-500 w-12 text-right">{club.engagement}%</span>
+                      <span className="text-xs text-gray-500 w-12 text-right">
+                        {club.engagement}%
+                      </span>
                     </div>
                   </div>
                 ))}
@@ -145,7 +155,9 @@ export default function EngagementDashboard() {
               <div className="space-y-3">
                 {weeklyStats.map((day, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <span className="text-xs text-gray-600 w-8 font-medium">{day.day}</span>
+                    <span className="text-xs text-gray-600 w-8 font-medium">
+                      {day.day}
+                    </span>
                     <div className="flex-1 space-y-1">
                       {/* Views bar */}
                       <div className="flex items-center gap-2">
@@ -154,22 +166,32 @@ export default function EngagementDashboard() {
                             className="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full flex items-center justify-end pr-2"
                             style={{ width: `${(day.views / 650) * 100}%` }}
                           >
-                            <span className="text-xs font-bold text-white">{day.views}</span>
+                            <span className="text-xs font-bold text-white">
+                              {day.views}
+                            </span>
                           </div>
                         </div>
-                        <span className="text-xs text-gray-500 w-12">views</span>
+                        <span className="text-xs text-gray-500 w-12">
+                          views
+                        </span>
                       </div>
                       {/* Interactions bar */}
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-gray-200 rounded-full h-4 relative overflow-hidden">
                           <div
                             className="bg-gradient-to-r from-orange-400 to-orange-600 h-full rounded-full flex items-center justify-end pr-2"
-                            style={{ width: `${(day.interactions / 200) * 100}%` }}
+                            style={{
+                              width: `${(day.interactions / 200) * 100}%`,
+                            }}
                           >
-                            <span className="text-xs font-bold text-white">{day.interactions}</span>
+                            <span className="text-xs font-bold text-white">
+                              {day.interactions}
+                            </span>
                           </div>
                         </div>
-                        <span className="text-xs text-gray-500 w-12">action</span>
+                        <span className="text-xs text-gray-500 w-12">
+                          action
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -190,11 +212,17 @@ export default function EngagementDashboard() {
                 <div key={index} className="p-4 bg-gray-50 rounded-xl">
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h4 className="font-bold text-gray-900">{cat.category}</h4>
-                      <p className="text-sm text-gray-600">{cat.clubs} CLB • {cat.members} thành viên</p>
+                      <h4 className="font-bold text-gray-900">
+                        {cat.category}
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        {cat.clubs} CLB • {cat.members} thành viên
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-teal-600">{cat.avgEngagement}%</p>
+                      <p className="text-2xl font-bold text-teal-600">
+                        {cat.avgEngagement}%
+                      </p>
                       <p className="text-xs text-gray-500">Engagement</p>
                     </div>
                   </div>
@@ -221,7 +249,9 @@ export default function EngagementDashboard() {
                 <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
                   <Bell className="w-8 h-8 text-orange-500" />
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-sm">Lịch thi Fall 2024</p>
+                    <p className="font-semibold text-gray-900 text-sm">
+                      Lịch thi Fall 2024
+                    </p>
                     <p className="text-xs text-gray-600">Gửi: 2 giờ trước</p>
                   </div>
                   <span className="text-xs font-bold text-orange-600">89%</span>
@@ -229,7 +259,9 @@ export default function EngagementDashboard() {
                 <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
                   <Bell className="w-8 h-8 text-blue-500" />
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-sm">Đăng ký môn học</p>
+                    <p className="font-semibold text-gray-900 text-sm">
+                      Đăng ký môn học
+                    </p>
                     <p className="text-xs text-gray-600">Gửi: 1 ngày trước</p>
                   </div>
                   <span className="text-xs font-bold text-blue-600">95%</span>
@@ -250,7 +282,9 @@ export default function EngagementDashboard() {
                     <span>Oct</span>
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-sm">Tech Talk</p>
+                    <p className="font-semibold text-gray-900 text-sm">
+                      Tech Talk
+                    </p>
                     <p className="text-xs text-gray-600">14:00 - 16:00</p>
                   </div>
                 </div>
@@ -260,7 +294,9 @@ export default function EngagementDashboard() {
                     <span>Oct</span>
                   </div>
                   <div className="flex-1">
-                    <p className="font-semibold text-gray-900 text-sm">Ngày hội CLB</p>
+                    <p className="font-semibold text-gray-900 text-sm">
+                      Ngày hội CLB
+                    </p>
                     <p className="text-xs text-gray-600">09:00 - 17:00</p>
                   </div>
                 </div>
@@ -276,29 +312,46 @@ export default function EngagementDashboard() {
               <div className="space-y-4">
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-gray-600">Notification Open Rate</span>
+                    <span className="text-sm text-gray-600">
+                      Notification Open Rate
+                    </span>
                     <span className="text-sm font-bold text-teal-600">82%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-teal-500 h-2 rounded-full" style={{ width: "82%" }}></div>
+                    <div
+                      className="bg-teal-500 h-2 rounded-full"
+                      style={{ width: "82%" }}
+                    ></div>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-gray-600">Event Participation</span>
+                    <span className="text-sm text-gray-600">
+                      Event Participation
+                    </span>
                     <span className="text-sm font-bold text-blue-600">67%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: "67%" }}></div>
+                    <div
+                      className="bg-blue-500 h-2 rounded-full"
+                      style={{ width: "67%" }}
+                    ></div>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-gray-600">Club Join Rate</span>
-                    <span className="text-sm font-bold text-purple-600">45%</span>
+                    <span className="text-sm text-gray-600">
+                      Club Join Rate
+                    </span>
+                    <span className="text-sm font-bold text-purple-600">
+                      45%
+                    </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-purple-500 h-2 rounded-full" style={{ width: "45%" }}></div>
+                    <div
+                      className="bg-purple-500 h-2 rounded-full"
+                      style={{ width: "45%" }}
+                    ></div>
                   </div>
                 </div>
               </div>

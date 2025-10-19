@@ -1,7 +1,19 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bell, Send, Users, Calendar, Plus, Edit, Trash2, Eye, X } from "lucide-react";
+import {
+  Bell,
+  Send,
+  Users,
+  Calendar,
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  X,
+} from "lucide-react";
 import { mockNotifications, mockSchoolEvents } from "@/services/mock/mockData";
+import ConfirmationDialog from "@/components/ui/confirmation-dialog";
+import { useToast } from "@/components/ui/toast";
 
 interface NotificationForm {
   title: string;
@@ -13,12 +25,20 @@ interface NotificationForm {
 }
 
 export default function NotificationManagement() {
-  const [notifications] = useState(mockNotifications);
-  const [events] = useState(mockSchoolEvents);
+  const [notifications, setNotifications] = useState(mockNotifications);
+  const [events, setEvents] = useState(mockSchoolEvents);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [createType, setCreateType] = useState<"notification" | "event">("notification");
-  const [activeTab, setActiveTab] = useState<"notifications" | "events">("notifications");
-  
+  const [createType, setCreateType] = useState<"notification" | "event">(
+    "notification"
+  );
+  const [activeTab, setActiveTab] = useState<"notifications" | "events">(
+    "notifications"
+  );
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { success, error, ToastContainer } = useToast();
+
   const [formData, setFormData] = useState<NotificationForm>({
     title: "",
     content: "",
@@ -27,31 +47,95 @@ export default function NotificationManagement() {
     targetAudience: "Tất cả sinh viên",
   });
 
-  const handleCreate = () => {
-    // TODO: Call API to create
-    alert(`Đã tạo ${createType === "notification" ? "thông báo" : "sự kiện"}: ${formData.title}`);
-    setShowCreateModal(false);
-    // Reset form
-    setFormData({
-      title: "",
-      content: "",
-      type: "Học vụ",
-      priority: "medium",
-      targetAudience: "Tất cả sinh viên",
-    });
+  const handleCreate = async () => {
+    if (!formData.title.trim() || !formData.content.trim()) {
+      error("Lỗi", "Vui lòng điền đầy đủ thông tin");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const newItem = {
+        id: Date.now().toString(),
+        title: formData.title,
+        content: formData.content,
+        type: formData.type,
+        priority: formData.priority,
+        targetAudience: formData.targetAudience,
+        createdAt: new Date().toLocaleDateString("vi-VN"),
+        status: "active"
+      };
+
+      if (createType === "notification") {
+        setNotifications(prev => [newItem, ...prev]);
+        success("Tạo thông báo thành công", `Đã tạo thông báo "${formData.title}"`);
+      } else {
+        setEvents(prev => [newItem, ...prev]);
+        success("Tạo sự kiện thành công", `Đã tạo sự kiện "${formData.title}"`);
+      }
+      
+      setShowCreateModal(false);
+      // Reset form
+      setFormData({
+        title: "",
+        content: "",
+        type: "Học vụ",
+        priority: "medium",
+        targetAudience: "Tất cả sinh viên",
+      });
+    } catch (err) {
+      error("Lỗi tạo", "Không thể tạo. Vui lòng thử lại.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteItem = (item: any, type: "notification" | "event") => {
+    setItemToDelete({ ...item, type });
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    
+    setIsLoading(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      if (itemToDelete.type === "notification") {
+        setNotifications(prev => prev.filter(n => n.id !== itemToDelete.id));
+        success("Xóa thông báo thành công", `Đã xóa thông báo "${itemToDelete.title}"`);
+      } else {
+        setEvents(prev => prev.filter(e => e.id !== itemToDelete.id));
+        success("Xóa sự kiện thành công", `Đã xóa sự kiện "${itemToDelete.title}"`);
+      }
+      
+      setShowDeleteDialog(false);
+      setItemToDelete(null);
+    } catch (err) {
+      error("Lỗi xóa", "Không thể xóa. Vui lòng thử lại.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleEditItem = (item: any) => {
+    // TODO: Implement edit functionality
+    success("Chức năng sửa", "Chức năng sửa sẽ được triển khai sớm");
+  };
+
+  const handleViewItem = (item: any) => {
+    // TODO: Implement view functionality
+    success("Xem chi tiết", `Đang xem chi tiết "${item.title}"`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Quản lý Thông báo & Sự kiện</h1>
-          <p className="text-teal-100">
-            Gửi thông báo, tạo sự kiện và theo dõi mức độ tương tác
-          </p>
-        </div>
-
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <Card>
@@ -59,7 +143,9 @@ export default function NotificationManagement() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Tổng thông báo</p>
-                  <p className="text-3xl font-bold text-gray-900">{notifications.length}</p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {notifications.length}
+                  </p>
                 </div>
                 <Bell className="w-10 h-10 text-orange-300" />
               </div>
@@ -71,7 +157,9 @@ export default function NotificationManagement() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Sự kiện</p>
-                  <p className="text-3xl font-bold text-gray-900">{events.length}</p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {events.length}
+                  </p>
                 </div>
                 <Calendar className="w-10 h-10 text-blue-300" />
               </div>
@@ -159,17 +247,24 @@ export default function NotificationManagement() {
           /* Notifications List */
           <div className="space-y-4">
             {notifications.map((notification) => (
-              <Card key={notification.id} className="hover:shadow-lg transition">
+              <Card
+                key={notification.id}
+                className="hover:shadow-lg transition"
+              >
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">
                     <div
                       className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                        notification.priority === "high" ? "bg-red-100" : "bg-orange-100"
+                        notification.priority === "high"
+                          ? "bg-red-100"
+                          : "bg-orange-100"
                       }`}
                     >
                       <Bell
                         className={`w-6 h-6 ${
-                          notification.priority === "high" ? "text-red-600" : "text-orange-600"
+                          notification.priority === "high"
+                            ? "text-red-600"
+                            : "text-orange-600"
                         }`}
                       />
                     </div>
@@ -187,12 +282,16 @@ export default function NotificationManagement() {
                                 : "bg-orange-100 text-orange-700"
                             }`}
                           >
-                            {notification.priority === "high" ? "Quan trọng" : "Bình thường"}
+                            {notification.priority === "high"
+                              ? "Quan trọng"
+                              : "Bình thường"}
                           </span>
                         </div>
                       </div>
 
-                      <p className="text-gray-600 text-sm mb-3">{notification.content}</p>
+                      <p className="text-gray-600 text-sm mb-3">
+                        {notification.content}
+                      </p>
 
                       <div className="flex items-center gap-6 text-sm text-gray-500 mb-4">
                         <div className="flex items-center gap-2">
@@ -211,15 +310,21 @@ export default function NotificationManagement() {
                       {/* Stats */}
                       <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                         <div className="text-center">
-                          <p className="text-2xl font-bold text-gray-900">1,234</p>
+                          <p className="text-2xl font-bold text-gray-900">
+                            1,234
+                          </p>
                           <p className="text-xs text-gray-500">Đã gửi</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-2xl font-bold text-teal-600">980</p>
+                          <p className="text-2xl font-bold text-teal-600">
+                            980
+                          </p>
                           <p className="text-xs text-gray-500">Đã đọc</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-2xl font-bold text-orange-600">79%</p>
+                          <p className="text-2xl font-bold text-orange-600">
+                            79%
+                          </p>
                           <p className="text-xs text-gray-500">Tỷ lệ mở</p>
                         </div>
                       </div>
@@ -227,13 +332,22 @@ export default function NotificationManagement() {
 
                     {/* Actions */}
                     <div className="flex flex-col gap-2">
-                      <button className="p-2 hover:bg-blue-50 rounded-lg transition" title="Xem chi tiết">
+                      <button
+                        className="p-2 hover:bg-blue-50 rounded-lg transition"
+                        title="Xem chi tiết"
+                      >
                         <Eye className="w-5 h-5 text-blue-600" />
                       </button>
-                      <button className="p-2 hover:bg-orange-50 rounded-lg transition" title="Chỉnh sửa">
+                      <button
+                        className="p-2 hover:bg-orange-50 rounded-lg transition"
+                        title="Chỉnh sửa"
+                      >
                         <Edit className="w-5 h-5 text-orange-600" />
                       </button>
-                      <button className="p-2 hover:bg-red-50 rounded-lg transition" title="Xóa">
+                      <button
+                        className="p-2 hover:bg-red-50 rounded-lg transition"
+                        title="Xóa"
+                      >
                         <Trash2 className="w-5 h-5 text-red-600" />
                       </button>
                     </div>
@@ -246,17 +360,26 @@ export default function NotificationManagement() {
           /* Events List */
           <div className="space-y-4">
             {events.map((event) => (
-              <Card key={event.id} className="hover:shadow-lg transition border-l-4 border-l-blue-500">
+              <Card
+                key={event.id}
+                className="hover:shadow-lg transition border-l-4 border-l-blue-500"
+              >
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">
                     <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-blue-600 rounded-xl flex flex-col items-center justify-center text-white flex-shrink-0">
-                      <span className="text-xl font-bold">{event.date.split("-")[2]}</span>
-                      <span className="text-xs">THG {event.date.split("-")[1]}</span>
+                      <span className="text-xl font-bold">
+                        {event.date.split("-")[2]}
+                      </span>
+                      <span className="text-xs">
+                        THG {event.date.split("-")[1]}
+                      </span>
                     </div>
 
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-bold text-gray-900 text-lg">{event.title}</h3>
+                        <h3 className="font-bold text-gray-900 text-lg">
+                          {event.title}
+                        </h3>
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${
                             event.priority === "high"
@@ -264,11 +387,15 @@ export default function NotificationManagement() {
                               : "bg-blue-100 text-blue-700"
                           }`}
                         >
-                          {event.priority === "high" ? "Quan trọng" : "Bình thường"}
+                          {event.priority === "high"
+                            ? "Quan trọng"
+                            : "Bình thường"}
                         </span>
                       </div>
 
-                      <p className="text-gray-600 text-sm mb-3">{event.description}</p>
+                      <p className="text-gray-600 text-sm mb-3">
+                        {event.description}
+                      </p>
 
                       <div className="grid grid-cols-2 gap-3 mb-4">
                         <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -283,19 +410,33 @@ export default function NotificationManagement() {
 
                       <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg">
                         <Calendar className="w-4 h-4 text-blue-600" />
-                        <span className="text-sm font-medium text-blue-900">{event.location}</span>
+                        <span className="text-sm font-medium text-blue-900">
+                          {event.location}
+                        </span>
                       </div>
                     </div>
 
                     {/* Actions */}
                     <div className="flex flex-col gap-2">
-                      <button className="p-2 hover:bg-blue-50 rounded-lg transition">
+                      <button 
+                        onClick={() => handleViewItem(event)}
+                        className="p-2 hover:bg-blue-50 rounded-lg transition"
+                        title="Xem chi tiết"
+                      >
                         <Eye className="w-5 h-5 text-blue-600" />
                       </button>
-                      <button className="p-2 hover:bg-orange-50 rounded-lg transition">
+                      <button 
+                        onClick={() => handleEditItem(event)}
+                        className="p-2 hover:bg-orange-50 rounded-lg transition"
+                        title="Sửa sự kiện"
+                      >
                         <Edit className="w-5 h-5 text-orange-600" />
                       </button>
-                      <button className="p-2 hover:bg-red-50 rounded-lg transition">
+                      <button 
+                        onClick={() => handleDeleteItem(event, "event")}
+                        className="p-2 hover:bg-red-50 rounded-lg transition"
+                        title="Xóa sự kiện"
+                      >
                         <Trash2 className="w-5 h-5 text-red-600" />
                       </button>
                     </div>
@@ -313,7 +454,9 @@ export default function NotificationManagement() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>
-                    {createType === "notification" ? "Tạo thông báo mới" : "Tạo sự kiện mới"}
+                    {createType === "notification"
+                      ? "Tạo thông báo mới"
+                      : "Tạo sự kiện mới"}
                   </CardTitle>
                   <button
                     onClick={() => setShowCreateModal(false)}
@@ -361,7 +504,9 @@ export default function NotificationManagement() {
                     <input
                       type="text"
                       value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
                       placeholder="Nhập tiêu đề..."
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-teal-500"
                       required
@@ -375,7 +520,9 @@ export default function NotificationManagement() {
                     <textarea
                       rows={5}
                       value={formData.content}
-                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, content: e.target.value })
+                      }
                       placeholder="Nhập nội dung chi tiết..."
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-teal-500 resize-none"
                       required
@@ -389,7 +536,9 @@ export default function NotificationManagement() {
                       </label>
                       <select
                         value={formData.type}
-                        onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, type: e.target.value })
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-teal-500"
                       >
                         {createType === "notification" ? (
@@ -419,7 +568,10 @@ export default function NotificationManagement() {
                         onChange={(e) =>
                           setFormData({
                             ...formData,
-                            priority: e.target.value as "high" | "medium" | "low",
+                            priority: e.target.value as
+                              | "high"
+                              | "medium"
+                              | "low",
                           })
                         }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-teal-500"
@@ -438,7 +590,10 @@ export default function NotificationManagement() {
                     <select
                       value={formData.targetAudience}
                       onChange={(e) =>
-                        setFormData({ ...formData, targetAudience: e.target.value })
+                        setFormData({
+                          ...formData,
+                          targetAudience: e.target.value,
+                        })
                       }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-teal-500"
                     >
@@ -502,7 +657,9 @@ export default function NotificationManagement() {
                       className="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition font-semibold inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Send className="w-4 h-4" />
-                      {createType === "notification" ? "Gửi thông báo" : "Tạo sự kiện"}
+                      {createType === "notification"
+                        ? "Gửi thông báo"
+                        : "Tạo sự kiện"}
                     </button>
                   </div>
                 </div>
@@ -510,6 +667,25 @@ export default function NotificationManagement() {
             </Card>
           </div>
         )}
+
+        {/* Confirmation Dialog */}
+        <ConfirmationDialog
+          isOpen={showDeleteDialog}
+          onClose={() => {
+            setShowDeleteDialog(false);
+            setItemToDelete(null);
+          }}
+          onConfirm={confirmDelete}
+          title="Xác nhận xóa"
+          message={`Bạn có chắc chắn muốn xóa ${itemToDelete?.type === "notification" ? "thông báo" : "sự kiện"} "${itemToDelete?.title}"? Hành động này không thể hoàn tác.`}
+          confirmText="Xóa"
+          cancelText="Hủy"
+          type="danger"
+          isLoading={isLoading}
+        />
+
+        {/* Toast Container */}
+        <ToastContainer />
       </div>
     </div>
   );

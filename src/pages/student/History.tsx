@@ -78,7 +78,7 @@ export default function History() {
                       </div>
 
                       {query.feedback === "positive" ? (
-                        <ThumbsUp className="w-5 h-5 text-green-500 flex-shrink-0 ml-4" />
+                        <ThumbsUp className="w-5 h-5 text-orange-500 flex-shrink-0 ml-4" />
                       ) : query.feedback === "negative" ? (
                         <ThumbsDown className="w-5 h-5 text-red-500 flex-shrink-0 ml-4" />
                       ) : null}
@@ -90,7 +90,7 @@ export default function History() {
                         <span
                           className={`px-2 py-0.5 rounded ${
                             query.confidence >= 0.8
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-orange-100 text-orange-700"
                               : query.confidence >= 0.5
                               ? "bg-yellow-100 text-yellow-700"
                               : "bg-red-100 text-red-700"
