@@ -1,12 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Activity,
-  Cpu,
-  Database,
-  Server,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
+import { Activity, Cpu, Database, Server, CheckCircle } from "lucide-react";
 
 export default function SystemHealth() {
   const services = [

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Search, Filter } from "lucide-react";
+import { FileText, Search } from "lucide-react";
 import { mockAuditLogs } from "@/services/mock/mockData";
 
 export default function AuditLogs() {

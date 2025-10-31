@@ -5,7 +5,6 @@ import {
   Send,
   Users,
   Calendar,
-  Plus,
   Edit,
   Trash2,
   Eye,
@@ -56,27 +55,40 @@ export default function NotificationManagement() {
     setIsLoading(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const newItem = {
-        id: Date.now().toString(),
-        title: formData.title,
-        content: formData.content,
-        type: formData.type,
-        priority: formData.priority,
-        targetAudience: formData.targetAudience,
-        createdAt: new Date().toLocaleDateString("vi-VN"),
-        status: "active"
-      };
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (createType === "notification") {
-        setNotifications(prev => [newItem, ...prev]);
-        success("Tạo thông báo thành công", `Đã tạo thông báo "${formData.title}"`);
+        const newNotification = {
+          id: Date.now().toString(),
+          title: formData.title,
+          content: formData.content,
+          type: formData.type,
+          priority: formData.priority,
+          targetAudience: formData.targetAudience,
+          date: new Date().toLocaleDateString("vi-VN"),
+          isRead: false,
+        };
+        setNotifications((prev) => [newNotification, ...prev]);
+        success(
+          "Tạo thông báo thành công",
+          `Đã tạo thông báo "${formData.title}"`
+        );
       } else {
-        setEvents(prev => [newItem, ...prev]);
+        const newEvent = {
+          id: Date.now().toString(),
+          title: formData.title,
+          description: formData.content,
+          type: formData.type,
+          priority: formData.priority,
+          targetAudience: formData.targetAudience,
+          date: new Date().toLocaleDateString("vi-VN"),
+          time: "00:00",
+          location: "TBA",
+        };
+        setEvents((prev) => [newEvent, ...prev]);
         success("Tạo sự kiện thành công", `Đã tạo sự kiện "${formData.title}"`);
       }
-      
+
       setShowCreateModal(false);
       // Reset form
       setFormData({
@@ -100,20 +112,28 @@ export default function NotificationManagement() {
 
   const confirmDelete = async () => {
     if (!itemToDelete) return;
-    
+
     setIsLoading(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       if (itemToDelete.type === "notification") {
-        setNotifications(prev => prev.filter(n => n.id !== itemToDelete.id));
-        success("Xóa thông báo thành công", `Đã xóa thông báo "${itemToDelete.title}"`);
+        setNotifications((prev) =>
+          prev.filter((n) => n.id !== itemToDelete.id)
+        );
+        success(
+          "Xóa thông báo thành công",
+          `Đã xóa thông báo "${itemToDelete.title}"`
+        );
       } else {
-        setEvents(prev => prev.filter(e => e.id !== itemToDelete.id));
-        success("Xóa sự kiện thành công", `Đã xóa sự kiện "${itemToDelete.title}"`);
+        setEvents((prev) => prev.filter((e) => e.id !== itemToDelete.id));
+        success(
+          "Xóa sự kiện thành công",
+          `Đã xóa sự kiện "${itemToDelete.title}"`
+        );
       }
-      
+
       setShowDeleteDialog(false);
       setItemToDelete(null);
     } catch (err) {
@@ -123,7 +143,7 @@ export default function NotificationManagement() {
     }
   };
 
-  const handleEditItem = (item: any) => {
+  const handleEditItem = (_item: any) => {
     // TODO: Implement edit functionality
     success("Chức năng sửa", "Chức năng sửa sẽ được triển khai sớm");
   };
@@ -418,21 +438,21 @@ export default function NotificationManagement() {
 
                     {/* Actions */}
                     <div className="flex flex-col gap-2">
-                      <button 
+                      <button
                         onClick={() => handleViewItem(event)}
                         className="p-2 hover:bg-blue-50 rounded-lg transition"
                         title="Xem chi tiết"
                       >
                         <Eye className="w-5 h-5 text-blue-600" />
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleEditItem(event)}
                         className="p-2 hover:bg-orange-50 rounded-lg transition"
                         title="Sửa sự kiện"
                       >
                         <Edit className="w-5 h-5 text-orange-600" />
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDeleteItem(event, "event")}
                         className="p-2 hover:bg-red-50 rounded-lg transition"
                         title="Xóa sự kiện"
@@ -677,7 +697,9 @@ export default function NotificationManagement() {
           }}
           onConfirm={confirmDelete}
           title="Xác nhận xóa"
-          message={`Bạn có chắc chắn muốn xóa ${itemToDelete?.type === "notification" ? "thông báo" : "sự kiện"} "${itemToDelete?.title}"? Hành động này không thể hoàn tác.`}
+          message={`Bạn có chắc chắn muốn xóa ${
+            itemToDelete?.type === "notification" ? "thông báo" : "sự kiện"
+          } "${itemToDelete?.title}"? Hành động này không thể hoàn tác.`}
           confirmText="Xóa"
           cancelText="Hủy"
           type="danger"

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
   FileText,
@@ -10,8 +10,8 @@ import {
   User,
   Settings,
   Bell,
-  ChevronRight
-} from 'lucide-react';
+  ChevronRight,
+} from "lucide-react";
 
 const MentorSidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -19,23 +19,23 @@ const MentorSidebar = () => {
 
   const menuItems = [
     {
-      title: 'Analytics',
-      href: '/mentor/analytics',
+      title: "Analytics",
+      href: "/mentor/analytics",
       icon: BarChart3,
-      description: 'Phân tích dữ liệu'
+      description: "Phân tích dữ liệu",
     },
     {
-      title: 'Recommendations',
-      href: '/mentor/recommendations',
+      title: "Recommendations",
+      href: "/mentor/recommendations",
       icon: FileText,
-      description: 'Đề xuất tài nguyên'
+      description: "Đề xuất tài nguyên",
     },
     {
-      title: 'Unresolved Queue',
-      href: '/mentor/queue',
+      title: "Unresolved Queue",
+      href: "/mentor/queue",
       icon: MessageSquare,
-      description: 'Hàng đợi chưa giải quyết'
-    }
+      description: "Hàng đợi chưa giải quyết",
+    },
   ];
 
   const isActive = (href: string) => {
@@ -43,8 +43,11 @@ const MentorSidebar = () => {
   };
 
   return (
-    <div className={`bg-card border-r border-border h-screen sticky top-0 transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'
-      }`}>
+    <div
+      className={`bg-card border-r border-border h-screen sticky top-0 transition-all duration-300 ${
+        isCollapsed ? "w-16" : "w-64"
+      }`}
+    >
       {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center justify-between">
@@ -54,8 +57,12 @@ const MentorSidebar = () => {
                 <User className="w-5 h-5 text-primary" />
               </div>
               <div>
-                <h2 className="font-semibold text-card-foreground">Mentor Panel</h2>
-                <p className="text-xs text-muted-foreground">Academic Advisor</p>
+                <h2 className="font-semibold text-card-foreground">
+                  Mentor Panel
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Academic Advisor
+                </p>
               </div>
             </div>
           )}
@@ -63,7 +70,11 @@ const MentorSidebar = () => {
             onClick={() => setIsCollapsed(!isCollapsed)}
             className="p-2 hover:bg-muted rounded-lg transition-colors"
           >
-            {isCollapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
+            {isCollapsed ? (
+              <Menu className="w-5 h-5" />
+            ) : (
+              <X className="w-5 h-5" />
+            )}
           </button>
         </div>
       </div>
@@ -74,18 +85,29 @@ const MentorSidebar = () => {
           <Link
             key={item.href}
             to={item.href}
-            className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group ${isActive(item.href)
-              ? 'bg-primary text-primary-foreground shadow-sm'
-              : 'hover:bg-muted text-card-foreground hover:text-foreground'
-              }`}
+            className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group ${
+              isActive(item.href)
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "hover:bg-muted text-card-foreground hover:text-foreground"
+            }`}
           >
-            <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive(item.href) ? 'text-primary-foreground' : 'text-muted-foreground group-hover:text-foreground'
-              }`} />
+            <item.icon
+              className={`w-5 h-5 flex-shrink-0 ${
+                isActive(item.href)
+                  ? "text-primary-foreground"
+                  : "text-muted-foreground group-hover:text-foreground"
+              }`}
+            />
             {!isCollapsed && (
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{item.title}</p>
-                <p className={`text-xs truncate ${isActive(item.href) ? 'text-primary-foreground/70' : 'text-muted-foreground'
-                  }`}>
+                <p
+                  className={`text-xs truncate ${
+                    isActive(item.href)
+                      ? "text-primary-foreground/70"
+                      : "text-muted-foreground"
+                  }`}
+                >
                   {item.description}
                 </p>
               </div>
@@ -100,7 +122,9 @@ const MentorSidebar = () => {
       {/* Quick Stats */}
       {!isCollapsed && (
         <div className="p-4 border-t border-border">
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">Thống kê nhanh</h3>
+          <h3 className="text-sm font-medium text-muted-foreground mb-3">
+            Thống kê nhanh
+          </h3>
           <div className="space-y-2">
             <div className="flex justify-between items-center text-sm">
               <span className="text-muted-foreground">Câu hỏi hôm nay</span>
@@ -134,18 +158,27 @@ const MentorSidebar = () => {
           )}
 
           <div className="flex gap-2">
-            <button className={`flex items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-sm ${isCollapsed ? 'justify-center' : 'flex-1'
-              }`}>
+            <button
+              className={`flex items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-sm ${
+                isCollapsed ? "justify-center" : "flex-1"
+              }`}
+            >
               <Settings className="w-4 h-4" />
               {!isCollapsed && <span>Cài đặt</span>}
             </button>
-            <button className={`flex items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-sm ${isCollapsed ? 'justify-center' : 'flex-1'
-              }`}>
+            <button
+              className={`flex items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-sm ${
+                isCollapsed ? "justify-center" : "flex-1"
+              }`}
+            >
               <Bell className="w-4 h-4" />
               {!isCollapsed && <span>Thông báo</span>}
             </button>
-            <button className={`flex items-center gap-2 p-2 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors text-sm ${isCollapsed ? 'justify-center' : 'flex-1'
-              }`}>
+            <button
+              className={`flex items-center gap-2 p-2 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors text-sm ${
+                isCollapsed ? "justify-center" : "flex-1"
+              }`}
+            >
               <LogOut className="w-4 h-4" />
               {!isCollapsed && <span>Đăng xuất</span>}
             </button>

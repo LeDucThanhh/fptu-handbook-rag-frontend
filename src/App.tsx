@@ -1,18 +1,27 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ProtectedRoute, RoleRoute } from "./routes";
-import MainLayout from "./components/MainLayout";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { RoleRoute } from "./routes";
 import RoleBasedLayout from "./components/RoleBasedLayout";
+import StudentLayout from "./components/StudentLayout";
 import { UserRole } from "./types";
 
-// Public pages
-import Home from "./pages/Home";
+// Auth pages
+import Login from "./pages/Login";
+
+// Protected pages - QA, Clubs, Handbook
 import QA from "./pages/QA";
 import Clubs from "./pages/Clubs";
 import Handbook from "./pages/Handbook";
 import Introduction from "./pages/Handbook/Introduction";
 import Admission from "./pages/Handbook/Admission";
 import Tuition from "./pages/Handbook/Tuition";
+
 // Student protected pages
+import StudentHome from "./pages/student/StudentHome";
 import Profile from "./pages/student/Profile";
 import History from "./pages/student/History";
 import NotificationCenter from "./pages/student/NotificationCenter";
@@ -22,7 +31,6 @@ import MentorDashboard from "./pages/mentor/Dashboard";
 import MentorAnalytics from "./pages/mentor/Analytics";
 import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
 import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
-import MentorPosts from "./pages/mentor/Posts";
 
 // Academic Staff pages
 import AcademicDashboard from "./pages/academic/Dashboard";
@@ -50,24 +58,70 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public routes - Accessible to everyone */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
+        {/* Public route - Login only */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Redirect root to login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {/* QA Page - NO Layout (Full screen chat) */}
+        <Route element={<RoleRoute allowedRoles={[UserRole.STUDENT]} />}>
           <Route path="/qa" element={<QA />} />
-          <Route path="/clubs" element={<Clubs />} />
-          <Route path="/handbook" element={<Handbook />} />
-          <Route path="/handbook/introduction" element={<Introduction />} />
-          <Route path="/handbook/admission" element={<Admission />} />
-          <Route path="/handbook/tuition" element={<Tuition />} />
         </Route>
 
-        {/* Role-based routes with Sidebar Navigation */}
-        <Route element={<RoleBasedLayout />}>
-          {/* Student routes */}
+        {/* Student Layout - All Student routes with Header + Footer (NO Sidebar) */}
+        <Route element={<StudentLayout />}>
           <Route element={<RoleRoute allowedRoles={[UserRole.STUDENT]} />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/notifications" element={<NotificationCenter />} />
+            <Route path="/student" element={<StudentHome />} />
+            <Route path="/student/profile" element={<Profile />} />
+            <Route path="/student/history" element={<History />} />
+            <Route
+              path="/student/notifications"
+              element={<NotificationCenter />}
+            />
+            <Route path="/clubs" element={<Clubs />} />
+            <Route path="/handbook" element={<Handbook />} />
+            <Route path="/handbook/introduction" element={<Introduction />} />
+            <Route path="/handbook/admission" element={<Admission />} />
+            <Route path="/handbook/tuition" element={<Tuition />} />
+            {/* Legacy routes for backward compatibility */}
+            <Route
+              path="/profile"
+              element={<Navigate to="/student/profile" replace />}
+            />
+            <Route
+              path="/history"
+              element={<Navigate to="/student/history" replace />}
+            />
+            <Route
+              path="/notifications"
+              element={<Navigate to="/student/notifications" replace />}
+            />
+          </Route>
+        </Route>
+
+        {/* Management Roles Layout - With Navbar + Sidebar */}
+        <Route element={<RoleBasedLayout />}>
+          {/* Common protected pages - Management roles only */}
+          <Route
+            element={
+              <RoleRoute
+                allowedRoles={[
+                  UserRole.MENTOR,
+                  UserRole.ACADEMIC_STAFF,
+                  UserRole.STUDENT_AFFAIRS,
+                  UserRole.CLUB_COORDINATOR,
+                  UserRole.ADMIN,
+                ]}
+              />
+            }
+          >
+            <Route path="/qa" element={<QA />} />
+            <Route path="/clubs" element={<Clubs />} />
+            <Route path="/handbook" element={<Handbook />} />
+            <Route path="/handbook/introduction" element={<Introduction />} />
+            <Route path="/handbook/admission" element={<Admission />} />
+            <Route path="/handbook/tuition" element={<Tuition />} />
           </Route>
           {/* Admin routes */}
           <Route element={<RoleRoute allowedRoles={[UserRole.ADMIN]} />}>
@@ -85,13 +139,12 @@ function App() {
             }
           >
             <Route path="/mentor/dashboard" element={<MentorDashboard />} />
-            <Route path="/mentor/unresolved" element={<UnresolvedQueue />} />
             <Route path="/mentor/analytics" element={<MentorAnalytics />} />
+            <Route path="/mentor/queue" element={<UnresolvedQueue />} />
             <Route
               path="/mentor/recommendations"
               element={<ResourceRecommendation />}
             />
-            <Route path="/mentor/posts" element={<MentorPosts />} />
           </Route>
 
           {/* Academic Staff routes */}

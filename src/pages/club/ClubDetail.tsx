@@ -1,19 +1,28 @@
-import { useAuthStore } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Mail, Phone, Globe, Save, Edit, Facebook, Instagram, ArrowLeft } from "lucide-react";
+import {
+  Users,
+  Mail,
+  Phone,
+  Globe,
+  Save,
+  Edit,
+  Facebook,
+  Instagram,
+  ArrowLeft,
+  TrendingUp,
+} from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { mockClubs } from "@/services/mock/mockData";
 
 export default function ClubDetail() {
-  const { user } = useAuthStore();
   const { clubId } = useParams();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
 
   // Mock: Lấy club data từ clubId
-  const initialClub = mockClubs.find(c => c.id === clubId) || mockClubs[0];
-  
+  const initialClub = mockClubs.find((c) => c.id === clubId) || mockClubs[0];
+
   const [clubData, setClubData] = useState({
     name: initialClub.name,
     type: initialClub.type,
@@ -68,7 +77,9 @@ export default function ClubDetail() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Tổng thành viên</p>
-                  <p className="text-4xl font-bold text-pink-600">{clubData.members}</p>
+                  <p className="text-4xl font-bold text-pink-600">
+                    {clubData.members}
+                  </p>
                 </div>
                 <Users className="w-12 h-12 text-pink-300" />
               </div>
@@ -81,7 +92,9 @@ export default function ClubDetail() {
                 <div>
                   <p className="text-sm text-gray-600">Tăng trưởng</p>
                   <p className="text-4xl font-bold text-orange-600">+15%</p>
-                  <p className="text-xs text-gray-500 mt-1">So với tháng trước</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    So với tháng trước
+                  </p>
                 </div>
                 <TrendingUp className="w-12 h-12 text-orange-300" />
               </div>
@@ -95,7 +108,9 @@ export default function ClubDetail() {
                   <p className="text-sm text-gray-600">Trạng thái</p>
                   <p
                     className={`text-lg font-bold ${
-                      clubData.isRecruiting ? "text-orange-600" : "text-gray-600"
+                      clubData.isRecruiting
+                        ? "text-orange-600"
+                        : "text-gray-600"
                     }`}
                   >
                     {clubData.isRecruiting ? "Đang tuyển" : "Không tuyển"}
@@ -106,7 +121,9 @@ export default function ClubDetail() {
                     clubData.isRecruiting ? "bg-orange-100" : "bg-gray-100"
                   }`}
                 >
-                  <span className="text-2xl">{clubData.isRecruiting ? "✅" : "⏸️"}</span>
+                  <span className="text-2xl">
+                    {clubData.isRecruiting ? "✅" : "⏸️"}
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -156,7 +173,9 @@ export default function ClubDetail() {
                   <input
                     type="text"
                     value={clubData.name}
-                    onChange={(e) => setClubData({ ...clubData, name: e.target.value })}
+                    onChange={(e) =>
+                      setClubData({ ...clubData, name: e.target.value })
+                    }
                     disabled={!isEditing}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 disabled:text-gray-700"
                   />
@@ -168,7 +187,9 @@ export default function ClubDetail() {
                   </label>
                   <select
                     value={clubData.type}
-                    onChange={(e) => setClubData({ ...clubData, type: e.target.value })}
+                    onChange={(e) =>
+                      setClubData({ ...clubData, type: e.target.value })
+                    }
                     disabled={!isEditing}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50"
                   >
@@ -187,7 +208,9 @@ export default function ClubDetail() {
                 <textarea
                   rows={4}
                   value={clubData.description}
-                  onChange={(e) => setClubData({ ...clubData, description: e.target.value })}
+                  onChange={(e) =>
+                    setClubData({ ...clubData, description: e.target.value })
+                  }
                   disabled={!isEditing}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 resize-none disabled:bg-gray-50"
                   placeholder="Giới thiệu về câu lạc bộ..."
@@ -196,7 +219,9 @@ export default function ClubDetail() {
 
               {/* Contact Info */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-4">Thông tin liên hệ</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">
+                  Thông tin liên hệ
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
@@ -207,7 +232,10 @@ export default function ClubDetail() {
                       type="email"
                       value={clubData.contactEmail}
                       onChange={(e) =>
-                        setClubData({ ...clubData, contactEmail: e.target.value })
+                        setClubData({
+                          ...clubData,
+                          contactEmail: e.target.value,
+                        })
                       }
                       disabled={!isEditing}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50"
@@ -222,7 +250,9 @@ export default function ClubDetail() {
                     <input
                       type="tel"
                       value={clubData.phone}
-                      onChange={(e) => setClubData({ ...clubData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setClubData({ ...clubData, phone: e.target.value })
+                      }
                       disabled={!isEditing}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50"
                       placeholder="0123456789"
@@ -233,7 +263,9 @@ export default function ClubDetail() {
 
               {/* Social Links */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-4">Social Media & Links</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">
+                  Social Media & Links
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
@@ -244,7 +276,10 @@ export default function ClubDetail() {
                       type="url"
                       value={clubData.facebookGroup}
                       onChange={(e) =>
-                        setClubData({ ...clubData, facebookGroup: e.target.value })
+                        setClubData({
+                          ...clubData,
+                          facebookGroup: e.target.value,
+                        })
                       }
                       disabled={!isEditing}
                       placeholder="https://facebook.com/groups/..."
@@ -298,7 +333,9 @@ export default function ClubDetail() {
                     <input
                       type="url"
                       value={clubData.website}
-                      onChange={(e) => setClubData({ ...clubData, website: e.target.value })}
+                      onChange={(e) =>
+                        setClubData({ ...clubData, website: e.target.value })
+                      }
                       disabled={!isEditing}
                       placeholder="https://..."
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 text-sm"
@@ -309,25 +346,33 @@ export default function ClubDetail() {
 
               {/* Recruiting Status */}
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Trạng thái tuyển thành viên</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  Trạng thái tuyển thành viên
+                </h3>
                 <div className="flex items-center gap-4">
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
                       name="recruiting"
                       checked={clubData.isRecruiting}
-                      onChange={() => setClubData({ ...clubData, isRecruiting: true })}
+                      onChange={() =>
+                        setClubData({ ...clubData, isRecruiting: true })
+                      }
                       disabled={!isEditing}
                       className="w-4 h-4 text-pink-500"
                     />
-                    <span className="text-sm font-medium">Đang tuyển thành viên</span>
+                    <span className="text-sm font-medium">
+                      Đang tuyển thành viên
+                    </span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="radio"
                       name="recruiting"
                       checked={!clubData.isRecruiting}
-                      onChange={() => setClubData({ ...clubData, isRecruiting: false })}
+                      onChange={() =>
+                        setClubData({ ...clubData, isRecruiting: false })
+                      }
                       disabled={!isEditing}
                       className="w-4 h-4 text-pink-500"
                     />
@@ -347,11 +392,15 @@ export default function ClubDetail() {
           <CardContent>
             <div className="bg-gradient-to-br from-pink-50 to-white p-6 rounded-xl border-2 border-pink-200">
               <div className="flex items-start gap-4 mb-4">
-                <div className={`w-16 h-16 bg-gradient-to-br from-${initialClub.color}-400 to-${initialClub.color}-600 rounded-2xl flex items-center justify-center text-3xl`}>
+                <div
+                  className={`w-16 h-16 bg-gradient-to-br from-${initialClub.color}-400 to-${initialClub.color}-600 rounded-2xl flex items-center justify-center text-3xl`}
+                >
                   {initialClub.icon}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">{clubData.name}</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                    {clubData.name}
+                  </h3>
                   <span className="text-xs px-3 py-1 bg-pink-100 text-pink-700 rounded-full font-medium">
                     {clubData.type}
                   </span>
@@ -363,11 +412,15 @@ export default function ClubDetail() {
               <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                 <div className="flex items-center gap-2">
                   <Users className="w-4 h-4 text-pink-500" />
-                  <span className="text-gray-700">{clubData.members} thành viên</span>
+                  <span className="text-gray-700">
+                    {clubData.members} thành viên
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-pink-500" />
-                  <span className="text-gray-700 truncate">{clubData.contactEmail}</span>
+                  <span className="text-gray-700 truncate">
+                    {clubData.contactEmail}
+                  </span>
                 </div>
                 {clubData.phone && (
                   <div className="flex items-center gap-2">
@@ -441,4 +494,3 @@ export default function ClubDetail() {
     </div>
   );
 }
-

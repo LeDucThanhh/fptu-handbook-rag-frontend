@@ -1,11 +1,27 @@
 import { useState } from "react";
-import { Bell, Calendar, CheckCircle, Filter, Search } from "lucide-react";
 import { mockNotifications, mockSchoolEvents } from "@/services/mock/mockData";
-import { PageContainer } from "@/components/layout/PageContainer";
-import { Section } from "@/components/layout/Section";
-import { ProfessionalCard } from "@/components/layout/ProfessionalCard";
-import RoleHeader from "@/components/layout/RoleHeader";
-import { DESIGN_TOKENS, BUTTON_VARIANTS } from "@/design-system/tokens";
+import {
+  Tabs,
+  Badge,
+  List,
+  Card,
+  Input,
+  Button,
+  Tag,
+  Space,
+  Statistic,
+  Row,
+  Col,
+} from "antd";
+import {
+  BellOutlined,
+  CalendarOutlined,
+  CheckCircleOutlined,
+  SearchOutlined,
+  AlertOutlined,
+  ClockCircleOutlined,
+  EnvironmentOutlined,
+} from "@ant-design/icons";
 
 export default function NotificationCenter() {
   // Combine notifications and events
@@ -55,213 +71,213 @@ export default function NotificationCenter() {
     setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
   };
 
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "Cao":
+        return "red";
+      case "Trung bình":
+        return "orange";
+      case "Thấp":
+        return "blue";
+      default:
+        return "default";
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "Học vụ":
+        return "orange";
+      case "Sự kiện":
+        return "blue";
+      case "Học bổng":
+        return "green";
+      case "Thông báo":
+        return "purple";
+      default:
+        return "default";
+    }
+  };
+
   return (
-    <PageContainer>
-      <Section>
-        {/* Role-specific Header */}
-        <RoleHeader
-          title="Trung tâm Thông báo"
-          description="Quản lý thông báo và sự kiện từ nhà trường"
-          icon={<Bell className="w-8 h-8 text-white" />}
-        />
-
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <button
-            onClick={markAllAsRead}
-            className={`${BUTTON_VARIANTS.primary} flex items-center gap-2`}
-          >
-            <CheckCircle className="w-4 h-4" />
-            Đánh dấu tất cả đã đọc
-          </button>
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            Trung tâm Thông báo
+          </h1>
+          <p className="text-lg text-gray-600">
+            Quản lý thông báo và sự kiện từ nhà trường
+          </p>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative mb-6">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Tìm kiếm thông báo..."
-            className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-orange-500 transition-all bg-white shadow-sm"
-          />
-        </div>
+        {/* Quick Stats */}
+        <Row gutter={[16, 16]} className="mb-8">
+          <Col xs={24} sm={8}>
+            <Card hoverable>
+              <Statistic
+                title="Chưa đọc"
+                value={unreadCount}
+                prefix={<BellOutlined style={{ color: "#f97316" }} />}
+                valueStyle={{ color: "#f97316" }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Card hoverable>
+              <Statistic
+                title="Tổng thông báo"
+                value={allItems.length}
+                prefix={<AlertOutlined style={{ color: "#3b82f6" }} />}
+                valueStyle={{ color: "#3b82f6" }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Card hoverable>
+              <Statistic
+                title="Sự kiện"
+                value={eventsAsNotifications.length}
+                prefix={<CalendarOutlined style={{ color: "#10b981" }} />}
+                valueStyle={{ color: "#10b981" }}
+              />
+            </Card>
+          </Col>
+        </Row>
 
-        {/* Professional Filter Tabs */}
-        <div className="flex flex-wrap gap-3 mb-8">
-          {[
-            {
-              key: "all",
-              label: "Tất cả",
-              count: allItems.length,
-              icon: Filter,
-            },
-            {
-              key: "notifications",
-              label: "Thông báo",
-              count: notifications.length,
-              icon: Bell,
-            },
-            {
-              key: "events",
-              label: "Sự kiện",
-              count: eventsAsNotifications.length,
-              icon: Calendar,
-            },
-          ].map(({ key, label, count, icon: Icon }) => (
-            <button
-              key={key}
-              onClick={() => setFilter(key as any)}
-              className={`
-                flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all
-                ${
-                  filter === key
-                    ? "bg-orange-500 text-white shadow-lg transform scale-105"
-                    : "bg-white text-gray-600 hover:bg-orange-50 hover:text-orange-600 border-2 border-gray-200 hover:border-orange-300"
-                }
-              `}
-            >
-              <Icon className="w-4 h-4" />
-              <span>{label}</span>
-              <span
-                className={`px-2 py-0.5 rounded-full text-xs ${
-                  filter === key
-                    ? "bg-white/20 text-white"
-                    : "bg-orange-100 text-orange-600"
-                }`}
+        {/* Filters and Search */}
+        <Card>
+          <Space direction="vertical" size="large" style={{ width: "100%" }}>
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+              {/* Filter Tabs */}
+              <Space>
+                <Button
+                  type={filter === "all" ? "primary" : "default"}
+                  onClick={() => setFilter("all")}
+                >
+                  Tất cả ({allItems.length})
+                </Button>
+                <Button
+                  type={filter === "notifications" ? "primary" : "default"}
+                  onClick={() => setFilter("notifications")}
+                >
+                  Thông báo ({notifications.length})
+                </Button>
+                <Button
+                  type={filter === "events" ? "primary" : "default"}
+                  onClick={() => setFilter("events")}
+                >
+                  Sự kiện ({eventsAsNotifications.length})
+                </Button>
+              </Space>
+
+              {/* Mark All as Read Button */}
+              <Button
+                type="primary"
+                icon={<CheckCircleOutlined />}
+                onClick={markAllAsRead}
+                danger
               >
-                {count}
-              </span>
-            </button>
-          ))}
-        </div>
+                Đánh dấu tất cả đã đọc
+              </Button>
+            </div>
 
-        {/* Professional Notifications List */}
-        <div className="space-y-6">
-          {filteredNotifications.map((notification) => (
-            <ProfessionalCard
+            {/* Search Bar */}
+            <Input
+              size="large"
+              placeholder="Tìm kiếm thông báo..."
+              prefix={<SearchOutlined />}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              allowClear
+            />
+          </Space>
+        </Card>
+
+        {/* Notifications List */}
+        <List
+          itemLayout="vertical"
+          size="large"
+          dataSource={filteredNotifications}
+          locale={{
+            emptyText: (
+              <div className="text-center py-12">
+                <BellOutlined style={{ fontSize: 48, color: "#d1d5db" }} />
+                <p className="text-gray-500 mt-4">Không có thông báo nào</p>
+              </div>
+            ),
+          }}
+          renderItem={(notification) => (
+            <List.Item
               key={notification.id}
               onClick={() => markAsRead(notification.id)}
-              className={`${
-                !notification.isRead ? "border-l-4 border-l-orange-500" : ""
-              }`}
+              style={{
+                cursor: "pointer",
+                backgroundColor: !notification.isRead ? "#fff7ed" : "white",
+                borderLeft: !notification.isRead
+                  ? "4px solid #f97316"
+                  : "4px solid transparent",
+                marginBottom: 16,
+                borderRadius: 8,
+                padding: 16,
+              }}
+              className="hover:shadow-md transition-all"
             >
-              <div className="flex items-start gap-4">
-                {/* Icon */}
-                <div
-                  className={`
-                  w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0
-                  ${
-                    notification.type === "Sự kiện"
-                      ? "bg-gradient-to-br from-orange-100 to-orange-200"
-                      : notification.priority === "high"
-                      ? "bg-gradient-to-br from-red-100 to-red-200"
-                      : "bg-gradient-to-br from-orange-100 to-orange-200"
-                  }
-                `}
-                >
-                  {notification.type === "Sự kiện" ? (
-                    <Calendar className="w-7 h-7 text-orange-600" />
-                  ) : (
-                    <Bell
-                      className={`w-7 h-7 ${
-                        notification.priority === "high"
-                          ? "text-red-600"
-                          : "text-orange-600"
-                      }`}
+              <List.Item.Meta
+                avatar={
+                  notification.type === "Sự kiện" ? (
+                    <CalendarOutlined
+                      style={{ fontSize: 32, color: "#10b981" }}
                     />
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3
-                          className={`${DESIGN_TOKENS.typography.heading4} ${DESIGN_TOKENS.colors.text.primary}`}
-                        >
-                          {notification.title}
-                        </h3>
-                        {!notification.isRead && (
-                          <div className="w-3 h-3 bg-orange-500 rounded-full animate-pulse"></div>
-                        )}
-                      </div>
-
-                      <p
-                        className={`${DESIGN_TOKENS.typography.body} ${DESIGN_TOKENS.colors.text.secondary} mb-4`}
-                      >
-                        {notification.content}
-                      </p>
-                    </div>
-
-                    {notification.isRead && (
-                      <CheckCircle className="w-6 h-6 text-orange-500 flex-shrink-0 ml-4" />
+                  ) : (
+                    <BellOutlined
+                      style={{
+                        fontSize: 32,
+                        color:
+                          notification.priority === "Cao"
+                            ? "#ef4444"
+                            : "#f97316",
+                      }}
+                    />
+                  )
+                }
+                title={
+                  <Space>
+                    <span className="font-semibold">{notification.title}</span>
+                    {!notification.isRead && (
+                      <Badge status="processing" text="Mới" />
                     )}
-                  </div>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="flex items-center gap-1 text-sm text-gray-500">
-                      <Calendar className="w-4 h-4" />
-                      <span>{notification.date}</span>
-                    </div>
-
-                    <span
-                      className={`
-                      px-3 py-1 rounded-full text-xs font-semibold
-                      ${
-                        notification.priority === "high"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-orange-100 text-orange-700"
-                      }
-                    `}
-                    >
-                      {notification.priority === "high"
-                        ? "Quan trọng"
-                        : "Bình thường"}
-                    </span>
-
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold">
-                      {notification.type}
-                    </span>
-
-                    <span className="text-sm text-gray-500">
-                      {notification.targetAudience}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </ProfessionalCard>
-          ))}
-        </div>
-
-        {/* Professional Empty State */}
-        {filteredNotifications.length === 0 && (
-          <ProfessionalCard className="text-center py-16">
-            <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Bell className="w-10 h-10 text-orange-500" />
-            </div>
-            <h3
-              className={`${DESIGN_TOKENS.typography.heading3} ${DESIGN_TOKENS.colors.text.primary} mb-2`}
-            >
-              Không có thông báo nào
-            </h3>
-            <p
-              className={`${DESIGN_TOKENS.typography.body} ${DESIGN_TOKENS.colors.text.secondary}`}
-            >
-              {searchQuery
-                ? "Không tìm thấy thông báo phù hợp với từ khóa tìm kiếm"
-                : filter === "notifications"
-                ? "Chưa có thông báo mới từ nhà trường"
-                : filter === "events"
-                ? "Chưa có sự kiện sắp tới"
-                : "Bạn đã xem hết tất cả thông báo"}
-            </p>
-          </ProfessionalCard>
-        )}
-      </Section>
-    </PageContainer>
+                    {notification.isRead && (
+                      <CheckCircleOutlined style={{ color: "#10b981" }} />
+                    )}
+                  </Space>
+                }
+                description={
+                  <Space direction="vertical" size="small">
+                    <p className="whitespace-pre-line">
+                      {notification.content}
+                    </p>
+                    <Space wrap>
+                      <Tag icon={<ClockCircleOutlined />} color="default">
+                        {notification.date}
+                      </Tag>
+                      <Tag color={getTypeColor(notification.type)}>
+                        {notification.type}
+                      </Tag>
+                      <Tag color={getPriorityColor(notification.priority)}>
+                        {notification.priority}
+                      </Tag>
+                    </Space>
+                  </Space>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      </div>
+    </div>
   );
 }
