@@ -15,7 +15,7 @@ export const getDashboardRoute = (user: User | null): string => {
   }
 
   if (user.roles.includes(UserRole.MENTOR)) {
-    return "/mentor/unresolved";
+    return "/mentor/dashboard";
   }
 
   if (user.roles.includes(UserRole.ACADEMIC_STAFF)) {
@@ -30,8 +30,13 @@ export const getDashboardRoute = (user: User | null): string => {
     return "/club/dashboard";
   }
 
-  // Student không có dashboard riêng, về home page
-  return "/";
+  // Student - redirect to home page
+  if (user.roles.includes(UserRole.STUDENT)) {
+    return "/student";
+  }
+
+  // Default fallback
+  return "/login";
 };
 
 /**

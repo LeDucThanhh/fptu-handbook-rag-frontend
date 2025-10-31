@@ -3,22 +3,20 @@ import { useAuthStore } from "@/contexts/AuthContext";
 import { UserRole } from "@/types";
 import {
   Home,
-  MessageCircle,
   BookOpen,
-  Users,
   Bell,
-  User,
   AlertCircle,
   FileText,
   BarChart,
   Settings,
-  Shield,
   Activity,
-  Database,
-  Calendar,
   TrendingUp,
   RefreshCw,
   LogOut,
+  Users,
+  User,
+  Clock,
+  MessageCircle,
 } from "lucide-react";
 
 interface NavItem {
@@ -64,18 +62,18 @@ export default function RoleNavigation() {
     // MENTOR
     if (user.roles.includes(UserRole.MENTOR)) {
       return [
+        { label: "Dashboard", href: "/mentor/dashboard", icon: Home },
+        { label: "Analytics", href: "/mentor/analytics", icon: BarChart },
         {
-          label: "Câu hỏi chưa giải quyết",
-          href: "/mentor/unresolved",
+          label: "Unresolved Queue",
+          href: "/mentor/queue",
           icon: AlertCircle,
         },
-        { label: "Analytics", href: "/mentor/analytics", icon: BarChart },
         {
           label: "Resource Recommendations",
           href: "/mentor/recommendations",
           icon: BookOpen,
         },
-        { label: "Quản lý Posts", href: "/mentor/posts", icon: FileText },
       ];
     }
 
@@ -121,7 +119,19 @@ export default function RoleNavigation() {
       ];
     }
 
-    // No sidebar for students - they use public routes
+    // STUDENT
+    if (user.roles.includes(UserRole.STUDENT)) {
+      return [
+        { label: "Thông tin cá nhân", href: "/student/profile", icon: User },
+        { label: "Hỏi đáp AI", href: "/qa", icon: MessageCircle },
+        { label: "Sổ tay sinh viên", href: "/handbook", icon: BookOpen },
+        { label: "Câu lạc bộ", href: "/clubs", icon: Users },
+        { label: "Lịch sử hỏi đáp", href: "/student/history", icon: Clock },
+        { label: "Thông báo", href: "/student/notifications", icon: Bell },
+      ];
+    }
+
+    // Default - no navigation
     return [];
   };
 
@@ -136,7 +146,7 @@ export default function RoleNavigation() {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
+    navigate("/login");
   };
 
   return (

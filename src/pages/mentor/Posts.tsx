@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useAuthStore } from "@/contexts/AuthContext";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { FileText, Eye, ThumbsUp, Edit, Trash2, Plus } from "lucide-react";
 import { mockMentorPosts } from "@/services/mock/mockData";
 
 export default function MentorPosts() {
-  const { user } = useAuthStore();
   const [posts] = useState(mockMentorPosts);
   const [filter, setFilter] = useState<"all" | "public" | "draft">("all");
 
@@ -147,9 +144,7 @@ export default function MentorPosts() {
           <Card>
             <CardContent className="py-16 text-center">
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg mb-2">
-                Chưa có bài viết nào
-              </p>
+              <p className="text-gray-500 text-lg mb-2">Chưa có bài viết nào</p>
               <p className="text-sm text-gray-400 mb-6">
                 Tạo bài viết đầu tiên để chia sẻ kiến thức
               </p>
@@ -163,6 +158,3 @@ export default function MentorPosts() {
     </div>
   );
 }
-
-
-

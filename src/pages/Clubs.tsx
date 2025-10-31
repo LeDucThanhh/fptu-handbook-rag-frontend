@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useGlareEffect } from "../hooks/useGlareEffect";
 import {
   Search,
   Users,
@@ -13,12 +12,9 @@ import {
   Code,
   Music,
   Heart,
-  Book,
+  BookOpen,
 } from "lucide-react";
-import { PageContainer } from "@/components/layout/PageContainer";
-import { Section } from "@/components/layout/Section";
-import { ProfessionalCard } from "@/components/layout/ProfessionalCard";
-import { DESIGN_TOKENS } from "@/design-system/tokens";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Club {
   id: number;
@@ -172,12 +168,6 @@ const Clubs: React.FC = () => {
     return cat.icon;
   };
 
-  const getCategoryColor = (category: string) => {
-    const cat = categories.find((c) => c.name === category);
-    if (!cat) return "orange";
-    return cat.color;
-  };
-
   const filteredClubs = clubsData.filter((club) => {
     const matchesSearch =
       club.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -191,209 +181,159 @@ const Clubs: React.FC = () => {
   });
 
   return (
-    <PageContainer size="large">
-      {/* Professional Hero Section */}
-      <Section
-        background="primary"
-        className="bg-gradient-to-r from-orange-500 to-orange-600 text-white relative overflow-hidden"
-      >
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -mr-48 -mt-48"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white rounded-full -ml-48 -mb-48"></div>
-        </div>
-        <div className="relative z-10 text-center">
-          <h1
-            className={`${DESIGN_TOKENS.typography.heading1} mb-4 animate-fadeInUp`}
-          >
-            Câu lạc bộ sinh viên FPTU
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold text-foreground">
+            Câu lạc bộ sinh viên
           </h1>
-          <p
-            className={`${DESIGN_TOKENS.typography.bodyLarge} text-orange-100 mb-8 animate-fadeInUp`}
-            style={{ animationDelay: "0.1s" }}
-          >
-            Tìm kiếm và tham gia các CLB phù hợp với đam mê của bạn
+          <p className="text-xl text-muted-foreground">
+            Khám phá và tham gia các CLB phù hợp với đam mê của bạn
           </p>
-          <div
-            className="flex flex-wrap items-center justify-center gap-4 text-sm md:text-base animate-fadeInUp"
-            style={{ animationDelay: "0.2s" }}
-          >
-            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Users className="w-5 h-5" />
-              <span>
-                {clubsData.reduce((sum, club) => sum + club.members, 0)}+ thành
-                viên
-              </span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Sparkles className="w-5 h-5" />
-              <span>{clubsData.length}+ câu lạc bộ</span>
-            </div>
-            <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-              <Trophy className="w-5 h-5" />
-              <span>50+ sự kiện/năm</span>
-            </div>
-          </div>
         </div>
-      </Section>
+        {/* Search and Filter */}
+        <Card>
+          <CardContent className="p-6">
+            <div className="relative mb-6">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Tìm kiếm câu lạc bộ theo tên, mô tả, hoặc tag..."
+                className="w-full pl-12 pr-4 py-4 border-2 border-border rounded-2xl focus:outline-none focus:border-orange-500 transition-all bg-background"
+              />
+            </div>
 
-      <Section>
-        {/* Professional Search and Filter */}
-        <div className="mb-8 animate-fadeInUp">
-          <div className="relative mb-6">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm kiếm câu lạc bộ theo tên, mô tả, hoặc tag..."
-              className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-2xl focus:outline-none focus:border-orange-500 transition-all bg-white shadow-sm"
-            />
-          </div>
+            {/* Categories Filter */}
+            <div className="flex flex-wrap gap-3">
+              {categories.map((cat) => {
+                const Icon = cat.icon;
+                const isActive = selectedCategory === cat.name;
+                return (
+                  <button
+                    key={cat.name}
+                    onClick={() => setSelectedCategory(cat.name)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
+                      isActive
+                        ? "bg-orange-500 text-white shadow-lg scale-105"
+                        : "bg-background text-foreground hover:bg-muted border-2 border-border"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{cat.name}</span>
+                    {cat.name === "Tất cả" && (
+                      <span className="ml-1 text-xs opacity-75">
+                        ({clubsData.length})
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Categories Filter */}
-          <div className="flex flex-wrap gap-3">
-            {categories.map((cat) => {
-              const Icon = cat.icon;
-              const isActive = selectedCategory === cat.name;
-              return (
-                <button
-                  key={cat.name}
-                  onClick={() => setSelectedCategory(cat.name)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all ${
-                    isActive
-                      ? `bg-${cat.color}-500 text-white shadow-lg scale-105`
-                      : "bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200"
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{cat.name}</span>
-                  {cat.name === "Tất cả" && (
-                    <span className="ml-1 text-xs opacity-75">
-                      ({clubsData.length})
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Professional Clubs Grid */}
+        {/* Clubs Grid */}
         {filteredClubs.length === 0 ? (
-          <ProfessionalCard className="text-center py-16">
-            <div className="w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Search className="w-10 h-10 text-orange-500" />
-            </div>
-            <h3
-              className={`${DESIGN_TOKENS.typography.heading3} ${DESIGN_TOKENS.colors.text.primary} mb-2`}
-            >
-              Không tìm thấy câu lạc bộ nào
-            </h3>
-            <p
-              className={`${DESIGN_TOKENS.typography.body} ${DESIGN_TOKENS.colors.text.secondary}`}
-            >
-              Thử tìm kiếm với từ khóa khác hoặc chọn danh mục khác
-            </p>
-          </ProfessionalCard>
+          <Card>
+            <CardContent className="text-center py-16">
+              <div className="w-20 h-20 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Search className="w-10 h-10 text-orange-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-2">
+                Không tìm thấy câu lạc bộ nào
+              </h3>
+              <p className="text-muted-foreground">
+                Thử tìm kiếm với từ khóa khác hoặc chọn danh mục khác
+              </p>
+            </CardContent>
+          </Card>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredClubs.map((club, index) => {
+            {filteredClubs.map((club) => {
               const CategoryIcon = getCategoryIcon(club.category);
-              const glareRef = useGlareEffect();
 
               return (
-                <div
+                <Card
                   key={club.id}
-                  ref={glareRef}
-                  className="overflow-hidden animate-fadeInUp"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  className="overflow-hidden hover:shadow-lg transition-all cursor-pointer hover:-translate-y-1"
+                  onClick={() => setSelectedClub(club)}
                 >
-                  <ProfessionalCard
-                    className="overflow-hidden"
-                    onClick={() => setSelectedClub(club)}
-                  >
-                    {/* Image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <img
-                        src={club.image}
-                        alt={club.name}
-                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                      <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1">
-                        <Users className="w-4 h-4 text-orange-500" />
-                        <span className="text-sm font-semibold text-gray-700">
-                          {club.members}
-                        </span>
-                      </div>
-                      <div className="absolute bottom-4 left-4">
+                  {/* Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={club.image}
+                      alt={club.name}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                    <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1">
+                      <Users className="w-4 h-4 text-orange-500" />
+                      <span className="text-sm font-semibold text-foreground">
+                        {club.members}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4">
+                      <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                        <CategoryIcon className="w-4 h-4" />
+                        {club.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold text-foreground mb-2 line-clamp-1">
+                      {club.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      {club.description}
+                    </p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {club.tags.slice(0, 3).map((tag, i) => (
                         <span
-                          className={`bg-${getCategoryColor(
-                            club.category
-                          )}-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1`}
+                          key={i}
+                          className="px-2 py-1 bg-orange-50 text-orange-600 rounded-md text-xs font-medium"
                         >
-                          <CategoryIcon className="w-4 h-4" />
-                          {club.category}
+                          #{tag}
                         </span>
-                      </div>
+                      ))}
                     </div>
 
-                    {/* Content */}
-                    <div className="p-6">
-                      <h3
-                        className={`${DESIGN_TOKENS.typography.heading4} ${DESIGN_TOKENS.colors.text.primary} mb-2 line-clamp-1`}
-                      >
-                        {club.name}
-                      </h3>
-                      <p
-                        className={`${DESIGN_TOKENS.typography.caption} ${DESIGN_TOKENS.colors.text.secondary} mb-4 line-clamp-2`}
-                      >
-                        {club.description}
-                      </p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {club.tags.slice(0, 3).map((tag, i) => (
-                          <span
-                            key={i}
-                            className="px-2 py-1 bg-orange-50 text-orange-600 rounded-md text-xs font-medium"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-4 border-t border-border">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Calendar className="w-4 h-4" />
+                        <span>{club.meeting.split(",")[0]}</span>
                       </div>
-
-                      {/* Footer */}
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                          <Calendar className="w-4 h-4" />
-                          <span>{club.meeting.split(",")[0]}</span>
-                        </div>
-                        <button className="text-orange-500 hover:text-orange-600 font-semibold text-sm flex items-center gap-1">
-                          Chi tiết
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                      <button className="text-orange-500 hover:text-orange-600 font-semibold text-sm flex items-center gap-1">
+                        Chi tiết
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </button>
                     </div>
-                  </ProfessionalCard>
-                </div>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
         )}
-      </Section>
+      </div>
 
       {/* Club Detail Modal */}
       {selectedClub && (
@@ -445,7 +385,7 @@ const Clubs: React.FC = () => {
               {/* Description */}
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Book className="w-5 h-5 text-orange-500" />
+                  <BookOpen className="w-5 h-5 text-orange-500" />
                   Giới thiệu
                 </h3>
                 <p className="text-gray-700 leading-relaxed">
@@ -535,7 +475,7 @@ const Clubs: React.FC = () => {
           </div>
         </div>
       )}
-    </PageContainer>
+    </div>
   );
 };
 

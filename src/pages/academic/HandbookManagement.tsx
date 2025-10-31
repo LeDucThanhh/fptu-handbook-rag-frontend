@@ -24,7 +24,6 @@ export default function HandbookManagement() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editingSection, setEditingSection] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const { success, error, ToastContainer } = useToast();
 
   // Form data for add/edit
@@ -88,7 +87,6 @@ export default function HandbookManagement() {
       category: "Học vụ",
       version: "1.0",
     });
-    setUploadedFiles([]);
     setShowAddDialog(true);
   };
 
@@ -99,7 +97,6 @@ export default function HandbookManagement() {
       category: "Học vụ",
       version: "1.0",
     });
-    setUploadedFiles([]);
   };
 
   const handleFormSubmit = async (isEdit: boolean = false) => {
@@ -154,8 +151,8 @@ export default function HandbookManagement() {
     }
   };
 
-  const handleFileSelect = (files: File[]) => {
-    setUploadedFiles(files);
+  const handleFileSelect = (_files: File[]) => {
+    // TODO: Implement file upload functionality
   };
 
   return (

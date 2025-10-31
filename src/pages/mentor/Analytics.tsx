@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -11,9 +11,7 @@ import { SimpleChart } from "@/components/ui/simple-chart";
 import {
   BarChart3,
   TrendingUp,
-  Users,
   BookOpen,
-  Calendar,
   Filter,
   Download,
   RefreshCw,
@@ -121,7 +119,7 @@ const Analytics = () => {
                 {["week", "month", "semester"].map((period) => (
                   <Button
                     key={period}
-                    variant={timeFilter === period ? "default" : "outline"}
+                    variant={timeFilter === period ? "primary" : "outline"}
                     size="sm"
                     onClick={() => setTimeFilter(period)}
                   >

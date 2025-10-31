@@ -1,183 +1,130 @@
-import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Users, Calendar, TrendingUp, Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Users, TrendingUp, Eye, Edit, BarChart3, Target } from "lucide-react";
 import { mockClubs } from "@/services/mock/mockData";
-import { PageContainer } from "@/components/layout/PageContainer";
-import { Section } from "@/components/layout/Section";
-import { ProfessionalCard } from "@/components/layout/ProfessionalCard";
-import RoleHeader from "@/components/layout/RoleHeader";
-import { DESIGN_TOKENS, BUTTON_VARIANTS } from "@/design-system/tokens";
 
 export default function ClubList() {
-  // Giả sử Club Coordinator có thể quản lý nhiều clubs
-  const [myClubs] = useState(mockClubs.slice(0, 2)); // Mock: quản lý 2 clubs
   const navigate = useNavigate();
 
-  return (
-    <PageContainer size="large">
-      <Section>
-        {/* Professional Header */}
-        {/* Role-specific Header */}
-        <RoleHeader
-          title="Quản lý Câu lạc bộ"
-          description="Danh sách các câu lạc bộ bạn đang quản lý"
-          icon={<Target className="w-8 h-8 text-white" />}
-        />
+  const quickStats = [
+    {
+      label: "Tổng số CLB",
+      value: mockClubs.length.toString(),
+      icon: Users,
+      color: "text-blue-600",
+      bgColor: "bg-blue-100",
+    },
+    {
+      label: "Tổng thành viên",
+      value: mockClubs.reduce((sum, club) => sum + club.members, 0).toString(),
+      icon: TrendingUp,
+      color: "text-green-600",
+      bgColor: "bg-green-100",
+    },
+    {
+      label: "Sự kiện tháng này",
+      value: "12",
+      icon: Calendar,
+      color: "text-orange-600",
+      bgColor: "bg-orange-100",
+    },
+  ];
 
-        {/* Professional Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          {[
-            {
-              label: "CLB quản lý",
-              value: myClubs.length,
-              icon: Target,
-              color: "orange",
-              suffix: "",
-            },
-            {
-              label: "Tổng thành viên",
-              value: myClubs.reduce((sum, c) => sum + c.members, 0),
-              icon: Users,
-              color: "blue",
-              suffix: "",
-            },
-            {
-              label: "Tăng trưởng",
-              value: "+12",
-              icon: TrendingUp,
-              color: "green",
-              suffix: "%",
-            },
-            {
-              label: "Engagement",
-              value: "85",
-              icon: BarChart3,
-              color: "purple",
-              suffix: "%",
-            },
-          ].map((stat, index) => {
+  return (
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-screen-2xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-foreground">
+              Quản lý Câu lạc bộ
+            </h1>
+            <p className="text-xl text-muted-foreground mt-2">
+              Quản lý thông tin và hoạt động của các CLB
+            </p>
+          </div>
+          <button className="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold">
+            <Plus className="w-5 h-5" />
+            Tạo CLB mới
+          </button>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {quickStats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <ProfessionalCard key={index} className="text-center">
-                <div className="flex flex-col items-center">
-                  <div
-                    className={`w-12 h-12 bg-gradient-to-br from-${stat.color}-100 to-${stat.color}-200 rounded-xl flex items-center justify-center mb-3`}
-                  >
-                    <Icon className={`w-6 h-6 text-${stat.color}-600`} />
+              <Card
+                key={index}
+                className="hover:shadow-md transition-shadow"
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        {stat.label}
+                      </p>
+                      <p className="text-3xl font-bold text-foreground">
+                        {stat.value}
+                      </p>
+                    </div>
+                    <div className={`${stat.bgColor} p-4 rounded-xl`}>
+                      <Icon className={`w-8 h-8 ${stat.color}`} />
+                    </div>
                   </div>
-                  <p
-                    className={`${DESIGN_TOKENS.typography.caption} ${DESIGN_TOKENS.colors.text.secondary} mb-2`}
-                  >
-                    {stat.label}
-                  </p>
-                  <p
-                    className={`${DESIGN_TOKENS.typography.heading3} text-${stat.color}-600`}
-                  >
-                    {stat.value}
-                    {stat.suffix}
-                  </p>
-                </div>
-              </ProfessionalCard>
+                </CardContent>
+              </Card>
             );
           })}
         </div>
 
-        {/* Professional Clubs List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {myClubs.map((club) => (
-            <ProfessionalCard
-              key={club.id}
-              onClick={() => navigate(`/club/detail/${club.id}`)}
-              className="overflow-hidden"
-            >
-              <div className="flex items-start gap-4">
-                {/* Club Icon */}
-                <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
-                  <span className="text-4xl">{club.icon}</span>
-                </div>
-
-                <div className="flex-1">
-                  {/* Header */}
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3
-                        className={`${DESIGN_TOKENS.typography.heading4} ${DESIGN_TOKENS.colors.text.primary} mb-2`}
-                      >
-                        {club.name}
-                      </h3>
-                      <span className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">
-                        {club.type}
-                      </span>
+        {/* Clubs List */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Danh sách Câu lạc bộ</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {mockClubs.map((club) => (
+                <Card
+                  key={club.id}
+                  className="hover:shadow-lg transition-all cursor-pointer hover:-translate-y-1"
+                  onClick={() => navigate(`/club/detail/${club.id}`)}
+                >
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <CardTitle className="text-lg mb-2">
+                          {club.name}
+                        </CardTitle>
+                        <span className="inline-block px-3 py-1 bg-orange-100 text-orange-700 text-xs font-semibold rounded-full">
+                          {club.type}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Description */}
-                  <p
-                    className={`${DESIGN_TOKENS.typography.caption} ${DESIGN_TOKENS.colors.text.secondary} mb-4 line-clamp-2`}
-                  >
-                    {club.description}
-                  </p>
-
-                  {/* Stats Grid */}
-                  <div className="grid grid-cols-3 gap-3 mb-4">
-                    <div className="text-center p-3 bg-orange-50 rounded-xl">
-                      <Users className="w-5 h-5 text-orange-600 mx-auto mb-1" />
-                      <p
-                        className={`${DESIGN_TOKENS.typography.body} font-bold ${DESIGN_TOKENS.colors.text.primary}`}
-                      >
-                        {club.members}
-                      </p>
-                      <p
-                        className={`${DESIGN_TOKENS.typography.small} ${DESIGN_TOKENS.colors.text.secondary}`}
-                      >
-                        Thành viên
-                      </p>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                      {club.description}
+                    </p>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2 text-muted-foreground">
+                        <Users className="w-4 h-4" />
+                        <span>{club.members} thành viên</span>
+                      </div>
+                      <div className="text-muted-foreground">
+                        <span className="font-semibold">Điều phối viên:</span>{" "}
+                        {club.coordinator}
+                      </div>
                     </div>
-                    <div className="text-center p-3 bg-green-50 rounded-xl">
-                      <TrendingUp className="w-5 h-5 text-green-600 mx-auto mb-1" />
-                      <p
-                        className={`${DESIGN_TOKENS.typography.body} font-bold text-green-600`}
-                      >
-                        +15%
-                      </p>
-                      <p
-                        className={`${DESIGN_TOKENS.typography.small} ${DESIGN_TOKENS.colors.text.secondary}`}
-                      >
-                        Tăng trưởng
-                      </p>
-                    </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-xl">
-                      <Eye className="w-5 h-5 text-blue-600 mx-auto mb-1" />
-                      <p
-                        className={`${DESIGN_TOKENS.typography.body} font-bold ${DESIGN_TOKENS.colors.text.primary}`}
-                      >
-                        2.5K
-                      </p>
-                      <p
-                        className={`${DESIGN_TOKENS.typography.small} ${DESIGN_TOKENS.colors.text.secondary}`}
-                      >
-                        Lượt xem
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Action Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/club/detail/${club.id}`);
-                    }}
-                    className={`${BUTTON_VARIANTS.primary} w-full inline-flex items-center justify-center gap-2`}
-                  >
-                    <Edit className="w-4 h-4" />
-                    Quản lý CLB này
-                  </button>
-                </div>
-              </div>
-            </ProfessionalCard>
-          ))}
-        </div>
-      </Section>
-    </PageContainer>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   );
 }
+

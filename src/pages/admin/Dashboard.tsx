@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useAuthStore } from "@/contexts/AuthContext";
 import {
   Users,
   Settings,
@@ -11,8 +10,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AdminDashboard() {
-  const { user } = useAuthStore();
-
   const quickActions = [
     {
       icon: Users,
