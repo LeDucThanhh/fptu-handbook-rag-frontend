@@ -10,13 +10,27 @@ import { Chrome, Loader2 } from "lucide-react";
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { loginWithGoogle } = useAuthStore();
 
   const handleGoogleLogin = async () => {
-    toast.info("Google OAuth chưa được tích hợp. Vui lòng dùng Demo Mode!");
+    try {
+      setIsLoading(true);
+      await loginWithGoogle();
+
+      toast.success("Đăng nhập thành công!");
+
+      // Navigate to student dashboard
+      navigate("/student");
+    } catch (error: any) {
+      console.error("Google login error:", error);
+      toast.error(error.message || "Đăng nhập thất bại!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDemoLogin = async (
-    role: "student" | "mentor" | "academic" | "affairs" | "club" | "admin"
+    role: "mentor" | "academic" | "affairs" | "club" | "admin"
   ) => {
     try {
       setIsLoading(true);
@@ -60,45 +74,33 @@ const Login: React.FC = () => {
 
   const demoRoles = [
     {
-      key: "student" as const,
-      label: "Sinh viên",
-      description: "Xem thông tin, hỏi đáp AI, lịch sử",
-      color: "from-blue-500 to-blue-600",
-      icon: "👨‍🎓",
-    },
-    {
       key: "mentor" as const,
       label: "Mentor / Cố vấn",
-      description: "Quản lý câu hỏi, phân tích, đề xuất tài liệu",
-      color: "from-purple-500 to-purple-600",
+      description: "Quản lý câu hỏi, phân tích",
       icon: "👨‍🏫",
     },
     {
       key: "academic" as const,
       label: "Phòng Đào tạo",
       description: "Quản lý handbook, rebuild index",
-      color: "from-green-500 to-green-600",
       icon: "📚",
     },
     {
       key: "affairs" as const,
       label: "Phòng Công tác SV",
-      description: "Quản lý thông báo, CLB, engagement",
-      color: "from-orange-500 to-orange-600",
+      description: "Quản lý thông báo, CLB",
       icon: "📢",
     },
     {
       key: "club" as const,
       label: "Điều phối viên CLB",
       description: "Quản lý câu lạc bộ, sự kiện",
-      color: "from-pink-500 to-pink-600",
       icon: "🎯",
     },
     {
       key: "admin" as const,
       label: "Quản trị viên",
-      description: "Quản lý hệ thống, users, config",
-      color: "from-red-500 to-red-600",
+      description: "Quản lý hệ thống",
       icon: "⚙️",
     },
   ];
@@ -197,15 +199,42 @@ const Login: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Google Login Button */}
-                <button
-                  onClick={handleGoogleLogin}
-                  disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-300 text-gray-700 px-6 py-4 rounded-xl hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 font-semibold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Chrome className="w-5 h-5 text-blue-500" />
-                  Đăng nhập bằng Google
-                </button>
+                {/* Student Login - Google Sign-In */}
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                      👨‍🎓 Dành cho Sinh viên
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Đăng nhập bằng tài khoản Google
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleGoogleLogin}
+                    disabled={isLoading}
+                    className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Đang đăng nhập...
+                      </>
+                    ) : (
+                      <>
+                        <Chrome className="w-5 h-5" />
+                        Đăng nhập bằng Google
+                      </>
+                    )}
+                  </button>
+
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <p className="text-xs text-blue-700 text-center">
+                      ✅ Tự động gán vai trò <strong>Sinh viên</strong> khi đăng
+                      nhập lần đầu
+                    </p>
+                  </div>
+                </div>
 
                 {/* Divider */}
                 <div className="relative">
@@ -219,14 +248,14 @@ const Login: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Demo Mode */}
+                {/* Demo Mode - Other Roles */}
                 <div className="space-y-4">
                   <div className="text-center">
-                    <p className="text-sm font-semibold text-gray-700 mb-1">
-                      Demo Mode (For Testing)
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Chọn vai trò để trải nghiệm hệ thống
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                      🧪 Demo Mode
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Dành cho testing các vai trò khác
                     </p>
                   </div>
 
@@ -257,6 +286,13 @@ const Login: React.FC = () => {
                       </button>
                     ))}
                   </div>
+
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <p className="text-xs text-yellow-700 text-center">
+                      ⚠️ Demo mode chỉ dùng cho testing, không cần Google
+                      account
+                    </p>
+                  </div>
                 </div>
 
                 {/* Footer Note */}
@@ -277,4 +313,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-

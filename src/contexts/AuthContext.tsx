@@ -2,7 +2,10 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { User, LoginRequest, RegisterRequest } from "@/types";
 import type { UserRole as UserRoleType } from "@/types";
+import { UserRole } from "@/types";
 import { authService } from "@/services/api/auth.service";
+import { auth, googleProvider } from "@/config/firebase.config";
+import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
 interface AuthState {
   user: User | null;
@@ -15,7 +18,7 @@ interface AuthState {
 
 interface AuthActions {
   login: (credentials: LoginRequest) => Promise<void>;
-  loginWithGoogle: (idToken: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refreshAuth: () => Promise<void>;
@@ -61,22 +64,53 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
-      loginWithGoogle: async (idToken: string) => {
+      loginWithGoogle: async () => {
         try {
           set({ isLoading: true, error: null });
-          const response = await authService.loginWithGoogle(idToken);
+
+          // Sign in with Google popup
+          const result = await signInWithPopup(auth, googleProvider);
+          const firebaseUser = result.user;
+
+          console.log("🔥 Firebase User:", firebaseUser);
+          console.log("📸 Photo URL:", firebaseUser.photoURL);
+
+          // Check if user has custom avatar in localStorage
+          const customAvatarKey = `avatar_${firebaseUser.uid}`;
+          const customAvatar = localStorage.getItem(customAvatarKey);
+
+          console.log("💾 Custom avatar from localStorage:", customAvatar);
+
+          // Create User object with Student role
+          const user: User = {
+            id: firebaseUser.uid,
+            email: firebaseUser.email || "",
+            fullName: firebaseUser.displayName || "User",
+            // Use custom avatar if exists, otherwise use Google avatar
+            avatarUrl: customAvatar || firebaseUser.photoURL || undefined,
+            roles: [UserRole.STUDENT], // Default role: Student
+            studentId: undefined, // Can be set later
+            department: undefined,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+
+          console.log("👤 Created User object:", user);
+
+          // Get Firebase ID token
+          const token = await firebaseUser.getIdToken();
 
           set({
-            user: response.user,
-            token: response.token,
-            refreshToken: response.refreshToken,
+            user,
+            token,
+            refreshToken: token, // Use same token for now
             isAuthenticated: true,
             isLoading: false,
             error: null,
           });
         } catch (error: any) {
           set({
-            error: error.response?.data?.message || "Đăng nhập Google thất bại",
+            error: error.message || "Đăng nhập Google thất bại",
             isLoading: false,
           });
           throw error;
@@ -107,10 +141,8 @@ export const useAuthStore = create<AuthStore>()(
 
       logout: async () => {
         try {
-          const { token } = get();
-          if (token) {
-            await authService.logout(token);
-          }
+          // Sign out from Firebase
+          await signOut(auth);
         } catch (error) {
           console.error("Logout error:", error);
         } finally {
