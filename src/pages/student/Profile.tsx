@@ -1,31 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuthStore } from "@/contexts/AuthContext";
-import {
-  Form,
-  Input,
-  Button,
-  Avatar,
-  Upload,
-  Card,
-  Divider,
-  Row,
-  Col,
-  message,
-} from "antd";
+import { Form, Input, Button, Card, Divider, Row, Col, message } from "antd";
 import {
   UserOutlined,
   MailOutlined,
   PhoneOutlined,
   HomeOutlined,
-  CameraOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
-import type { UploadProps } from "antd";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const Profile: React.FC = () => {
   const { user } = useAuthStore();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(
+    user?.avatarUrl
+  );
+
+  // Sync avatarUrl with user from store
+  useEffect(() => {
+    console.log("👤 User from store:", user);
+    console.log("🖼️ Avatar URL:", user?.avatarUrl);
+
+    if (user?.avatarUrl) {
+      setAvatarUrl(user.avatarUrl);
+    }
+  }, [user?.avatarUrl]);
 
   if (!user) {
     return (
@@ -42,8 +43,8 @@ const Profile: React.FC = () => {
   const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
-      // TODO: Call API to update profile
-      console.log("Profile update:", values);
+      // TODO: Call API to update profile with avatarUrl
+      console.log("Profile update:", { ...values, avatarUrl });
       message.success("Cập nhật thông tin thành công!");
     } catch (error) {
       message.error("Cập nhật thông tin thất bại!");
@@ -52,28 +53,30 @@ const Profile: React.FC = () => {
     }
   };
 
-  const uploadProps: UploadProps = {
-    name: "avatar",
-    listType: "picture-circle",
-    showUploadList: false,
-    beforeUpload: (file) => {
-      const isImage = file.type.startsWith("image/");
-      if (!isImage) {
-        message.error("Chỉ được upload file ảnh!");
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        message.error("Ảnh phải nhỏ hơn 2MB!");
-      }
-      return isImage && isLt2M;
-    },
-    onChange: (info) => {
-      if (info.file.status === "done") {
-        message.success("Upload ảnh thành công!");
-      } else if (info.file.status === "error") {
-        message.error("Upload ảnh thất bại!");
-      }
-    },
+  const handleAvatarUpload = (url: string) => {
+    setAvatarUrl(url);
+
+    // Update user in Zustand store
+    if (user) {
+      const updatedUser = {
+        ...user,
+        avatarUrl: url,
+        updatedAt: new Date().toISOString(),
+      };
+
+      // Update store
+      useAuthStore.setState({ user: updatedUser });
+
+      // Save to localStorage (persist across sessions)
+      const customAvatarKey = `avatar_${user.id}`;
+      localStorage.setItem(customAvatarKey, url);
+
+      console.log("✅ Avatar saved to localStorage:", url);
+      message.success("Cập nhật avatar thành công!");
+
+      // TODO: Call API to save to backend
+      // await updateUserProfile({ avatarUrl: url });
+    }
   };
 
   return (
@@ -92,23 +95,14 @@ const Profile: React.FC = () => {
         <Card>
           {/* Avatar Section */}
           <div className="text-center mb-8">
-            <Upload {...uploadProps}>
-              <div className="relative inline-block cursor-pointer group">
-                <Avatar
-                  size={120}
-                  src={
-                    user.avatarUrl ||
-                    `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                      user.fullName
-                    )}&background=f97316&color=fff&size=120`
-                  }
-                  icon={<UserOutlined />}
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <CameraOutlined style={{ fontSize: 32, color: "white" }} />
-                </div>
-              </div>
-            </Upload>
+            <ImageUpload
+              folder="avatars"
+              currentImageUrl={avatarUrl}
+              onUploadSuccess={handleAvatarUpload}
+              maxSizeMB={5}
+              shape="circle"
+              size={120}
+            />
             <h2 className="text-2xl font-bold text-gray-900 mt-4">
               {user.fullName}
             </h2>
@@ -125,8 +119,8 @@ const Profile: React.FC = () => {
               fullName: user.fullName,
               email: user.email,
               studentId: user.studentId,
-              phone: user.phone || "",
-              address: user.address || "",
+              phone: "",
+              address: "",
             }}
             onFinish={handleSubmit}
           >
@@ -135,9 +129,7 @@ const Profile: React.FC = () => {
                 <Form.Item
                   label="Họ và tên"
                   name="fullName"
-                  rules={[
-                    { required: true, message: "Vui lòng nhập họ tên!" },
-                  ]}
+                  rules={[{ required: true, message: "Vui lòng nhập họ tên!" }]}
                 >
                   <Input
                     prefix={<UserOutlined />}
@@ -148,11 +140,7 @@ const Profile: React.FC = () => {
               </Col>
               <Col xs={24} sm={12}>
                 <Form.Item label="Mã sinh viên" name="studentId">
-                  <Input
-                    prefix={<UserOutlined />}
-                    disabled
-                    size="large"
-                  />
+                  <Input prefix={<UserOutlined />} disabled size="large" />
                 </Form.Item>
               </Col>
             </Row>
@@ -179,7 +167,10 @@ const Profile: React.FC = () => {
                   label="Số điện thoại"
                   name="phone"
                   rules={[
-                    { pattern: /^[0-9]{10}$/, message: "Số điện thoại không hợp lệ!" },
+                    {
+                      pattern: /^[0-9]{10}$/,
+                      message: "Số điện thoại không hợp lệ!",
+                    },
                   ]}
                 >
                   <Input
