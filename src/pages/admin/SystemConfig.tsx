@@ -1,210 +1,273 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Settings, Database, Key, Mail, Save } from "lucide-react";
+import { Settings, Plus, Edit, Trash2, Loader2 } from "lucide-react";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  message,
+  Popconfirm,
+  Tag,
+} from "antd";
+import { systemConfigService } from "@/services/api";
+import type { SystemConfiguration } from "@/services/api/system-config.service";
+
+const { Option } = Select;
 
 export default function SystemConfig() {
+  const [configs, setConfigs] = useState<SystemConfiguration[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingConfig, setEditingConfig] =
+    useState<SystemConfiguration | null>(null);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    fetchConfigs();
+  }, []);
+
+  const fetchConfigs = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        message.error("Vui lòng đăng nhập lại");
+        return;
+      }
+
+      const data = await systemConfigService.getAll(token);
+      setConfigs(data);
+    } catch (error: any) {
+      console.error("Error fetching configs:", error);
+      message.error(
+        error.response?.data?.message || "Không thể tải cấu hình hệ thống"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAdd = () => {
+    setEditingConfig(null);
+    form.resetFields();
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (config: SystemConfiguration) => {
+    setEditingConfig(config);
+    form.setFieldsValue(config);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        message.error("Vui lòng đăng nhập lại");
+        return;
+      }
+
+      await systemConfigService.delete(id, token);
+      message.success("Xóa cấu hình thành công!");
+      fetchConfigs();
+    } catch (error: any) {
+      console.error("Error deleting config:", error);
+      message.error(error.response?.data?.message || "Không thể xóa cấu hình");
+    }
+  };
+
+  const handleModalOk = async () => {
+    try {
+      const values = await form.validateFields();
+      const token = localStorage.getItem("token");
+      if (!token) {
+        message.error("Vui lòng đăng nhập lại");
+        return;
+      }
+
+      if (editingConfig) {
+        await systemConfigService.update(editingConfig.id, values, token);
+        message.success("Cập nhật cấu hình thành công!");
+      } else {
+        await systemConfigService.create(values, token);
+        message.success("Thêm cấu hình thành công!");
+      }
+
+      setIsModalOpen(false);
+      form.resetFields();
+      fetchConfigs();
+    } catch (error: any) {
+      console.error("Error saving config:", error);
+      message.error(error.response?.data?.message || "Không thể lưu cấu hình");
+    }
+  };
+
+  const columns = [
+    {
+      title: "Key",
+      dataIndex: "key",
+      key: "key",
+      render: (text: string) => <code className="text-sm">{text}</code>,
+    },
+    {
+      title: "Value",
+      dataIndex: "value",
+      key: "value",
+      render: (text: string) => (
+        <span className="text-sm text-gray-700">{text}</span>
+      ),
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      render: (text: string) => <Tag color="blue">{text || "General"}</Tag>,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (text: string) => (
+        <span className="text-sm text-gray-500">{text || "-"}</span>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive: boolean) => (
+        <Tag color={isActive ? "green" : "red"}>
+          {isActive ? "Active" : "Inactive"}
+        </Tag>
+      ),
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_: any, record: SystemConfiguration) => (
+        <div className="flex items-center gap-2">
+          <Button
+            type="link"
+            icon={<Edit className="w-4 h-4" />}
+            onClick={() => handleEdit(record)}
+          />
+          <Popconfirm
+            title="Xóa cấu hình?"
+            description="Bạn có chắc chắn muốn xóa cấu hình này?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button type="link" danger icon={<Trash2 className="w-4 h-4" />} />
+          </Popconfirm>
+        </div>
+      ),
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-screen-2xl mx-auto space-y-8">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Cấu hình hệ thống</h1>
-          <p className="text-purple-100">
-            Cấu hình AI, API keys và chính sách truy cập
-          </p>
+        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Cấu hình hệ thống</h1>
+            <p className="text-purple-100">
+              Quản lý cấu hình hệ thống, API keys và tham số
+            </p>
+          </div>
+          <Button
+            type="primary"
+            icon={<Plus className="w-4 h-4" />}
+            onClick={handleAdd}
+            size="large"
+          >
+            Thêm cấu hình
+          </Button>
         </div>
 
-        {/* AI Configuration */}
-        <Card className="mb-6">
+        {/* System Configurations Table */}
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Settings className="w-5 h-5 text-purple-500" />
-              Cấu hình AI
+              Danh sách cấu hình ({configs.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  AI Model
-                </label>
-                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500">
-                  <option>GPT-4</option>
-                  <option>GPT-3.5-Turbo</option>
-                  <option>Claude</option>
-                </select>
+            {loading ? (
+              <div className="text-center py-12">
+                <Loader2 className="w-12 h-12 animate-spin text-purple-500 mx-auto mb-4" />
+                <p className="text-gray-500">Đang tải cấu hình...</p>
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Confidence Threshold
-                </label>
-                <input
-                  type="number"
-                  defaultValue="0.75"
-                  step="0.01"
-                  min="0"
-                  max="1"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  Câu trả lời dưới ngưỡng này sẽ được đánh dấu là "unresolved"
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Max Tokens
-                </label>
-                <input
-                  type="number"
-                  defaultValue="2048"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                />
-              </div>
-            </div>
+            ) : (
+              <Table
+                columns={columns}
+                dataSource={configs}
+                rowKey="id"
+                pagination={false}
+                locale={{
+                  emptyText: "Chưa có cấu hình nào",
+                }}
+              />
+            )}
           </CardContent>
         </Card>
 
-        {/* API Keys */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Key className="w-5 h-5 text-blue-500" />
-              API Keys
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  OpenAI API Key
-                </label>
-                <input
-                  type="password"
-                  defaultValue="sk-****************************"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                />
-              </div>
+        {/* Add/Edit Config Modal */}
+        <Modal
+          title={editingConfig ? "Chỉnh sửa cấu hình" : "Thêm cấu hình mới"}
+          open={isModalOpen}
+          onOk={handleModalOk}
+          onCancel={() => {
+            setIsModalOpen(false);
+            form.resetFields();
+          }}
+          okText={editingConfig ? "Cập nhật" : "Thêm"}
+          cancelText="Hủy"
+          width={600}
+        >
+          <Form form={form} layout="vertical" className="mt-4">
+            <Form.Item
+              name="key"
+              label="Key"
+              rules={[{ required: true, message: "Vui lòng nhập key" }]}
+            >
+              <Input placeholder="AI_MODEL" disabled={!!editingConfig} />
+            </Form.Item>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Azure Cognitive Search Key
-                </label>
-                <input
-                  type="password"
-                  defaultValue="****************************"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            <Form.Item
+              name="value"
+              label="Value"
+              rules={[{ required: true, message: "Vui lòng nhập value" }]}
+            >
+              <Input placeholder="GPT-4" />
+            </Form.Item>
 
-        {/* Email Configuration */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Mail className="w-5 h-5 text-orange-500" />
-              Cấu hình Email
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  SMTP Server
-                </label>
-                <input
-                  type="text"
-                  defaultValue="smtp.gmail.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                />
-              </div>
+            <Form.Item name="category" label="Category">
+              <Select placeholder="Chọn category">
+                <Option value="AI">AI</Option>
+                <Option value="API">API</Option>
+                <Option value="Database">Database</Option>
+                <Option value="Email">Email</Option>
+                <Option value="General">General</Option>
+              </Select>
+            </Form.Item>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    SMTP Port
-                  </label>
-                  <input
-                    type="number"
-                    defaultValue="587"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                  />
-                </div>
+            <Form.Item name="description" label="Description">
+              <Input.TextArea placeholder="Mô tả cấu hình..." rows={3} />
+            </Form.Item>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    From Email
-                  </label>
-                  <input
-                    type="email"
-                    defaultValue="noreply@fpt.edu.vn"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                  />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Database */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Database className="w-5 h-5 text-green-500" />
-              Database
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Connection String
-                </label>
-                <input
-                  type="password"
-                  defaultValue="Server=...;Database=...;User=...;Password=***"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Max Pool Size
-                  </label>
-                  <input
-                    type="number"
-                    defaultValue="100"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Connection Timeout (s)
-                  </label>
-                  <input
-                    type="number"
-                    defaultValue="30"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-                  />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Save Button */}
-        <div className="flex items-center justify-end gap-3">
-          <button className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
-            Reset
-          </button>
-          <button className="bg-purple-500 text-white px-6 py-2.5 rounded-lg hover:bg-purple-600 transition font-semibold inline-flex items-center gap-2">
-            <Save className="w-4 h-4" />
-            Lưu cấu hình
-          </button>
-        </div>
+            <Form.Item name="isActive" label="Status" initialValue={true}>
+              <Select>
+                <Option value={true}>Active</Option>
+                <Option value={false}>Inactive</Option>
+              </Select>
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     </div>
   );

@@ -8,7 +8,8 @@ import type {
 } from "@/types";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://fptu-handbook-esgma9b2hzckcnce.southeastasia-01.azurewebsites.net";
 
 export const handbookService = {
   /**
@@ -16,7 +17,7 @@ export const handbookService = {
    */
   async getVersions(token: string): Promise<HandbookVersion[]> {
     const response = await axios.get<ApiResponse<HandbookVersion[]>>(
-      `${API_BASE_URL}/handbook/versions`,
+      `${API_BASE_URL}/api/HandbooksVersion`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -25,30 +26,60 @@ export const handbookService = {
   },
 
   /**
-   * Get active version
+   * Get handbook version by ID
    */
-  async getActiveVersion(token: string): Promise<HandbookVersion> {
-    const response = await axios.get<ApiResponse<HandbookVersion>>(
-      `${API_BASE_URL}/handbook/versions/active`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data.data;
-  },
-
-  /**
-   * Get sections by version
-   */
-  async getSections(
+  async getVersionById(
     versionId: string,
-    token: string,
-    parentId?: string
+    token: string
+  ): Promise<HandbookVersion> {
+    const response = await axios.get<ApiResponse<HandbookVersion>>(
+      `${API_BASE_URL}/api/HandbooksVersion/${versionId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Get active version for a specific year
+   */
+  async getActiveVersionForYear(
+    year: number,
+    token: string
+  ): Promise<HandbookVersion> {
+    const response = await axios.get<ApiResponse<HandbookVersion>>(
+      `${API_BASE_URL}/api/HandbooksVersion/active/${year}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Get all sections
+   */
+  async getAllSections(token: string): Promise<HandbookSection[]> {
+    const response = await axios.get<ApiResponse<HandbookSection[]>>(
+      `${API_BASE_URL}/api/HandbookSection`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Get sections by handbook ID
+   */
+  async getSectionsByHandbook(
+    handbookId: string,
+    token: string
   ): Promise<HandbookSection[]> {
     const response = await axios.get<ApiResponse<HandbookSection[]>>(
-      `${API_BASE_URL}/handbook/sections`,
+      `${API_BASE_URL}/api/HandbookSection/handbook/${handbookId}`,
       {
-        params: { versionId, parentId },
         headers: { Authorization: `Bearer ${token}` },
       }
     );
@@ -63,7 +94,7 @@ export const handbookService = {
     token: string
   ): Promise<HandbookSection> {
     const response = await axios.get<ApiResponse<HandbookSection>>(
-      `${API_BASE_URL}/handbook/sections/${sectionId}`,
+      `${API_BASE_URL}/api/HandbookSection/${sectionId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -76,13 +107,13 @@ export const handbookService = {
    */
   async searchSections(
     query: string,
-    versionId: string,
+    topK: number = 10,
     token: string
   ): Promise<HandbookSection[]> {
-    const response = await axios.get<ApiResponse<HandbookSection[]>>(
-      `${API_BASE_URL}/handbook/sections/search`,
+    const response = await axios.post<ApiResponse<HandbookSection[]>>(
+      `${API_BASE_URL}/api/HandbookSection/search`,
+      { query, topK },
       {
-        params: { query, versionId },
         headers: { Authorization: `Bearer ${token}` },
       }
     );
@@ -97,7 +128,7 @@ export const handbookService = {
     token: string
   ): Promise<HandbookSection> {
     const response = await axios.post<ApiResponse<HandbookSection>>(
-      `${API_BASE_URL}/handbook/sections`,
+      `${API_BASE_URL}/api/HandbookSection`,
       data,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -115,7 +146,7 @@ export const handbookService = {
     token: string
   ): Promise<HandbookSection> {
     const response = await axios.put<ApiResponse<HandbookSection>>(
-      `${API_BASE_URL}/handbook/sections/${sectionId}`,
+      `${API_BASE_URL}/api/HandbookSection/${sectionId}`,
       data,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -128,21 +159,21 @@ export const handbookService = {
    * Delete section (Academic Staff only)
    */
   async deleteSection(sectionId: string, token: string): Promise<void> {
-    await axios.delete(`${API_BASE_URL}/handbook/sections/${sectionId}`, {
+    await axios.delete(`${API_BASE_URL}/api/HandbookSection/${sectionId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
 
   /**
-   * Rebuild index (Academic Staff only)
+   * Create new handbook version (Academic Staff only)
    */
-  async rebuildIndex(
-    request: RebuildIndexRequest,
+  async createVersion(
+    data: Partial<HandbookVersion>,
     token: string
-  ): Promise<RebuildIndexResponse> {
-    const response = await axios.post<ApiResponse<RebuildIndexResponse>>(
-      `${API_BASE_URL}/handbook/rebuild-index`,
-      request,
+  ): Promise<HandbookVersion> {
+    const response = await axios.post<ApiResponse<HandbookVersion>>(
+      `${API_BASE_URL}/api/HandbooksVersion`,
+      data,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -151,18 +182,52 @@ export const handbookService = {
   },
 
   /**
-   * Get rebuild status
+   * Update handbook version (Academic Staff only)
    */
-  async getRebuildStatus(
-    jobId: string,
+  async updateVersion(
+    versionId: string,
+    data: Partial<HandbookVersion>,
     token: string
-  ): Promise<RebuildIndexResponse> {
-    const response = await axios.get<ApiResponse<RebuildIndexResponse>>(
-      `${API_BASE_URL}/handbook/rebuild-index/${jobId}`,
+  ): Promise<HandbookVersion> {
+    const response = await axios.put<ApiResponse<HandbookVersion>>(
+      `${API_BASE_URL}/api/HandbooksVersion/update/${versionId}`,
+      data,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data.data;
+  },
+
+  /**
+   * Update handbook version status (Academic Staff only)
+   */
+  async updateVersionStatus(
+    versionId: string,
+    isActive: boolean,
+    updatedBy: string,
+    token: string
+  ): Promise<HandbookVersion> {
+    const response = await axios.patch<ApiResponse<HandbookVersion>>(
+      `${API_BASE_URL}/api/HandbooksVersion/${versionId}/status`,
+      updatedBy,
+      {
+        params: { isActive },
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Delete handbook version (Academic Staff only)
+   */
+  async deleteVersion(versionId: string, token: string): Promise<void> {
+    await axios.delete(
+      `${API_BASE_URL}/api/HandbooksVersion/delete/${versionId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
   },
 };

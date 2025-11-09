@@ -8,53 +8,52 @@ import type {
 } from "@/types";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://fptu-handbook-esgma9b2hzckcnce.southeastasia-01.azurewebsites.net";
 
 export const authService = {
   /**
    * Login with Google OAuth
    */
-  async loginWithGoogle(idToken: string): Promise<LoginResponse> {
+  async loginWithGoogle(
+    idToken: string,
+    preferredLanguage: string = "vi"
+  ): Promise<LoginResponse> {
     const response = await axios.post<ApiResponse<LoginResponse>>(
-      `${API_BASE_URL}/auth/google`,
-      { idToken }
+      `${API_BASE_URL}/api/Auth/google-login`,
+      { idToken, preferredLanguage }
     );
     return response.data.data;
   },
 
   /**
-   * Login user (email/password - optional, nếu cần)
-   */
-  async login(credentials: LoginRequest): Promise<LoginResponse> {
-    const response = await axios.post<ApiResponse<LoginResponse>>(
-      `${API_BASE_URL}/auth/login`,
-      credentials
-    );
-    return response.data.data;
-  },
-
-  /**
-   * Register new user
-   */
-  async register(data: RegisterRequest): Promise<LoginResponse> {
-    const response = await axios.post<ApiResponse<LoginResponse>>(
-      `${API_BASE_URL}/auth/register`,
-      data
-    );
-    return response.data.data;
-  },
-
-  /**
-   * Get current user profile
+   * Get current user info
    */
   async getCurrentUser(token: string): Promise<User> {
     const response = await axios.get<ApiResponse<User>>(
-      `${API_BASE_URL}/auth/me`,
+      `${API_BASE_URL}/api/Auth/me`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
     return response.data.data;
+  },
+
+  /**
+   * Validate token
+   */
+  async validateToken(token: string): Promise<boolean> {
+    try {
+      const response = await axios.get<ApiResponse<boolean>>(
+        `${API_BASE_URL}/api/Auth/validate`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      return response.data.data;
+    } catch {
+      return false;
+    }
   },
 
   /**
@@ -62,20 +61,20 @@ export const authService = {
    */
   async refreshToken(
     refreshToken: string
-  ): Promise<{ token: string; refreshToken: string }> {
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const response = await axios.post<
-      ApiResponse<{ token: string; refreshToken: string }>
-    >(`${API_BASE_URL}/auth/refresh`, { refreshToken });
+      ApiResponse<{ accessToken: string; refreshToken: string }>
+    >(`${API_BASE_URL}/api/Auth/refresh-token`, { refreshToken });
     return response.data.data;
   },
 
   /**
-   * Logout user
+   * Revoke refresh token (logout)
    */
-  async logout(token: string): Promise<void> {
+  async revokeToken(refreshToken: string, token: string): Promise<void> {
     await axios.post(
-      `${API_BASE_URL}/auth/logout`,
-      {},
+      `${API_BASE_URL}/api/Auth/revoke-token`,
+      { refreshToken },
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -83,19 +82,22 @@ export const authService = {
   },
 
   /**
-   * Request password reset
+   * Confirm email
    */
-  async requestPasswordReset(email: string): Promise<void> {
-    await axios.post(`${API_BASE_URL}/auth/forgot-password`, { email });
+  async confirmEmail(userId: string, token: string): Promise<boolean> {
+    const response = await axios.get<ApiResponse<boolean>>(
+      `${API_BASE_URL}/api/Auth/confirm-email`,
+      {
+        params: { userId, token },
+      }
+    );
+    return response.data.data;
   },
 
   /**
-   * Reset password with token
+   * Start Google OAuth flow (for web redirect flow)
    */
-  async resetPassword(token: string, newPassword: string): Promise<void> {
-    await axios.post(`${API_BASE_URL}/auth/reset-password`, {
-      token,
-      newPassword,
-    });
+  getGoogleLoginUrl(language: string = "vi"): string {
+    return `${API_BASE_URL}/api/Auth/google-login-start?language=${language}`;
   },
 };
