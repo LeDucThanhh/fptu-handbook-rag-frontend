@@ -15,6 +15,7 @@ import Login from "./pages/Login";
 // Protected pages - QA, Clubs, Handbook
 import QA from "./pages/QA";
 import Clubs from "./pages/Clubs";
+import ClubDetailPage from "./pages/ClubDetail";
 import Handbook from "./pages/Handbook";
 import Introduction from "./pages/Handbook/Introduction";
 import Admission from "./pages/Handbook/Admission";
@@ -31,6 +32,7 @@ import MentorDashboard from "./pages/mentor/Dashboard";
 import MentorAnalytics from "./pages/mentor/Analytics";
 import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
 import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
+import MentorPosts from "./pages/mentor/Posts";
 
 // Academic Staff pages
 import AcademicDashboard from "./pages/academic/Dashboard";
@@ -80,6 +82,7 @@ function App() {
               element={<NotificationCenter />}
             />
             <Route path="/clubs" element={<Clubs />} />
+            <Route path="/clubs/:id" element={<ClubDetailPage />} />
             <Route path="/handbook" element={<Handbook />} />
             <Route path="/handbook/introduction" element={<Introduction />} />
             <Route path="/handbook/admission" element={<Admission />} />
@@ -145,6 +148,7 @@ function App() {
               path="/mentor/recommendations"
               element={<ResourceRecommendation />}
             />
+            <Route path="/mentor/posts" element={<MentorPosts />} />
           </Route>
 
           {/* Academic Staff routes */}

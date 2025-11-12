@@ -8,7 +8,8 @@ import type {
 } from "@/types";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://fptu-handbook-esgma9b2hzckcnce.southeastasia-01.azurewebsites.net";
 
 export const notificationService = {
   /**
@@ -72,17 +73,29 @@ export const notificationService = {
   /**
    * Get all notifications (Student Affairs only)
    */
-  async getAllNotifications(
-    page: number = 1,
-    pageSize: number = 20,
+  async getAllNotifications(token: string): Promise<Notification[]> {
+    const response = await axios.get<ApiResponse<Notification[]>>(
+      `${API_BASE_URL}/api/Notification`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return response.data.data;
+  },
+
+  /**
+   * Get notification by ID
+   */
+  async getNotificationById(
+    notificationId: string,
     token: string
-  ): Promise<PaginatedResponse<Notification>> {
-    const response = await axios.get<
-      ApiResponse<PaginatedResponse<Notification>>
-    >(`${API_BASE_URL}/notifications`, {
-      params: { page, pageSize },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  ): Promise<Notification> {
+    const response = await axios.get<ApiResponse<Notification>>(
+      `${API_BASE_URL}/api/Notification/${notificationId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return response.data.data;
   },
 
@@ -94,7 +107,7 @@ export const notificationService = {
     token: string
   ): Promise<Notification> {
     const response = await axios.post<ApiResponse<Notification>>(
-      `${API_BASE_URL}/notifications`,
+      `${API_BASE_URL}/api/Notification`,
       data,
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -112,9 +125,10 @@ export const notificationService = {
     token: string
   ): Promise<Notification> {
     const response = await axios.put<ApiResponse<Notification>>(
-      `${API_BASE_URL}/notifications/${notificationId}`,
+      `${API_BASE_URL}/api/Notification`,
       data,
       {
+        params: { id: notificationId },
         headers: { Authorization: `Bearer ${token}` },
       }
     );
@@ -128,26 +142,9 @@ export const notificationService = {
     notificationId: string,
     token: string
   ): Promise<void> {
-    await axios.delete(`${API_BASE_URL}/notifications/${notificationId}`, {
+    await axios.delete(`${API_BASE_URL}/api/Notification`, {
+      params: { id: notificationId },
       headers: { Authorization: `Bearer ${token}` },
     });
   },
-
-  /**
-   * Get notification stats (Student Affairs only)
-   */
-  async getNotificationStats(
-    notificationId: string,
-    token: string
-  ): Promise<NotificationStats> {
-    const response = await axios.get<ApiResponse<NotificationStats>>(
-      `${API_BASE_URL}/notifications/${notificationId}/stats`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    return response.data.data;
-  },
 };
-
-

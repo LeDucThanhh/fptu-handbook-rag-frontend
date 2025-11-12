@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "antd";
 import {
   Users,
   Mail,
@@ -51,43 +51,43 @@ export default function ClubDetail() {
         {/* Back Button */}
         <button
           onClick={() => navigate("/club/dashboard")}
-          className="flex items-center gap-2 text-gray-600 hover:text-pink-600 mb-6 transition"
+          className="flex items-center gap-2 text-gray-600 hover:text-orange-600 mb-6 transition"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Quay lại danh sách</span>
         </button>
 
         {/* Header */}
-        <div className="bg-gradient-to-r from-pink-500 to-pink-600 rounded-2xl p-8 mb-8 text-white">
+        <div className="mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-4xl backdrop-blur-sm">
+            <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-4xl">
               {initialClub.icon}
             </div>
             <div>
               <h1 className="text-3xl font-bold mb-1">Chi tiết Câu lạc bộ</h1>
-              <p className="text-pink-100">{clubData.name}</p>
+              <p className="text-gray-600">{clubData.name}</p>
             </div>
           </div>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6 px-6 pb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Tổng thành viên</p>
-                  <p className="text-4xl font-bold text-pink-600">
+                  <p className="text-4xl font-bold text-orange-600">
                     {clubData.members}
                   </p>
                 </div>
-                <Users className="w-12 h-12 text-pink-300" />
+                <Users className="w-12 h-12 text-orange-300" />
               </div>
-            </CardContent>
+            </div>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6 px-6 pb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Tăng trưởng</p>
@@ -98,11 +98,11 @@ export default function ClubDetail() {
                 </div>
                 <TrendingUp className="w-12 h-12 text-orange-300" />
               </div>
-            </CardContent>
+            </div>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6 px-6 pb-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Trạng thái</p>
@@ -126,19 +126,19 @@ export default function ClubDetail() {
                   </span>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Club Information */}
-        <Card className="mb-8">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Thông tin câu lạc bộ</CardTitle>
+        <Card className="mb-8 shadow-md">
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-semibold">Thông tin câu lạc bộ</h2>
               {!isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition font-semibold"
+                  className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-semibold"
                 >
                   <Edit className="w-4 h-4" />
                   Chỉnh sửa
@@ -153,7 +153,7 @@ export default function ClubDetail() {
                   </button>
                   <button
                     onClick={handleSave}
-                    className="flex items-center gap-2 px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition font-semibold"
+                    className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition font-semibold"
                   >
                     <Save className="w-4 h-4" />
                     Lưu thay đổi
@@ -161,8 +161,6 @@ export default function ClubDetail() {
                 </div>
               )}
             </div>
-          </CardHeader>
-          <CardContent>
             <div className="space-y-6">
               {/* Basic Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -177,7 +175,7 @@ export default function ClubDetail() {
                       setClubData({ ...clubData, name: e.target.value })
                     }
                     disabled={!isEditing}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 disabled:text-gray-700"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50 disabled:text-gray-700"
                   />
                 </div>
 
@@ -191,7 +189,7 @@ export default function ClubDetail() {
                       setClubData({ ...clubData, type: e.target.value })
                     }
                     disabled={!isEditing}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50"
                   >
                     <option>Học thuật</option>
                     <option>Thể thao</option>
@@ -212,7 +210,7 @@ export default function ClubDetail() {
                     setClubData({ ...clubData, description: e.target.value })
                   }
                   disabled={!isEditing}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 resize-none disabled:bg-gray-50"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 resize-none disabled:bg-gray-50"
                   placeholder="Giới thiệu về câu lạc bộ..."
                 />
               </div>
@@ -225,7 +223,7 @@ export default function ClubDetail() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-pink-500" />
+                      <Mail className="w-4 h-4 text-orange-500" />
                       Email
                     </label>
                     <input
@@ -238,13 +236,13 @@ export default function ClubDetail() {
                         })
                       }
                       disabled={!isEditing}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Phone className="w-4 h-4 text-pink-500" />
+                      <Phone className="w-4 h-4 text-orange-500" />
                       Số điện thoại
                     </label>
                     <input
@@ -254,7 +252,7 @@ export default function ClubDetail() {
                         setClubData({ ...clubData, phone: e.target.value })
                       }
                       disabled={!isEditing}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50"
                       placeholder="0123456789"
                     />
                   </div>
@@ -283,7 +281,7 @@ export default function ClubDetail() {
                       }
                       disabled={!isEditing}
                       placeholder="https://facebook.com/groups/..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50 text-sm"
                     />
                   </div>
 
@@ -304,13 +302,13 @@ export default function ClubDetail() {
                       }
                       disabled={!isEditing}
                       placeholder="https://zalo.me/g/..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50 text-sm"
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                      <Instagram className="w-4 h-4 text-pink-500" />
+                      <Instagram className="w-4 h-4 text-orange-500" />
                       Instagram
                     </label>
                     <input
@@ -321,7 +319,7 @@ export default function ClubDetail() {
                       }
                       disabled={!isEditing}
                       placeholder="https://instagram.com/..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50 text-sm"
                     />
                   </div>
 
@@ -338,7 +336,7 @@ export default function ClubDetail() {
                       }
                       disabled={!isEditing}
                       placeholder="https://..."
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-pink-500 disabled:bg-gray-50 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 disabled:bg-gray-50 text-sm"
                     />
                   </div>
                 </div>
@@ -359,7 +357,7 @@ export default function ClubDetail() {
                         setClubData({ ...clubData, isRecruiting: true })
                       }
                       disabled={!isEditing}
-                      className="w-4 h-4 text-pink-500"
+                      className="w-4 h-4 text-orange-500"
                     />
                     <span className="text-sm font-medium">
                       Đang tuyển thành viên
@@ -374,34 +372,36 @@ export default function ClubDetail() {
                         setClubData({ ...clubData, isRecruiting: false })
                       }
                       disabled={!isEditing}
-                      className="w-4 h-4 text-pink-500"
+                      className="w-4 h-4 text-orange-500"
                     />
                     <span className="text-sm font-medium">Tạm ngưng tuyển</span>
                   </label>
                 </div>
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Preview Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Preview - Giao diện sinh viên nhìn thấy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="bg-gradient-to-br from-pink-50 to-white p-6 rounded-xl border-2 border-pink-200">
+        <Card
+          className="shadow-md"
+          title={
+            <span className="text-xl font-semibold">
+              Preview - Giao diện sinh viên nhìn thấy
+            </span>
+          }
+        >
+          <div className="p-6">
+            <div className="bg-orange-50 p-6 rounded-xl border-2 border-orange-200">
               <div className="flex items-start gap-4 mb-4">
-                <div
-                  className={`w-16 h-16 bg-gradient-to-br from-${initialClub.color}-400 to-${initialClub.color}-600 rounded-2xl flex items-center justify-center text-3xl`}
-                >
+                <div className="w-16 h-16 bg-orange-500 rounded-2xl flex items-center justify-center text-3xl">
                   {initialClub.icon}
                 </div>
                 <div className="flex-1">
                   <h3 className="text-2xl font-bold text-gray-900 mb-1">
                     {clubData.name}
                   </h3>
-                  <span className="text-xs px-3 py-1 bg-pink-100 text-pink-700 rounded-full font-medium">
+                  <span className="text-xs px-3 py-1 bg-orange-100 text-orange-700 rounded-full font-medium">
                     {clubData.type}
                   </span>
                 </div>
@@ -411,20 +411,20 @@ export default function ClubDetail() {
 
               <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-pink-500" />
+                  <Users className="w-4 h-4 text-orange-500" />
                   <span className="text-gray-700">
                     {clubData.members} thành viên
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-pink-500" />
+                  <Mail className="w-4 h-4 text-orange-500" />
                   <span className="text-gray-700 truncate">
                     {clubData.contactEmail}
                   </span>
                 </div>
                 {clubData.phone && (
                   <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-pink-500" />
+                    <Phone className="w-4 h-4 text-orange-500" />
                     <span className="text-gray-700">{clubData.phone}</span>
                   </div>
                 )}
@@ -444,7 +444,7 @@ export default function ClubDetail() {
                     href={clubData.facebookGroup}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition text-sm font-medium"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm font-medium"
                   >
                     <Facebook className="w-4 h-4" />
                     Facebook
@@ -455,7 +455,7 @@ export default function ClubDetail() {
                     href={clubData.zaloGroup}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 bg-blue-400 text-white rounded-lg hover:bg-blue-500 transition text-sm font-medium"
+                    className="px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm font-medium"
                   >
                     Zalo Group
                   </a>
@@ -465,7 +465,7 @@ export default function ClubDetail() {
                     href={clubData.instagram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 px-3 py-1.5 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition text-sm font-medium"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm font-medium"
                   >
                     <Instagram className="w-4 h-4" />
                     Instagram
@@ -476,7 +476,7 @@ export default function ClubDetail() {
                     href={clubData.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1 px-3 py-1.5 bg-green-500 text-white rounded-lg hover:bg-green-600 transition text-sm font-medium"
+                    className="flex items-center gap-1 px-3 py-1.5 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition text-sm font-medium"
                   >
                     <Globe className="w-4 h-4" />
                     Website
@@ -484,11 +484,11 @@ export default function ClubDetail() {
                 )}
               </div>
 
-              <button className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white py-3 rounded-xl font-semibold hover:from-pink-600 hover:to-pink-700 transition shadow-lg">
+              <button className="w-full bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition shadow-lg">
                 Đăng ký tham gia
               </button>
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

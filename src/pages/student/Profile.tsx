@@ -5,10 +5,10 @@ import {
   UserOutlined,
   MailOutlined,
   PhoneOutlined,
-  HomeOutlined,
   SaveOutlined,
 } from "@ant-design/icons";
 import { ImageUpload } from "@/components/ImageUpload";
+import { userService } from "@/services/api";
 
 const Profile: React.FC = () => {
   const { user } = useAuthStore();
@@ -43,17 +43,33 @@ const Profile: React.FC = () => {
   const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
-      // TODO: Call API to update profile with avatarUrl
-      console.log("Profile update:", { ...values, avatarUrl });
+      const token = localStorage.getItem("token");
+      if (!token) {
+        message.error("Vui lòng đăng nhập lại");
+        return;
+      }
+
+      // Call API to update profile
+      const updatedProfile = await userService.updateMyProfile(
+        { ...values, avatarUrl },
+        token
+      );
+
+      // Update user in Zustand store
+      useAuthStore.setState({ user: updatedProfile });
+
       message.success("Cập nhật thông tin thành công!");
-    } catch (error) {
-      message.error("Cập nhật thông tin thất bại!");
+    } catch (error: any) {
+      console.error("Error updating profile:", error);
+      message.error(
+        error.response?.data?.message || "Cập nhật thông tin thất bại!"
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAvatarUpload = (url: string) => {
+  const handleAvatarUpload = async (url: string) => {
     setAvatarUrl(url);
 
     // Update user in Zustand store
@@ -72,10 +88,18 @@ const Profile: React.FC = () => {
       localStorage.setItem(customAvatarKey, url);
 
       console.log("✅ Avatar saved to localStorage:", url);
-      message.success("Cập nhật avatar thành công!");
 
-      // TODO: Call API to save to backend
-      // await updateUserProfile({ avatarUrl: url });
+      // Call API to save to backend
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          await userService.updateMyProfile({ avatarUrl: url }, token);
+          message.success("Cập nhật avatar thành công!");
+        }
+      } catch (error) {
+        console.error("Error updating avatar:", error);
+        message.warning("Avatar đã lưu local nhưng chưa đồng bộ với server");
+      }
     }
   };
 
@@ -184,7 +208,6 @@ const Profile: React.FC = () => {
 
             <Form.Item label="Địa chỉ" name="address">
               <Input.TextArea
-                prefix={<HomeOutlined />}
                 placeholder="Nhập địa chỉ của bạn"
                 rows={3}
                 size="large"

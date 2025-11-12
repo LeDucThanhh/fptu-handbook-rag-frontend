@@ -24,6 +24,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { useAuthStore } from "@/contexts/AuthContext";
+import { queryLogService } from "@/services/api";
 
 interface Message {
   type: "user" | "bot";
@@ -131,7 +132,7 @@ const QA: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const handleSubmitWithQuery = (query: string) => {
+  const handleSubmitWithQuery = async (query: string) => {
     if (!query.trim()) return;
 
     const userMessage: Message = {
@@ -145,22 +146,45 @@ const QA: React.FC = () => {
     setQuestion("");
     setIsTyping(true);
 
-    // Simulate AI response with typing delay
-    setTimeout(() => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        antMessage.error("Vui lòng đăng nhập lại");
+        setIsTyping(false);
+        return;
+      }
+
+      // Call API to generate AI response
+      const response = await queryLogService.generate(query, token);
+
       const botMessage: Message = {
         type: "bot",
-        content: `Để ${query.toLowerCase()}, bạn cần thực hiện các bước sau:\n\n1. **Truy cập FAP Portal**: Đăng nhập vào hệ thống FAP (fap.fpt.edu.vn) bằng tài khoản sinh viên của bạn.\n\n2. **Chọn chức năng tương ứng**: Vào mục đăng ký/quản lý môn học hoặc hoạt động bạn muốn.\n\n3. **Kiểm tra điều kiện**: Đảm bảo bạn đáp ứng các điều kiện cần thiết (GPA, số tín chỉ, v.v.).\n\n4. **Xác nhận đăng ký**: Sau khi hoàn tất, kiểm tra email xác nhận từ nhà trường.\n\nNếu bạn gặp khó khăn, vui lòng liên hệ phòng Đào tạo qua email: daotao@fpt.edu.vn hoặc hotline: (024) 7300 5588.`,
-        sources: [
-          "Sổ tay Sinh viên FPTU 2024",
-          "Quy chế Đào tạo Đại học",
-          "Hướng dẫn sử dụng FAP Portal",
-        ],
+        content: response.response,
+        sources: response.sources || [],
+        timestamp: new Date(),
+        id: response.id,
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error: any) {
+      console.error("Error generating response:", error);
+      antMessage.error(
+        error.response?.data?.message ||
+          "Không thể tạo câu trả lời. Vui lòng thử lại!"
+      );
+
+      // Fallback message
+      const errorMessage: Message = {
+        type: "bot",
+        content:
+          "Xin lỗi, tôi đang gặp sự cố kỹ thuật. Vui lòng thử lại sau hoặc liên hệ phòng Đào tạo qua email: daotao@fpt.edu.vn hoặc hotline: (024) 7300 5588.",
         timestamp: new Date(),
         id: (Date.now() + 1).toString(),
       };
-      setMessages((prev) => [...prev, botMessage]);
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 2000);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -173,22 +197,60 @@ const QA: React.FC = () => {
     handleSubmitWithQuery(q);
   };
 
-  const handleFeedback = (messageId: string, isPositive: boolean) => {
-    if (isPositive) {
-      // TODO: Send positive feedback to API
-      alert("Cảm ơn phản hồi của bạn! 👍");
-    } else {
-      setFeedbackMessageId(messageId);
+  const handleFeedback = async (messageId: string, isPositive: boolean) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        antMessage.error("Vui lòng đăng nhập lại");
+        return;
+      }
+
+      if (isPositive) {
+        // Send positive feedback to API
+        await queryLogService.submitFeedback(
+          {
+            queryLogId: messageId,
+            score: 5,
+          },
+          token
+        );
+        antMessage.success("Cảm ơn phản hồi của bạn! 👍");
+      } else {
+        setFeedbackMessageId(messageId);
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      antMessage.error("Không thể gửi phản hồi. Vui lòng thử lại!");
     }
   };
 
-  const handleSubmitFeedback = () => {
-    // TODO: Send negative feedback to API
-    alert(
-      `Cảm ơn phản hồi của bạn! Chúng tôi sẽ cải thiện. Nội dung: ${feedbackText}`
-    );
-    setFeedbackMessageId(null);
-    setFeedbackText("");
+  const handleSubmitFeedback = async () => {
+    if (!feedbackMessageId) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        antMessage.error("Vui lòng đăng nhập lại");
+        return;
+      }
+
+      // Send negative feedback to API
+      await queryLogService.submitFeedback(
+        {
+          queryLogId: feedbackMessageId,
+          score: 1,
+          comment: feedbackText,
+        },
+        token
+      );
+
+      antMessage.success("Cảm ơn phản hồi của bạn! Chúng tôi sẽ cải thiện.");
+      setFeedbackMessageId(null);
+      setFeedbackText("");
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+      antMessage.error("Không thể gửi phản hồi. Vui lòng thử lại!");
+    }
   };
 
   return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "antd";
 import { FileText, Eye, ThumbsUp, Edit, Trash2, Plus } from "lucide-react";
 import { mockMentorPosts } from "@/services/mock/mockData";
 
@@ -16,9 +16,9 @@ export default function MentorPosts() {
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-8 mb-8 text-white">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">Quản lý Mentor Posts</h1>
-          <p className="text-orange-100">
+          <p className="text-gray-600">
             Quản lý các bài viết và câu trả lời chính thức của bạn
           </p>
         </div>
@@ -71,9 +71,9 @@ export default function MentorPosts() {
           {filteredPosts.map((post) => (
             <Card
               key={post.id}
-              className="hover:shadow-lg transition cursor-pointer"
+              className="hover:shadow-lg transition cursor-pointer shadow-md"
             >
-              <CardContent className="pt-6">
+              <div className="pt-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
@@ -134,15 +134,15 @@ export default function MentorPosts() {
                     </button>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>
 
         {/* Empty State */}
         {filteredPosts.length === 0 && (
-          <Card>
-            <CardContent className="py-16 text-center">
+          <Card className="shadow-md">
+            <div className="py-16 text-center">
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 text-lg mb-2">Chưa có bài viết nào</p>
               <p className="text-sm text-gray-400 mb-6">
@@ -151,7 +151,7 @@ export default function MentorPosts() {
               <button className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition font-semibold">
                 Tạo bài viết mới
               </button>
-            </CardContent>
+            </div>
           </Card>
         )}
       </div>

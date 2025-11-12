@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, Button, Input } from "antd";
 import {
   MessageSquare,
   AlertTriangle,
@@ -91,9 +84,9 @@ const priorityConfig: Record<
   PriorityType,
   { label: string; color: string; bg: string }
 > = {
-  high: { label: "Cao", color: "text-destructive", bg: "bg-destructive/10" },
-  medium: { label: "Trung bình", color: "text-warning", bg: "bg-warning/10" },
-  low: { label: "Thấp", color: "text-muted-foreground", bg: "bg-muted/10" },
+  high: { label: "Cao", color: "text-red-600", bg: "bg-red-50" },
+  medium: { label: "Trung bình", color: "text-orange-600", bg: "bg-orange-50" },
+  low: { label: "Thấp", color: "text-gray-600", bg: "bg-gray-50" },
 };
 
 const statusConfig: Record<
@@ -102,18 +95,18 @@ const statusConfig: Record<
 > = {
   unresolved: {
     label: "Chưa giải quyết",
-    color: "text-destructive",
-    bg: "bg-destructive/10",
+    color: "text-red-600",
+    bg: "bg-red-50",
   },
   pending_review: {
     label: "Chờ xem xét",
-    color: "text-warning",
-    bg: "bg-warning/10",
+    color: "text-orange-600",
+    bg: "bg-orange-50",
   },
   resolved: {
     label: "Đã giải quyết",
-    color: "text-success",
-    bg: "bg-success/10",
+    color: "text-green-600",
+    bg: "bg-green-50",
   },
 };
 
@@ -199,28 +192,26 @@ const UnresolvedQueue = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center">
-                  <AlertTriangle className="w-5 h-5 text-destructive" />
+                <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
                     {questions.filter((q) => q.status === "unresolved").length}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    Chưa giải quyết
-                  </p>
+                  <p className="text-sm text-gray-600">Chưa giải quyết</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-warning" />
+                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
@@ -229,62 +220,59 @@ const UnresolvedQueue = () => {
                         .length
                     }
                   </p>
-                  <p className="text-sm text-muted-foreground">Chờ xem xét</p>
+                  <p className="text-sm text-gray-600">Chờ xem xét</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-success" />
+                <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
                     {questions.filter((q) => q.status === "resolved").length}
                   </p>
-                  <p className="text-sm text-muted-foreground">Đã giải quyết</p>
+                  <p className="text-sm text-gray-600">Đã giải quyết</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
+                  <MessageSquare className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{questions.length}</p>
-                  <p className="text-sm text-muted-foreground">Tổng câu hỏi</p>
+                  <p className="text-sm text-gray-600">Tổng câu hỏi</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Filters */}
-        <Card>
-          <CardContent className="p-6">
+        <Card className="shadow-md">
+          <div className="p-6">
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm câu hỏi hoặc sinh viên..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
+                <Input
+                  placeholder="Tìm kiếm câu hỏi hoặc sinh viên..."
+                  prefix={<Search className="w-4 h-4 text-gray-400" />}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  size="large"
+                />
               </div>
               <div className="flex gap-2">
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="all">Tất cả trạng thái</option>
                   <option value="unresolved">Chưa giải quyết</option>
@@ -294,7 +282,7 @@ const UnresolvedQueue = () => {
                 <select
                   value={filterPriority}
                   onChange={(e) => setFilterPriority(e.target.value)}
-                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="all">Tất cả mức độ</option>
                   <option value="high">Cao</option>
@@ -303,7 +291,7 @@ const UnresolvedQueue = () => {
                 </select>
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Questions List */}
@@ -314,8 +302,10 @@ const UnresolvedQueue = () => {
             {filteredQuestions.map((question) => (
               <Card
                 key={question.id}
-                className={`cursor-pointer transition-all hover:shadow-md ${
-                  selectedQuestion === question.id ? "ring-2 ring-primary" : ""
+                className={`cursor-pointer transition-all hover:shadow-md shadow-sm ${
+                  selectedQuestion === question.id
+                    ? "ring-2 ring-orange-500"
+                    : ""
                 }`}
                 onClick={() =>
                   setSelectedQuestion(
@@ -323,7 +313,7 @@ const UnresolvedQueue = () => {
                   )
                 }
               >
-                <CardContent className="p-4">
+                <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <h3 className="font-medium text-sm mb-2 line-clamp-2">
@@ -379,7 +369,7 @@ const UnresolvedQueue = () => {
                       <Eye className="w-3 h-3 text-muted-foreground" />
                     </div>
                   </div>
-                </CardContent>
+                </div>
               </Card>
             ))}
           </div>
@@ -395,17 +385,18 @@ const UnresolvedQueue = () => {
                 if (!question) return null;
 
                 return (
-                  <Card>
-                    <CardHeader>
+                  <Card
+                    className="shadow-md"
+                    title={
                       <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle className="text-lg">
+                          <div className="text-lg font-semibold">
                             {question.question}
-                          </CardTitle>
-                          <CardDescription>
+                          </div>
+                          <div className="text-sm text-gray-500 mt-1">
                             {question.studentName} ({question.studentId}) •{" "}
                             {question.timestamp}
-                          </CardDescription>
+                          </div>
                         </div>
                         <div className="flex gap-2">
                           <span
@@ -433,8 +424,9 @@ const UnresolvedQueue = () => {
                           </span>
                         </div>
                       </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
+                    }
+                  >
+                    <div className="space-y-4">
                       {/* System Response */}
                       <div>
                         <h4 className="font-medium mb-2">
@@ -535,26 +527,24 @@ const UnresolvedQueue = () => {
                       {/* Actions */}
                       <div className="flex gap-2 pt-4 border-t">
                         <Button
-                          size="sm"
                           onClick={() =>
                             handleStatusChange(question.id, "resolved")
                           }
                           disabled={question.status === "resolved"}
+                          className="bg-green-600 hover:bg-green-700 text-white"
                         >
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Đánh dấu đã giải quyết
                         </Button>
                         <Button
-                          size="sm"
-                          variant="outline"
+                          type="default"
                           onClick={() => handleCreateRecommendation(question)}
                         >
                           <Plus className="w-4 h-4 mr-2" />
                           Tạo đề xuất
                         </Button>
                         <Button
-                          size="sm"
-                          variant="outline"
+                          type="default"
                           onClick={() =>
                             handleStatusChange(question.id, "pending_review")
                           }
@@ -563,18 +553,18 @@ const UnresolvedQueue = () => {
                           Chờ xem xét
                         </Button>
                       </div>
-                    </CardContent>
+                    </div>
                   </Card>
                 );
               })()
             ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">
+              <Card className="shadow-md">
+                <div className="p-8 text-center">
+                  <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-500">
                     Chọn một câu hỏi để xem chi tiết
                   </p>
-                </CardContent>
+                </div>
               </Card>
             )}
           </div>

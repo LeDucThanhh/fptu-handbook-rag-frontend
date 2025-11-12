@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthStore } from "@/contexts/AuthContext";
-import { mockQueryLogs } from "@/services/mock/mockData";
-import { Timeline, Card, Tag, Space, Empty, Rate } from "antd";
+import { Timeline, Card, Tag, Space, Empty, Rate, Spin, message } from "antd";
 import {
   MessageOutlined,
   ClockCircleOutlined,
@@ -9,10 +8,40 @@ import {
   DislikeOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import { queryLogService } from "@/services/api";
+import type { QueryLog } from "@/services/api/query-log.service";
 
 export default function History() {
   const { user } = useAuthStore();
-  const [queries] = useState(mockQueryLogs);
+  const [queries, setQueries] = useState<QueryLog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          message.error("Vui lòng đăng nhập lại");
+          return;
+        }
+
+        const history = await queryLogService.getHistory(token);
+        setQueries(history);
+      } catch (error: any) {
+        console.error("Error fetching history:", error);
+        message.error(
+          error.response?.data?.message || "Không thể tải lịch sử hỏi đáp"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchHistory();
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -38,7 +67,12 @@ export default function History() {
         </div>
 
         <Card>
-          {queries.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <Spin size="large" />
+              <p className="mt-4 text-gray-500">Đang tải lịch sử...</p>
+            </div>
+          ) : queries.length === 0 ? (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description={
@@ -54,7 +88,7 @@ export default function History() {
             <Timeline
               mode="left"
               items={queries.map((query) => ({
-                color: "blue",
+                color: query.isResolved ? "green" : "blue",
                 dot: <MessageOutlined style={{ fontSize: "16px" }} />,
                 children: (
                   <Card
@@ -72,10 +106,13 @@ export default function History() {
                         <div className="flex items-center gap-2 mb-2">
                           <MessageOutlined style={{ color: "#f97316" }} />
                           <span className="font-semibold text-lg">
-                            {query.question}
+                            {query.query}
                           </span>
+                          {query.isResolved && (
+                            <Tag color="green">Đã giải quyết</Tag>
+                          )}
                         </div>
-                        <p className="text-gray-600 pl-6">{query.answer}</p>
+                        <p className="text-gray-600 pl-6">{query.response}</p>
                       </div>
 
                       {/* Sources */}
@@ -99,32 +136,33 @@ export default function History() {
                         <Space>
                           <ClockCircleOutlined />
                           <span className="text-sm text-gray-500">
-                            {query.timestamp}
+                            {new Date(query.createdAt).toLocaleString("vi-VN")}
                           </span>
                         </Space>
 
                         <Space>
-                          {query.feedback === "positive" ? (
-                            <LikeOutlined
-                              style={{ color: "#10b981", fontSize: 18 }}
-                            />
-                          ) : query.feedback === "negative" ? (
-                            <DislikeOutlined
-                              style={{ color: "#ef4444", fontSize: 18 }}
-                            />
-                          ) : null}
-
-                          <Tag
-                            color={
-                              query.confidence >= 0.8
-                                ? "green"
-                                : query.confidence >= 0.5
-                                ? "orange"
-                                : "red"
-                            }
-                          >
-                            Confidence: {(query.confidence * 100).toFixed(0)}%
-                          </Tag>
+                          {query.feedbackScore !== undefined &&
+                            query.feedbackScore !== null && (
+                              <>
+                                {query.feedbackScore >= 4 ? (
+                                  <LikeOutlined
+                                    style={{ color: "#10b981", fontSize: 18 }}
+                                  />
+                                ) : (
+                                  <DislikeOutlined
+                                    style={{ color: "#ef4444", fontSize: 18 }}
+                                  />
+                                )}
+                                <Rate
+                                  disabled
+                                  value={query.feedbackScore}
+                                  style={{ fontSize: 14 }}
+                                />
+                              </>
+                            )}
+                          {query.feedbackComment && (
+                            <Tag color="blue">{query.feedbackComment}</Tag>
+                          )}
                         </Space>
                       </div>
                     </Space>

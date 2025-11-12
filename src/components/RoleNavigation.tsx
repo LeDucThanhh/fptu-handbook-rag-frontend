@@ -45,7 +45,7 @@ export default function RoleNavigation() {
         { label: "--- Mentor Access ---", href: "#", icon: null },
         {
           label: "Unresolved Queue",
-          href: "/mentor/unresolved",
+          href: "/mentor/queue",
           icon: AlertCircle,
         },
         { label: "Mentor Posts", href: "/mentor/posts", icon: FileText },
@@ -74,6 +74,7 @@ export default function RoleNavigation() {
           href: "/mentor/recommendations",
           icon: BookOpen,
         },
+        { label: "Mentor Posts", href: "/mentor/posts", icon: FileText },
       ];
     }
 

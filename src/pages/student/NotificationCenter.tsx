@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { mockNotifications, mockSchoolEvents } from "@/services/mock/mockData";
+import { useState, useEffect } from "react";
 import {
   Tabs,
   Badge,
@@ -12,6 +11,8 @@ import {
   Statistic,
   Row,
   Col,
+  Spin,
+  message,
 } from "antd";
 import {
   BellOutlined,
@@ -22,56 +23,68 @@ import {
   ClockCircleOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
+import { notificationService } from "@/services/api";
+import type { Notification } from "@/types";
 
 export default function NotificationCenter() {
-  // Combine notifications and events
-  const [notifications, setNotifications] = useState(mockNotifications);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "notifications" | "events">(
     "all"
   );
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Convert events to notification format
-  const eventsAsNotifications = mockSchoolEvents.map((event) => ({
-    id: event.id,
-    title: event.title,
-    content: `${event.description}\n📍 ${event.location}\n🕐 ${event.time}`,
-    type: event.type,
-    priority: event.priority,
-    date: event.date,
-    isRead: false,
-    targetAudience: event.targetAudience,
-  }));
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          message.error("Vui lòng đăng nhập lại");
+          return;
+        }
 
-  const allItems = [...notifications, ...eventsAsNotifications];
+        const data = await notificationService.getAllNotifications(token);
+        setNotifications(data);
+      } catch (error: any) {
+        console.error("Error fetching notifications:", error);
+        message.error(
+          error.response?.data?.message || "Không thể tải thông báo"
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  const allItems = notifications;
+  const eventsAsNotifications: Notification[] = []; // No events for now
 
   const filteredNotifications = allItems.filter((item) => {
-    // Filter by type
-    const matchesFilter =
-      filter === "all" ||
-      (filter === "notifications" && item.type !== "Sự kiện") ||
-      (filter === "events" && item.type === "Sự kiện");
-
     // Filter by search query
     const matchesSearch =
       searchQuery === "" ||
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.content.toLowerCase().includes(searchQuery.toLowerCase());
 
-    return matchesFilter && matchesSearch;
+    return matchesSearch;
   });
 
   const markAsRead = (id: string) => {
+    // TODO: Call API to mark as read if needed
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
     );
   };
 
   const markAllAsRead = () => {
+    // TODO: Call API to mark all as read if needed
     setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
   };
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = 0; // Backend doesn't track read status yet
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -115,38 +128,30 @@ export default function NotificationCenter() {
         </div>
 
         {/* Quick Stats */}
-        <Row gutter={[16, 16]} className="mb-8">
-          <Col xs={24} sm={8}>
-            <Card hoverable>
-              <Statistic
-                title="Chưa đọc"
-                value={unreadCount}
-                prefix={<BellOutlined style={{ color: "#f97316" }} />}
-                valueStyle={{ color: "#f97316" }}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={8}>
-            <Card hoverable>
-              <Statistic
-                title="Tổng thông báo"
-                value={allItems.length}
-                prefix={<AlertOutlined style={{ color: "#3b82f6" }} />}
-                valueStyle={{ color: "#3b82f6" }}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={8}>
-            <Card hoverable>
-              <Statistic
-                title="Sự kiện"
-                value={eventsAsNotifications.length}
-                prefix={<CalendarOutlined style={{ color: "#10b981" }} />}
-                valueStyle={{ color: "#10b981" }}
-              />
-            </Card>
-          </Col>
-        </Row>
+        {!loading && (
+          <Row gutter={[16, 16]} className="mb-8">
+            <Col xs={24} sm={12}>
+              <Card hoverable>
+                <Statistic
+                  title="Chưa đọc"
+                  value={unreadCount}
+                  prefix={<BellOutlined style={{ color: "#f97316" }} />}
+                  valueStyle={{ color: "#f97316" }}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Card hoverable>
+                <Statistic
+                  title="Tổng thông báo"
+                  value={allItems.length}
+                  prefix={<AlertOutlined style={{ color: "#3b82f6" }} />}
+                  valueStyle={{ color: "#3b82f6" }}
+                />
+              </Card>
+            </Col>
+          </Row>
+        )}
 
         {/* Filters and Search */}
         <Card>
@@ -198,85 +203,73 @@ export default function NotificationCenter() {
         </Card>
 
         {/* Notifications List */}
-        <List
-          itemLayout="vertical"
-          size="large"
-          dataSource={filteredNotifications}
-          locale={{
-            emptyText: (
-              <div className="text-center py-12">
-                <BellOutlined style={{ fontSize: 48, color: "#d1d5db" }} />
-                <p className="text-gray-500 mt-4">Không có thông báo nào</p>
-              </div>
-            ),
-          }}
-          renderItem={(notification) => (
-            <List.Item
-              key={notification.id}
-              onClick={() => markAsRead(notification.id)}
-              style={{
-                cursor: "pointer",
-                backgroundColor: !notification.isRead ? "#fff7ed" : "white",
-                borderLeft: !notification.isRead
-                  ? "4px solid #f97316"
-                  : "4px solid transparent",
-                marginBottom: 16,
-                borderRadius: 8,
-                padding: 16,
-              }}
-              className="hover:shadow-md transition-all"
-            >
-              <List.Item.Meta
-                avatar={
-                  notification.type === "Sự kiện" ? (
-                    <CalendarOutlined
-                      style={{ fontSize: 32, color: "#10b981" }}
-                    />
-                  ) : (
+        {loading ? (
+          <div className="text-center py-12">
+            <Spin size="large" />
+            <p className="mt-4 text-gray-500">Đang tải thông báo...</p>
+          </div>
+        ) : (
+          <List
+            itemLayout="vertical"
+            size="large"
+            dataSource={filteredNotifications}
+            locale={{
+              emptyText: (
+                <div className="text-center py-12">
+                  <BellOutlined style={{ fontSize: 48, color: "#d1d5db" }} />
+                  <p className="text-gray-500 mt-4">Không có thông báo nào</p>
+                </div>
+              ),
+            }}
+            renderItem={(notification) => (
+              <List.Item
+                key={notification.id}
+                onClick={() => markAsRead(notification.id)}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "white",
+                  borderLeft: "4px solid #f97316",
+                  marginBottom: 16,
+                  borderRadius: 8,
+                  padding: 16,
+                }}
+                className="hover:shadow-md transition-all"
+              >
+                <List.Item.Meta
+                  avatar={
                     <BellOutlined
                       style={{
                         fontSize: 32,
-                        color:
-                          notification.priority === "Cao"
-                            ? "#ef4444"
-                            : "#f97316",
+                        color: "#f97316",
                       }}
                     />
-                  )
-                }
-                title={
-                  <Space>
-                    <span className="font-semibold">{notification.title}</span>
-                    {!notification.isRead && (
-                      <Badge status="processing" text="Mới" />
-                    )}
-                    {notification.isRead && (
-                      <CheckCircleOutlined style={{ color: "#10b981" }} />
-                    )}
-                  </Space>
-                }
-                description={
-                  <Space direction="vertical" size="small">
-                    <p className="whitespace-pre-line">
-                      {notification.content}
-                    </p>
-                    <Space wrap>
-                      <Tag icon={<ClockCircleOutlined />} color="default">
-                        {notification.date}
-                      </Tag>
-                      <Tag color={getTypeColor(notification.type)}>
-                        {notification.type}
-                      </Tag>
-                      <Tag color={getPriorityColor(notification.priority)}>
-                        {notification.priority}
-                      </Tag>
+                  }
+                  title={
+                    <Space>
+                      <span className="font-semibold">
+                        {notification.title}
+                      </span>
                     </Space>
-                  </Space>
-                }
-              />
-            </List.Item>
-          )}
-        />
+                  }
+                  description={
+                    <Space direction="vertical" size="small">
+                      <p className="whitespace-pre-line">
+                        {notification.content}
+                      </p>
+                      <Space wrap>
+                        <Tag icon={<ClockCircleOutlined />} color="default">
+                          {new Date(notification.createdAt).toLocaleDateString(
+                            "vi-VN"
+                          )}
+                        </Tag>
+                      </Space>
+                    </Space>
+                  }
+                />
+              </List.Item>
+            )}
+          />
+        )}
       </div>
     </div>
   );

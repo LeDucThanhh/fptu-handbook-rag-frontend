@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, message } from "antd";
 import {
   BookOpen,
   Plus,
@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { mockHandbookSections } from "@/services/mock/mockData";
 import ConfirmationDialog from "@/components/ui/confirmation-dialog";
-import { useToast } from "@/components/ui/toast";
 import FileUpload from "@/components/ui/file-upload";
 
 export default function HandbookManagement() {
@@ -24,7 +23,6 @@ export default function HandbookManagement() {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [editingSection, setEditingSection] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { success, error, ToastContainer } = useToast();
 
   // Form data for add/edit
   const [formData, setFormData] = useState({
@@ -59,11 +57,11 @@ export default function HandbookManagement() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       setSections((prev) => prev.filter((s) => s.id !== sectionToDelete.id));
-      success("Xóa thành công", `Đã xóa nội dung "${sectionToDelete.title}"`);
+      message.success(`Đã xóa nội dung "${sectionToDelete.title}"`);
       setShowDeleteDialog(false);
       setSectionToDelete(null);
     } catch (err) {
-      error("Lỗi xóa", "Không thể xóa nội dung. Vui lòng thử lại.");
+      message.error("Không thể xóa nội dung. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
@@ -101,7 +99,7 @@ export default function HandbookManagement() {
 
   const handleFormSubmit = async (isEdit: boolean = false) => {
     if (!formData.title.trim() || !formData.content.trim()) {
-      error("Lỗi", "Vui lòng điền đầy đủ thông tin");
+      message.error("Vui lòng điền đầy đủ thông tin");
       return;
     }
 
@@ -124,7 +122,7 @@ export default function HandbookManagement() {
         setSections((prev) =>
           prev.map((s) => (s.id === editingSection.id ? updatedSection : s))
         );
-        success("Sửa thành công", `Đã cập nhật nội dung "${formData.title}"`);
+        message.success(`Đã cập nhật nội dung "${formData.title}"`);
         setShowEditDialog(false);
         setEditingSection(null);
       } else {
@@ -139,13 +137,13 @@ export default function HandbookManagement() {
         };
 
         setSections((prev) => [newSection, ...prev]);
-        success("Thêm thành công", `Đã thêm nội dung "${formData.title}"`);
+        message.success(`Đã thêm nội dung "${formData.title}"`);
         setShowAddDialog(false);
       }
 
       resetForm();
     } catch (err) {
-      error("Lỗi", "Không thể lưu nội dung. Vui lòng thử lại.");
+      message.error("Không thể lưu nội dung. Vui lòng thử lại.");
     } finally {
       setIsLoading(false);
     }
@@ -204,9 +202,9 @@ export default function HandbookManagement() {
           {filteredSections.map((section) => (
             <Card
               key={section.id}
-              className="hover:shadow-lg transition cursor-pointer"
+              className="hover:shadow-lg transition cursor-pointer shadow-md"
             >
-              <CardContent className="pt-6">
+              <div className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-3">
@@ -255,15 +253,15 @@ export default function HandbookManagement() {
                     </button>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>
 
         {/* Empty State */}
         {filteredSections.length === 0 && (
-          <Card>
-            <CardContent className="py-16 text-center">
+          <Card className="shadow-md">
+            <div className="py-16 text-center">
               <FolderOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500 text-lg mb-2">
                 Không tìm thấy nội dung
@@ -271,7 +269,7 @@ export default function HandbookManagement() {
               <p className="text-sm text-gray-400">
                 Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm
               </p>
-            </CardContent>
+            </div>
           </Card>
         )}
 
@@ -295,7 +293,7 @@ export default function HandbookManagement() {
         {showAddDialog && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <CardContent className="p-6">
+              <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900">
                     Thêm nội dung mới
@@ -429,7 +427,7 @@ export default function HandbookManagement() {
                     </button>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           </div>
         )}
@@ -438,7 +436,7 @@ export default function HandbookManagement() {
         {showEditDialog && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
             <Card className="w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-              <CardContent className="p-6">
+              <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-900">
                     Sửa nội dung
@@ -552,13 +550,10 @@ export default function HandbookManagement() {
                     </button>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           </div>
         )}
-
-        {/* Toast Container */}
-        <ToastContainer />
       </div>
     </div>
   );
