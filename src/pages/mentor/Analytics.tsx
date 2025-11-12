@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, Button } from "antd";
 import { SimpleChart } from "@/components/ui/simple-chart";
 import {
   BarChart3,
@@ -81,19 +74,19 @@ const Analytics = () => {
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">
+            <h1 className="text-3xl font-bold mb-2">
               Mentor Analytics Dashboard
             </h1>
-            <p className="text-muted-foreground mt-2">
+            <p className="text-gray-600">
               Theo dõi xu hướng hỏi-đáp của sinh viên để phát hiện lỗ hổng nội
               dung
             </p>
           </div>
           <div className="flex gap-3">
             <Button
-              variant="outline"
+              className="border border-gray-300"
               onClick={handleRefresh}
               disabled={isLoading}
             >
@@ -102,7 +95,10 @@ const Analytics = () => {
               />
               Làm mới
             </Button>
-            <Button onClick={handleExport}>
+            <Button
+              className="bg-orange-500 hover:bg-orange-600"
+              onClick={handleExport}
+            >
               <Download className="w-4 h-4 mr-2" />
               Xuất báo cáo
             </Button>
@@ -110,16 +106,20 @@ const Analytics = () => {
         </div>
 
         {/* Time Filter */}
-        <Card>
-          <CardContent className="p-6">
+        <Card className="shadow-md">
+          <div className="p-6">
             <div className="flex items-center gap-4">
-              <Filter className="w-5 h-5 text-muted-foreground" />
+              <Filter className="w-5 h-5 text-gray-600" />
               <span className="font-medium">Bộ lọc thời gian:</span>
               <div className="flex gap-2">
                 {["week", "month", "semester"].map((period) => (
                   <Button
                     key={period}
-                    variant={timeFilter === period ? "primary" : "outline"}
+                    className={
+                      timeFilter === period
+                        ? "bg-orange-500 hover:bg-orange-600 text-white"
+                        : "border border-gray-300"
+                    }
                     size="sm"
                     onClick={() => setTimeFilter(period)}
                   >
@@ -132,19 +132,23 @@ const Analytics = () => {
                 ))}
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Main Analytics Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {/* Top Query Topics */}
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+          <Card
+            className="lg:col-span-2 shadow-md"
+            title={
+              <span className="flex items-center gap-2 text-lg font-semibold">
                 <BarChart3 className="w-5 h-5" />
                 Top Query Topics
-              </CardTitle>
-              <CardDescription>
+              </span>
+            }
+          >
+            <div className="p-6">
+              <p className="text-gray-600 mb-4">
                 Chủ đề được hỏi nhiều nhất trong{" "}
                 {timeFilter === "week"
                   ? "tuần"
@@ -152,9 +156,7 @@ const Analytics = () => {
                   ? "tháng"
                   : "học kỳ"}{" "}
                 này
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
               <div className="space-y-6">
                 {/* Chart */}
                 <div className="h-48">
@@ -174,15 +176,15 @@ const Analytics = () => {
                   {mockData.topQueryTopics.map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 rounded-lg bg-muted/50"
+                      className="flex items-center justify-between p-3 rounded-lg bg-gray-50"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-semibold text-primary">
+                        <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm font-semibold text-orange-600">
                           {index + 1}
                         </div>
                         <div>
                           <p className="font-medium">{item.topic}</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-gray-600">
                             {item.count} câu hỏi
                           </p>
                         </div>
@@ -197,38 +199,38 @@ const Analytics = () => {
                   ))}
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
           {/* Feedback Accuracy */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+          <Card
+            className="shadow-md"
+            title={
+              <span className="flex items-center gap-2 text-lg font-semibold">
                 <CheckCircle className="w-5 h-5" />
                 Feedback Accuracy
-              </CardTitle>
-              <CardDescription>
+              </span>
+            }
+          >
+            <div className="p-6">
+              <p className="text-gray-600 mb-4">
                 Tỷ lệ trả lời đúng/sai theo người dùng
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
               <div className="space-y-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary">
+                  <div className="text-3xl font-bold text-orange-600">
                     {mockData.feedbackAccuracy.correct}%
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Tỷ lệ chính xác
-                  </p>
+                  <p className="text-sm text-gray-600">Tỷ lệ chính xác</p>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Chính xác</span>
                     <span>{mockData.feedbackAccuracy.correct}%</span>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-primary h-2 rounded-full transition-all duration-500"
+                      className="bg-orange-500 h-2 rounded-full transition-all duration-500"
                       style={{ width: `${mockData.feedbackAccuracy.correct}%` }}
                     />
                   </div>
@@ -236,9 +238,9 @@ const Analytics = () => {
                     <span>Không chính xác</span>
                     <span>{mockData.feedbackAccuracy.incorrect}%</span>
                   </div>
-                  <div className="w-full bg-muted rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-destructive h-2 rounded-full transition-all duration-500"
+                      className="bg-red-500 h-2 rounded-full transition-all duration-500"
                       style={{
                         width: `${mockData.feedbackAccuracy.incorrect}%`,
                       }}
@@ -246,21 +248,23 @@ const Analytics = () => {
                   </div>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
           {/* Trending Handbook Sections */}
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+          <Card
+            className="lg:col-span-2 shadow-md"
+            title={
+              <span className="flex items-center gap-2 text-lg font-semibold">
                 <BookOpen className="w-5 h-5" />
                 Trending Handbook Sections
-              </CardTitle>
-              <CardDescription>
+              </span>
+            }
+          >
+            <div className="p-6">
+              <p className="text-gray-600 mb-4">
                 Các phần sổ tay đang được truy cập nhiều
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
               <div className="space-y-6">
                 {/* Chart */}
                 <div className="flex justify-center">
@@ -280,77 +284,77 @@ const Analytics = () => {
                   {mockData.trendingSections.map((section, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-4 rounded-lg border"
+                      className="flex items-center justify-between p-4 rounded-lg border border-gray-200"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                          <BookOpen className="w-5 h-5 text-primary" />
+                        <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+                          <BookOpen className="w-5 h-5 text-orange-600" />
                         </div>
                         <div>
                           <p className="font-medium">{section.section}</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className="text-sm text-gray-600">
                             {section.views} lượt xem
                           </p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-semibold text-primary">
+                        <div className="text-lg font-semibold text-orange-600">
                           {section.accuracy}%
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          Độ chính xác
-                        </p>
+                        <p className="text-sm text-gray-600">Độ chính xác</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
           {/* Insight Summary */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+          <Card
+            className="shadow-md"
+            title={
+              <span className="flex items-center gap-2 text-lg font-semibold">
                 <AlertCircle className="w-5 h-5" />
                 Insight Summary
-              </CardTitle>
-              <CardDescription>
+              </span>
+            }
+          >
+            <div className="p-6">
+              <p className="text-gray-600 mb-4">
                 Top vấn đề hoặc khu vực thiếu nội dung
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+              </p>
               <div className="space-y-4">
                 {mockData.insights.map((insight, index) => (
                   <div
                     key={index}
-                    className="p-3 rounded-lg border-l-4 border-l-primary/20 bg-muted/30"
+                    className="p-3 rounded-lg border-l-4 border-l-orange-200 bg-gray-50"
                   >
                     <div className="flex items-start gap-3">
                       <div
                         className={`w-6 h-6 rounded-full flex items-center justify-center ${
                           insight.type === "warning"
-                            ? "bg-warning/20"
+                            ? "bg-orange-100"
                             : insight.type === "info"
-                            ? "bg-info/20"
-                            : "bg-success/20"
+                            ? "bg-blue-100"
+                            : "bg-green-100"
                         }`}
                       >
                         {insight.type === "warning" ? (
-                          <AlertCircle className="w-4 h-4 text-warning" />
+                          <AlertCircle className="w-4 h-4 text-orange-600" />
                         ) : insight.type === "info" ? (
-                          <Clock className="w-4 h-4 text-info" />
+                          <Clock className="w-4 h-4 text-blue-600" />
                         ) : (
-                          <CheckCircle className="w-4 h-4 text-success" />
+                          <CheckCircle className="w-4 h-4 text-green-600" />
                         )}
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-sm">{insight.title}</p>
-                        <p className="text-xs text-muted-foreground mt-1">
+                        <p className="text-xs text-gray-600 mt-1">
                           {insight.description}
                         </p>
                         <div className="flex items-center gap-2 mt-2">
-                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                          <span className="text-xs bg-orange-100 text-orange-600 px-2 py-1 rounded-full">
                             {insight.count} vấn đề
                           </span>
                         </div>
@@ -359,7 +363,7 @@ const Analytics = () => {
                   </div>
                 ))}
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
       </div>

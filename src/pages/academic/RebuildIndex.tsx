@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "antd";
 import { RefreshCw, CheckCircle, Clock, Database, Loader } from "lucide-react";
 
 export default function RebuildIndex() {
@@ -52,16 +52,23 @@ export default function RebuildIndex() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-screen-2xl mx-auto space-y-8">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-2">Rebuild AI Index</h1>
+          <p className="text-gray-600">Tái lập chỉ mục AI cho hệ thống RAG</p>
+        </div>
+
         {/* Horizontal Layout: Status + Rebuild Control */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Current Status - Left Side */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Trạng thái hệ thống</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Card
+            className="shadow-md"
+            title={
+              <span className="text-lg font-semibold">Trạng thái hệ thống</span>
+            }
+          >
+            <div className="p-6">
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl border border-orange-200">
+                <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl border border-orange-200">
                   <div className="flex items-center gap-3">
                     <Database className="w-8 h-8 text-orange-600" />
                     <div>
@@ -71,39 +78,39 @@ export default function RebuildIndex() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200">
+                <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl border border-orange-200">
                   <div className="flex items-center gap-3">
-                    <CheckCircle className="w-8 h-8 text-green-600" />
+                    <CheckCircle className="w-8 h-8 text-orange-600" />
                     <div>
                       <p className="text-sm text-gray-600">Index Status</p>
-                      <p className="text-lg font-bold text-green-600">
+                      <p className="text-lg font-bold text-orange-600">
                         Up to date
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
+                <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl border border-orange-200">
                   <div className="flex items-center gap-3">
-                    <Clock className="w-8 h-8 text-blue-600" />
+                    <Clock className="w-8 h-8 text-orange-600" />
                     <div>
                       <p className="text-sm text-gray-600">Last Rebuild</p>
-                      <p className="text-lg font-bold text-blue-600">
+                      <p className="text-lg font-bold text-orange-600">
                         2 hours ago
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
           {/* Rebuild Control - Right Side */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Rebuild Index</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <Card
+            className="shadow-md"
+            title={<span className="text-lg font-semibold">Rebuild Index</span>}
+          >
+            <div className="p-6">
               {status === "idle" && (
                 <div className="h-full flex flex-col justify-center">
                   <div className="text-center">
@@ -139,7 +146,7 @@ export default function RebuildIndex() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-4">
                       <div
-                        className="bg-gradient-to-r from-orange-500 to-orange-600 h-4 rounded-full transition-all duration-300"
+                        className="bg-orange-500 h-4 rounded-full transition-all duration-300"
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
@@ -169,21 +176,21 @@ export default function RebuildIndex() {
                   </button>
                 </div>
               )}
-            </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Rebuild History - Full Width */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Lịch sử Rebuild</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card
+          className="shadow-md"
+          title={<span className="text-lg font-semibold">Lịch sử Rebuild</span>}
+        >
+          <div className="p-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {lastRebuildLogs.map((log, index) => (
                 <div
                   key={index}
-                  className="p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-gray-200"
+                  className="p-4 bg-gray-50 rounded-xl border border-gray-200"
                 >
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -202,7 +209,7 @@ export default function RebuildIndex() {
                 </div>
               ))}
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

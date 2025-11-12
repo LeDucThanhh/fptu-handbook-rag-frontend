@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "antd";
 import { Activity, Cpu, Database, Server, CheckCircle } from "lucide-react";
 
 export default function SystemHealth() {
@@ -38,16 +38,16 @@ export default function SystemHealth() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-screen-2xl mx-auto space-y-8">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold mb-2">System Health</h1>
-          <p className="text-purple-100">
+          <p className="text-gray-600">
             Giám sát hiệu năng và trạng thái server
           </p>
         </div>
 
         {/* Overall Status */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
+        <Card className="mb-8 shadow-md">
+          <div className="pt-6">
             <div className="flex items-center justify-center gap-4 py-8">
               <CheckCircle className="w-16 h-16 text-green-500" />
               <div>
@@ -59,84 +59,86 @@ export default function SystemHealth() {
                 </p>
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* System Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">CPU Usage</p>
                   <p className="text-3xl font-bold text-gray-900">45%</p>
                 </div>
-                <Cpu className="w-10 h-10 text-blue-300" />
+                <Cpu className="w-10 h-10 text-orange-400" />
               </div>
               <div className="mt-4">
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-blue-500 h-2 rounded-full"
+                    className="bg-orange-500 h-2 rounded-full"
                     style={{ width: "45%" }}
                   ></div>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Memory</p>
                   <p className="text-3xl font-bold text-gray-900">62%</p>
                 </div>
-                <Server className="w-10 h-10 text-purple-300" />
+                <Server className="w-10 h-10 text-orange-400" />
               </div>
               <div className="mt-4">
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
-                    className="bg-purple-500 h-2 rounded-full"
+                    className="bg-orange-500 h-2 rounded-full"
                     style={{ width: "62%" }}
                   ></div>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Database</p>
                   <p className="text-3xl font-bold text-gray-900">2.4GB</p>
                 </div>
-                <Database className="w-10 h-10 text-green-300" />
+                <Database className="w-10 h-10 text-orange-400" />
               </div>
               <p className="text-xs text-gray-500 mt-4">of 50GB used</p>
-            </CardContent>
+            </div>
           </Card>
 
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="shadow-md">
+            <div className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Requests/min</p>
                   <p className="text-3xl font-bold text-gray-900">1.2K</p>
                 </div>
-                <Activity className="w-10 h-10 text-orange-300" />
+                <Activity className="w-10 h-10 text-orange-400" />
               </div>
               <p className="text-xs text-gray-500 mt-4">Avg: 850/min</p>
-            </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Services Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Trạng thái dịch vụ</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card
+          className="shadow-md"
+          title={
+            <span className="text-lg font-semibold">Trạng thái dịch vụ</span>
+          }
+        >
+          <div className="p-6">
             <div className="space-y-4">
               {services.map((service, index) => (
                 <div
@@ -167,7 +169,7 @@ export default function SystemHealth() {
                 </div>
               ))}
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

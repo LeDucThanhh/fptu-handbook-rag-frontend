@@ -53,7 +53,8 @@ const StudentHome: React.FC = () => {
                   className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-fadeInUp"
                   style={{
                     animationDelay: "0.1s",
-                    fontFamily: "Inter, system-ui, sans-serif",
+                    fontFamily:
+                      "SVN-Product Sans, Inter, system-ui, sans-serif",
                     textShadow:
                       "0 4px 20px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2)",
                   }}

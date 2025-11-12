@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, Input } from "antd";
 import { FileText, Search } from "lucide-react";
 import { mockAuditLogs } from "@/services/mock/mockData";
 
@@ -15,9 +15,11 @@ export default function AuditLogs() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-screen-2xl mx-auto space-y-8">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white">
-          <h1 className="text-3xl font-bold mb-2">Audit Logs</h1>
-          <p className="text-purple-100">Theo dõi hoạt động và lỗi hệ thống</p>
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Audit Logs</h1>
+            <p className="text-gray-600">Theo dõi hoạt động và lỗi hệ thống</p>
+          </div>
         </div>
 
         <div className="flex items-center justify-between mb-6">
@@ -26,7 +28,7 @@ export default function AuditLogs() {
               onClick={() => setFilter("all")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "all"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -36,7 +38,7 @@ export default function AuditLogs() {
               onClick={() => setFilter("success")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "success"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -46,7 +48,7 @@ export default function AuditLogs() {
               onClick={() => setFilter("error")}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 filter === "error"
-                  ? "bg-purple-500 text-white"
+                  ? "bg-orange-500 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -54,21 +56,20 @@ export default function AuditLogs() {
             </button>
           </div>
 
-          <div className="relative">
-            <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Tìm kiếm logs..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500"
-            />
-          </div>
+          <Input
+            placeholder="Tìm kiếm logs..."
+            prefix={<Search className="w-5 h-5 text-gray-400" />}
+            className="w-64"
+          />
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Lịch sử hoạt động</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card
+          className="shadow-md"
+          title={
+            <span className="text-lg font-semibold">Lịch sử hoạt động</span>
+          }
+        >
+          <div className="p-6">
             <div className="space-y-3">
               {filteredLogs.map((log) => (
                 <div
@@ -121,7 +122,7 @@ export default function AuditLogs() {
                 </div>
               ))}
             </div>
-          </CardContent>
+          </div>
         </Card>
       </div>
     </div>

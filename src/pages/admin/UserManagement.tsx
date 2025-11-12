@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, Trash2, Shield, Search, Loader2 } from "lucide-react";
+import { Card } from "antd";
+import { Plus, Edit, Shield, Search, Loader2 } from "lucide-react";
 import {
   Modal,
   Form,
   Input,
   Select,
-  Button,
   message,
   Popconfirm,
   Pagination,
@@ -56,7 +55,7 @@ export default function UserManagement() {
       );
 
       setUsers(response.items);
-      setTotal(response.totalCount);
+      setTotal(response.total);
     } catch (error: any) {
       console.error("Error fetching users:", error);
       message.error(
@@ -107,7 +106,11 @@ export default function UserManagement() {
 
       if (editingUser) {
         // Update existing user
-        await userService.updateUserProfile(editingUser.id, values, token);
+        await userService.updateUserProfile(
+          editingUser.userProfileId,
+          values,
+          token
+        );
         message.success("Cập nhật người dùng thành công!");
       } else {
         // Create new user based on role
@@ -185,12 +188,21 @@ export default function UserManagement() {
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-screen-2xl mx-auto space-y-8">
         <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Quản lý người dùng</h1>
+            <p className="text-gray-600">
+              Quản lý tài khoản và phân quyền người dùng
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mb-6">
           <div className="relative">
             <Search className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
               placeholder="Tìm người dùng..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-purple-500 w-80"
+              className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg outline-none focus:border-orange-500 w-80"
               onChange={(e) => handleSearch(e.target.value)}
               value={searchQuery}
             />
@@ -198,21 +210,25 @@ export default function UserManagement() {
 
           <button
             onClick={handleAddUser}
-            className="bg-purple-500 text-white px-6 py-2.5 rounded-lg hover:bg-purple-600 transition font-semibold inline-flex items-center gap-2"
+            className="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition font-semibold inline-flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             Thêm người dùng
           </button>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Danh sách người dùng ({total} người dùng)</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <Card
+          className="shadow-md"
+          title={
+            <span className="text-lg font-semibold">
+              Danh sách người dùng ({total} người dùng)
+            </span>
+          }
+        >
+          <div className="p-6">
             {loading ? (
               <div className="text-center py-12">
-                <Loader2 className="w-12 h-12 animate-spin text-purple-500 mx-auto mb-4" />
+                <Loader2 className="w-12 h-12 animate-spin text-orange-500 mx-auto mb-4" />
                 <p className="text-gray-500">
                   Đang tải danh sách người dùng...
                 </p>
@@ -226,11 +242,11 @@ export default function UserManagement() {
                 <div className="space-y-4">
                   {users.map((user) => (
                     <div
-                      key={user.id}
+                      key={user.userProfileId}
                       className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-white font-bold">
                           {user.fullName?.charAt(0) || "U"}
                         </div>
                         <div>
@@ -282,7 +298,7 @@ export default function UserManagement() {
                                 : "Người dùng sẽ có thể đăng nhập lại"
                             }
                             onConfirm={() =>
-                              handleToggleActive(user.id, user.isActive)
+                              handleToggleActive(user.userId, user.isActive)
                             }
                             okText="Xác nhận"
                             cancelText="Hủy"
@@ -321,7 +337,7 @@ export default function UserManagement() {
                 </div>
               </>
             )}
-          </CardContent>
+          </div>
         </Card>
 
         {/* Add/Edit User Modal */}

@@ -21,6 +21,25 @@ export interface User {
   updatedAt: string;
 }
 
+export interface UserProfile {
+  userProfileId: string;
+  userId: string;
+  studentId?: string;
+  fullName: string;
+  enrollmentYear?: number;
+  departmentId?: string;
+  departmentName?: string;
+  campus?: string;
+  preferredLanguage: string;
+  isActive: boolean;
+  lastLoginAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  email: string;
+  emailConfirmed: boolean;
+  role?: string; // Single role from backend
+}
+
 export interface LoginRequest {
   email: string;
   password: string;

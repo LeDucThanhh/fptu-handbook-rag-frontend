@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "antd";
 import { Settings, Plus, Edit, Trash2, Loader2 } from "lucide-react";
 import {
   Table,
@@ -124,7 +124,7 @@ export default function SystemConfig() {
       title: "Category",
       dataIndex: "category",
       key: "category",
-      render: (text: string) => <Tag color="blue">{text || "General"}</Tag>,
+      render: (text: string) => <Tag color="orange">{text || "General"}</Tag>,
     },
     {
       title: "Description",
@@ -171,10 +171,10 @@ export default function SystemConfig() {
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-screen-2xl mx-auto space-y-8">
-        <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl p-8 mb-8 text-white flex items-center justify-between">
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold mb-2">Cấu hình hệ thống</h1>
-            <p className="text-purple-100">
+            <p className="text-gray-600">
               Quản lý cấu hình hệ thống, API keys và tham số
             </p>
           </div>
@@ -183,23 +183,26 @@ export default function SystemConfig() {
             icon={<Plus className="w-4 h-4" />}
             onClick={handleAdd}
             size="large"
+            className="bg-orange-500 hover:bg-orange-600"
           >
             Thêm cấu hình
           </Button>
         </div>
 
         {/* System Configurations Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Settings className="w-5 h-5 text-purple-500" />
+        <Card
+          className="shadow-md"
+          title={
+            <span className="text-lg font-semibold flex items-center gap-2">
+              <Settings className="w-5 h-5 text-orange-500" />
               Danh sách cấu hình ({configs.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </span>
+          }
+        >
+          <div className="p-6">
             {loading ? (
               <div className="text-center py-12">
-                <Loader2 className="w-12 h-12 animate-spin text-purple-500 mx-auto mb-4" />
+                <Loader2 className="w-12 h-12 animate-spin text-orange-500 mx-auto mb-4" />
                 <p className="text-gray-500">Đang tải cấu hình...</p>
               </div>
             ) : (
@@ -213,7 +216,7 @@ export default function SystemConfig() {
                 }}
               />
             )}
-          </CardContent>
+          </div>
         </Card>
 
         {/* Add/Edit Config Modal */}

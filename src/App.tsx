@@ -32,6 +32,7 @@ import MentorDashboard from "./pages/mentor/Dashboard";
 import MentorAnalytics from "./pages/mentor/Analytics";
 import ResourceRecommendation from "./pages/mentor/ResourceRecommendation";
 import UnresolvedQueue from "./pages/mentor/UnresolvedQueue";
+import MentorPosts from "./pages/mentor/Posts";
 
 // Academic Staff pages
 import AcademicDashboard from "./pages/academic/Dashboard";
@@ -147,6 +148,7 @@ function App() {
               path="/mentor/recommendations"
               element={<ResourceRecommendation />}
             />
+            <Route path="/mentor/posts" element={<MentorPosts />} />
           </Route>
 
           {/* Academic Staff routes */}

@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, Button } from "antd";
 import {
   FileText,
   Send,
@@ -137,16 +130,19 @@ const ResourceRecommendation = () => {
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">
+            <h1 className="text-3xl font-bold mb-2">
               Resource Recommendation Panel
             </h1>
-            <p className="text-muted-foreground mt-2">
+            <p className="text-gray-600">
               Đề xuất cập nhật hoặc bổ sung tài liệu học vụ / nội dung sổ tay
             </p>
           </div>
-          <Button onClick={() => setShowForm(true)}>
+          <Button
+            className="bg-orange-500 hover:bg-orange-600"
+            onClick={() => setShowForm(true)}
+          >
             <Plus className="w-4 h-4 mr-2" />
             Tạo đề xuất mới
           </Button>
@@ -154,26 +150,26 @@ const ResourceRecommendation = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-warning" />
+                <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <Clock className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
                     {suggestions.filter((s) => s.status === "pending").length}
                   </p>
-                  <p className="text-sm text-muted-foreground">Chờ xử lý</p>
+                  <p className="text-sm text-gray-600">Chờ xử lý</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-info/10 flex items-center justify-center">
-                  <AlertCircle className="w-5 h-5 text-info" />
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <AlertCircle className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
@@ -182,75 +178,85 @@ const ResourceRecommendation = () => {
                         .length
                     }
                   </p>
-                  <p className="text-sm text-muted-foreground">Đang xử lý</p>
+                  <p className="text-sm text-gray-600">Đang xử lý</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-success" />
+                <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
                     {suggestions.filter((s) => s.status === "completed").length}
                   </p>
-                  <p className="text-sm text-muted-foreground">Hoàn thành</p>
+                  <p className="text-sm text-gray-600">Hoàn thành</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="shadow-md">
+            <div className="p-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-primary" />
+                <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-orange-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold">{suggestions.length}</p>
-                  <p className="text-sm text-muted-foreground">Tổng đề xuất</p>
+                  <p className="text-sm text-gray-600">Tổng đề xuất</p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           </Card>
         </div>
 
         {/* Filters */}
-        <Card>
-          <CardContent className="p-6">
+        <Card className="shadow-md">
+          <div className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Tìm kiếm đề xuất..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                   />
                 </div>
               </div>
               <div className="flex gap-2">
                 <Button
-                  variant={filterStatus === "all" ? "primary" : "outline"}
+                  className={
+                    filterStatus === "all"
+                      ? "bg-orange-500 hover:bg-orange-600 text-white"
+                      : "border border-gray-300"
+                  }
                   size="sm"
                   onClick={() => setFilterStatus("all")}
                 >
                   Tất cả
                 </Button>
                 <Button
-                  variant={filterStatus === "pending" ? "primary" : "outline"}
+                  className={
+                    filterStatus === "pending"
+                      ? "bg-orange-500 hover:bg-orange-600 text-white"
+                      : "border border-gray-300"
+                  }
                   size="sm"
                   onClick={() => setFilterStatus("pending")}
                 >
                   Chờ xử lý
                 </Button>
                 <Button
-                  variant={
-                    filterStatus === "in_progress" ? "primary" : "outline"
+                  className={
+                    filterStatus === "in_progress"
+                      ? "bg-orange-500 hover:bg-orange-600 text-white"
+                      : "border border-gray-300"
                   }
                   size="sm"
                   onClick={() => setFilterStatus("in_progress")}
@@ -258,7 +264,11 @@ const ResourceRecommendation = () => {
                   Đang xử lý
                 </Button>
                 <Button
-                  variant={filterStatus === "completed" ? "primary" : "outline"}
+                  className={
+                    filterStatus === "completed"
+                      ? "bg-orange-500 hover:bg-orange-600 text-white"
+                      : "border border-gray-300"
+                  }
                   size="sm"
                   onClick={() => setFilterStatus("completed")}
                 >
@@ -266,14 +276,14 @@ const ResourceRecommendation = () => {
                 </Button>
               </div>
             </div>
-          </CardContent>
+          </div>
         </Card>
 
         {/* Suggestions List */}
         <div className="space-y-4">
           {filteredSuggestions.map((suggestion) => (
-            <Card key={suggestion.id}>
-              <CardContent className="p-6">
+            <Card key={suggestion.id} className="shadow-md">
+              <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
@@ -282,10 +292,11 @@ const ResourceRecommendation = () => {
                       </h3>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          statusConfig[suggestion.status]?.bg || "bg-muted/10"
-                        } ${
-                          statusConfig[suggestion.status]?.color ||
-                          "text-muted-foreground"
+                          suggestion.status === "pending"
+                            ? "bg-orange-100 text-orange-600"
+                            : suggestion.status === "in_progress"
+                            ? "bg-blue-100 text-blue-600"
+                            : "bg-green-100 text-green-600"
                         }`}
                       >
                         {statusConfig[suggestion.status]?.label ||
@@ -293,42 +304,34 @@ const ResourceRecommendation = () => {
                       </span>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          priorityConfig[suggestion.priority]?.bg ||
-                          "bg-muted/10"
-                        } ${
-                          priorityConfig[suggestion.priority]?.color ||
-                          "text-muted-foreground"
+                          suggestion.priority === "high"
+                            ? "bg-red-100 text-red-600"
+                            : suggestion.priority === "medium"
+                            ? "bg-orange-100 text-orange-600"
+                            : "bg-gray-100 text-gray-600"
                         }`}
                       >
                         {priorityConfig[suggestion.priority]?.label ||
                           suggestion.priority}
                       </span>
                     </div>
-                    <p className="text-muted-foreground mb-3">
+                    <p className="text-gray-600 mb-3">
                       {suggestion.description}
                     </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
-                        <p className="font-medium text-foreground mb-1">
-                          Lý do:
-                        </p>
-                        <p className="text-muted-foreground">
-                          {suggestion.reason}
-                        </p>
+                        <p className="font-medium mb-1">Lý do:</p>
+                        <p className="text-gray-600">{suggestion.reason}</p>
                       </div>
                       <div>
-                        <p className="font-medium text-foreground mb-1">
-                          Nguồn tham khảo:
-                        </p>
-                        <p className="text-muted-foreground">
-                          {suggestion.reference}
-                        </p>
+                        <p className="font-medium mb-1">Nguồn tham khảo:</p>
+                        <p className="text-gray-600">{suggestion.reference}</p>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
                       {suggestion.createdAt}
@@ -342,7 +345,7 @@ const ResourceRecommendation = () => {
                     {suggestion.status === "pending" && (
                       <Button
                         size="sm"
-                        variant="outline"
+                        className="border border-gray-300"
                         onClick={() =>
                           handleStatusChange(suggestion.id, "in_progress")
                         }
@@ -353,6 +356,7 @@ const ResourceRecommendation = () => {
                     {suggestion.status === "in_progress" && (
                       <Button
                         size="sm"
+                        className="bg-orange-500 hover:bg-orange-600"
                         onClick={() =>
                           handleStatusChange(suggestion.id, "completed")
                         }
@@ -360,15 +364,15 @@ const ResourceRecommendation = () => {
                         Hoàn thành
                       </Button>
                     )}
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" className="border border-gray-300">
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" className="border border-gray-300">
                       <Send className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           ))}
         </div>
@@ -376,14 +380,12 @@ const ResourceRecommendation = () => {
         {/* Create Form Modal */}
         {showForm && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-              <CardHeader>
-                <CardTitle>Tạo đề xuất mới</CardTitle>
-                <CardDescription>
+            <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-md">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold mb-2">Tạo đề xuất mới</h2>
+                <p className="text-gray-600 mb-6">
                   Điền thông tin để tạo ticket tự động gửi đến Academic Office
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
+                </p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">
@@ -395,7 +397,7 @@ const ResourceRecommendation = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, title: e.target.value })
                       }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="Nhập tiêu đề đề xuất..."
                       required
                     />
@@ -412,7 +414,7 @@ const ResourceRecommendation = () => {
                           description: e.target.value,
                         })
                       }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       rows={3}
                       placeholder="Mô tả chi tiết về nội dung cần cập nhật..."
                       required
@@ -427,7 +429,7 @@ const ResourceRecommendation = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, reason: e.target.value })
                       }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       rows={2}
                       placeholder="Giải thích lý do cần cập nhật nội dung này..."
                       required
@@ -443,7 +445,7 @@ const ResourceRecommendation = () => {
                       onChange={(e) =>
                         setFormData({ ...formData, reference: e.target.value })
                       }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       placeholder="Ví dụ: Thông báo số 123/2024, Hướng dẫn từ IT Department..."
                     />
                   </div>
@@ -457,7 +459,7 @@ const ResourceRecommendation = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, category: e.target.value })
                         }
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                         required
                       >
                         <option value="">Chọn danh mục</option>
@@ -479,7 +481,7 @@ const ResourceRecommendation = () => {
                         onChange={(e) =>
                           setFormData({ ...formData, priority: e.target.value })
                         }
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                       >
                         <option value="low">Thấp</option>
                         <option value="medium">Trung bình</option>
@@ -490,18 +492,21 @@ const ResourceRecommendation = () => {
                   <div className="flex justify-end gap-3 pt-4">
                     <Button
                       type="button"
-                      variant="outline"
+                      className="border border-gray-300"
                       onClick={() => setShowForm(false)}
                     >
                       Hủy
                     </Button>
-                    <Button type="submit">
+                    <Button
+                      type="submit"
+                      className="bg-orange-500 hover:bg-orange-600"
+                    >
                       <Send className="w-4 h-4 mr-2" />
                       Gửi đề xuất
                     </Button>
                   </div>
                 </form>
-              </CardContent>
+              </div>
             </Card>
           </div>
         )}
