@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Button, Input } from "antd";
+import { Card, Button, Input, Modal, Select, notification } from "antd";
 import {
   MessageSquare,
   AlertTriangle,
@@ -12,6 +12,8 @@ import {
   Calendar,
   Plus,
 } from "lucide-react";
+
+const { TextArea } = Input;
 
 // Mock data for demonstration
 const mockUnresolvedQuestions = [
@@ -116,15 +118,85 @@ const UnresolvedQueue = () => {
   const [filterPriority, setFilterPriority] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
+  const [showResolveModal, setShowResolveModal] = useState(false);
+  const [showRecommendModal, setShowRecommendModal] = useState(false);
+  const [currentQuestionId, setCurrentQuestionId] = useState<number | null>(
+    null
+  );
+  const [resolveFormData, setResolveFormData] = useState({
+    answer: "",
+    tags: [] as string[],
+    createRecommendation: false,
+  });
+  const [recommendFormData, setRecommendFormData] = useState({
+    title: "",
+    description: "",
+    resourceUrl: "",
+    tags: [] as string[],
+  });
+
+  const availableTags = [
+    "Học bổng",
+    "Đăng ký môn",
+    "Lịch thi",
+    "Học phí",
+    "Câu lạc bộ",
+    "Sự kiện",
+    "Thực tập",
+    "Tốt nghiệp",
+  ];
   const [mentorNotes, setMentorNotes] = useState<{ [key: number]: string }>({});
   const [mentorTags, setMentorTags] = useState<{ [key: number]: string[] }>({});
 
   const handleStatusChange = (id: number, newStatus: string) => {
+    if (newStatus === "resolved") {
+      // Open resolve modal instead of directly changing status
+      setCurrentQuestionId(id);
+      setShowResolveModal(true);
+      return;
+    }
+
     setQuestions(
       questions.map((q) =>
         q.id === id ? { ...q, status: newStatus as any } : q
       )
     );
+
+    notification.success({
+      message: "Thành công",
+      description: "Đã cập nhật trạng thái câu hỏi!",
+      placement: "topRight",
+      duration: 3,
+    });
+  };
+
+  const handleResolveQuestion = () => {
+    if (!resolveFormData.answer) {
+      notification.error({
+        message: "Lỗi",
+        description: "Vui lòng nhập câu trả lời!",
+        placement: "topRight",
+      });
+      return;
+    }
+
+    // TODO: Call API to resolve question
+    setQuestions(
+      questions.map((q) =>
+        q.id === currentQuestionId ? { ...q, status: "resolved" as any } : q
+      )
+    );
+
+    notification.success({
+      message: "Thành công",
+      description: "Đã giải quyết câu hỏi thành công!",
+      placement: "topRight",
+      duration: 3,
+    });
+
+    setShowResolveModal(false);
+    setResolveFormData({ answer: "", tags: [], createRecommendation: false });
+    setCurrentQuestionId(null);
   };
 
   const handleAddTag = (id: number, tag: string) => {
@@ -147,8 +219,42 @@ const UnresolvedQueue = () => {
   };
 
   const handleCreateRecommendation = (question: any) => {
-    // This would typically open the Resource Recommendation form
-    console.log("Creating recommendation for question:", question.id);
+    setCurrentQuestionId(question.id);
+    setRecommendFormData({
+      title: `Hướng dẫn: ${question.question}`,
+      description: "",
+      resourceUrl: "",
+      tags: question.suggestedTags || [],
+    });
+    setShowRecommendModal(true);
+  };
+
+  const handleSubmitRecommendation = () => {
+    if (!recommendFormData.title || !recommendFormData.description) {
+      notification.error({
+        message: "Lỗi",
+        description: "Vui lòng điền đầy đủ tiêu đề và mô tả!",
+        placement: "topRight",
+      });
+      return;
+    }
+
+    // TODO: Call API to create recommendation
+    notification.success({
+      message: "Thành công",
+      description: "Đã tạo đề xuất tài liệu thành công!",
+      placement: "topRight",
+      duration: 3,
+    });
+
+    setShowRecommendModal(false);
+    setRecommendFormData({
+      title: "",
+      description: "",
+      resourceUrl: "",
+      tags: [],
+    });
+    setCurrentQuestionId(null);
   };
 
   const filteredQuestions = questions.filter((question) => {
@@ -570,6 +676,161 @@ const UnresolvedQueue = () => {
           </div>
         </div>
       </div>
+
+      {/* Resolve Question Modal */}
+      <Modal
+        title={
+          <span className="text-xl font-semibold">Giải quyết câu hỏi</span>
+        }
+        open={showResolveModal}
+        onCancel={() => {
+          setShowResolveModal(false);
+          setResolveFormData({
+            answer: "",
+            tags: [],
+            createRecommendation: false,
+          });
+        }}
+        onOk={handleResolveQuestion}
+        okText="Đánh dấu đã giải quyết"
+        cancelText="Hủy"
+        width={700}
+        okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+      >
+        <div className="space-y-4 py-4">
+          {/* Answer */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Câu trả lời <span className="text-red-500">*</span>
+            </label>
+            <TextArea
+              placeholder="Nhập câu trả lời chi tiết cho câu hỏi..."
+              value={resolveFormData.answer}
+              onChange={(e) =>
+                setResolveFormData({
+                  ...resolveFormData,
+                  answer: e.target.value,
+                })
+              }
+              rows={6}
+            />
+          </div>
+
+          {/* Tags */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tags
+            </label>
+            <Select
+              mode="multiple"
+              placeholder="Chọn tags"
+              value={resolveFormData.tags}
+              onChange={(value) =>
+                setResolveFormData({ ...resolveFormData, tags: value })
+              }
+              size="large"
+              className="w-full"
+              options={availableTags.map((tag) => ({ label: tag, value: tag }))}
+            />
+          </div>
+        </div>
+      </Modal>
+
+      {/* Create Recommendation Modal */}
+      <Modal
+        title={
+          <span className="text-xl font-semibold">Tạo đề xuất tài liệu</span>
+        }
+        open={showRecommendModal}
+        onCancel={() => {
+          setShowRecommendModal(false);
+          setRecommendFormData({
+            title: "",
+            description: "",
+            resourceUrl: "",
+            tags: [],
+          });
+        }}
+        onOk={handleSubmitRecommendation}
+        okText="Tạo đề xuất"
+        cancelText="Hủy"
+        width={700}
+        okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+      >
+        <div className="space-y-4 py-4">
+          {/* Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tiêu đề <span className="text-red-500">*</span>
+            </label>
+            <Input
+              placeholder="Nhập tiêu đề đề xuất"
+              value={recommendFormData.title}
+              onChange={(e) =>
+                setRecommendFormData({
+                  ...recommendFormData,
+                  title: e.target.value,
+                })
+              }
+              size="large"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Mô tả <span className="text-red-500">*</span>
+            </label>
+            <TextArea
+              placeholder="Nhập mô tả chi tiết về tài liệu..."
+              value={recommendFormData.description}
+              onChange={(e) =>
+                setRecommendFormData({
+                  ...recommendFormData,
+                  description: e.target.value,
+                })
+              }
+              rows={5}
+            />
+          </div>
+
+          {/* Resource URL */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Link tài liệu
+            </label>
+            <Input
+              placeholder="https://..."
+              value={recommendFormData.resourceUrl}
+              onChange={(e) =>
+                setRecommendFormData({
+                  ...recommendFormData,
+                  resourceUrl: e.target.value,
+                })
+              }
+              size="large"
+            />
+          </div>
+
+          {/* Tags */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tags
+            </label>
+            <Select
+              mode="multiple"
+              placeholder="Chọn tags"
+              value={recommendFormData.tags}
+              onChange={(value) =>
+                setRecommendFormData({ ...recommendFormData, tags: value })
+              }
+              size="large"
+              className="w-full"
+              options={availableTags.map((tag) => ({ label: tag, value: tag }))}
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

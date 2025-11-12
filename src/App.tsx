@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { App as AntApp } from "antd";
 import { RoleRoute } from "./routes";
 import RoleBasedLayout from "./components/RoleBasedLayout";
 import StudentLayout from "./components/StudentLayout";
@@ -58,146 +59,154 @@ import SystemHealth from "./pages/admin/SystemHealth";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public route - Login only */}
-        <Route path="/login" element={<Login />} />
+    <AntApp>
+      <Router>
+        <Routes>
+          {/* Public route - Login only */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Redirect root to login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+          {/* Redirect root to login */}
+          <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* QA Page - NO Layout (Full screen chat) */}
-        <Route element={<RoleRoute allowedRoles={[UserRole.STUDENT]} />}>
-          <Route path="/qa" element={<QA />} />
-        </Route>
-
-        {/* Student Layout - All Student routes with Header + Footer (NO Sidebar) */}
-        <Route element={<StudentLayout />}>
+          {/* QA Page - NO Layout (Full screen chat) */}
           <Route element={<RoleRoute allowedRoles={[UserRole.STUDENT]} />}>
-            <Route path="/student" element={<StudentHome />} />
-            <Route path="/student/profile" element={<Profile />} />
-            <Route path="/student/history" element={<History />} />
-            <Route
-              path="/student/notifications"
-              element={<NotificationCenter />}
-            />
-            <Route path="/clubs" element={<Clubs />} />
-            <Route path="/clubs/:id" element={<ClubDetailPage />} />
-            <Route path="/handbook" element={<Handbook />} />
-            <Route path="/handbook/introduction" element={<Introduction />} />
-            <Route path="/handbook/admission" element={<Admission />} />
-            <Route path="/handbook/tuition" element={<Tuition />} />
-            {/* Legacy routes for backward compatibility */}
-            <Route
-              path="/profile"
-              element={<Navigate to="/student/profile" replace />}
-            />
-            <Route
-              path="/history"
-              element={<Navigate to="/student/history" replace />}
-            />
-            <Route
-              path="/notifications"
-              element={<Navigate to="/student/notifications" replace />}
-            />
-          </Route>
-        </Route>
-
-        {/* Management Roles Layout - With Navbar + Sidebar */}
-        <Route element={<RoleBasedLayout />}>
-          {/* Common protected pages - Management roles only */}
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={[
-                  UserRole.MENTOR,
-                  UserRole.ACADEMIC_STAFF,
-                  UserRole.STUDENT_AFFAIRS,
-                  UserRole.CLUB_COORDINATOR,
-                  UserRole.ADMIN,
-                ]}
-              />
-            }
-          >
             <Route path="/qa" element={<QA />} />
-            <Route path="/clubs" element={<Clubs />} />
-            <Route path="/handbook" element={<Handbook />} />
-            <Route path="/handbook/introduction" element={<Introduction />} />
-            <Route path="/handbook/admission" element={<Admission />} />
-            <Route path="/handbook/tuition" element={<Tuition />} />
-          </Route>
-          {/* Admin routes */}
-          <Route element={<RoleRoute allowedRoles={[UserRole.ADMIN]} />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<UserManagement />} />
-            <Route path="/admin/config" element={<SystemConfig />} />
-            <Route path="/admin/logs" element={<AuditLogs />} />
-            <Route path="/admin/health" element={<SystemHealth />} />
           </Route>
 
-          {/* Mentor routes */}
-          <Route
-            element={
-              <RoleRoute allowedRoles={[UserRole.MENTOR, UserRole.ADMIN]} />
-            }
-          >
-            <Route path="/mentor/dashboard" element={<MentorDashboard />} />
-            <Route path="/mentor/analytics" element={<MentorAnalytics />} />
-            <Route path="/mentor/queue" element={<UnresolvedQueue />} />
-            <Route
-              path="/mentor/recommendations"
-              element={<ResourceRecommendation />}
-            />
-            <Route path="/mentor/posts" element={<MentorPosts />} />
-          </Route>
-
-          {/* Academic Staff routes */}
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={[UserRole.ACADEMIC_STAFF, UserRole.ADMIN]}
+          {/* Student Layout - All Student routes with Header + Footer (NO Sidebar) */}
+          <Route element={<StudentLayout />}>
+            <Route element={<RoleRoute allowedRoles={[UserRole.STUDENT]} />}>
+              <Route path="/student" element={<StudentHome />} />
+              <Route path="/student/profile" element={<Profile />} />
+              <Route path="/student/history" element={<History />} />
+              <Route
+                path="/student/notifications"
+                element={<NotificationCenter />}
               />
-            }
-          >
-            <Route path="/academic/dashboard" element={<AcademicDashboard />} />
-            <Route path="/academic/handbook" element={<HandbookManagement />} />
-            <Route path="/academic/rebuild" element={<RebuildIndex />} />
+              <Route path="/clubs" element={<Clubs />} />
+              <Route path="/clubs/:id" element={<ClubDetailPage />} />
+              <Route path="/handbook" element={<Handbook />} />
+              <Route path="/handbook/introduction" element={<Introduction />} />
+              <Route path="/handbook/admission" element={<Admission />} />
+              <Route path="/handbook/tuition" element={<Tuition />} />
+              {/* Legacy routes for backward compatibility */}
+              <Route
+                path="/profile"
+                element={<Navigate to="/student/profile" replace />}
+              />
+              <Route
+                path="/history"
+                element={<Navigate to="/student/history" replace />}
+              />
+              <Route
+                path="/notifications"
+                element={<Navigate to="/student/notifications" replace />}
+              />
+            </Route>
           </Route>
 
-          {/* Student Affairs routes */}
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={[UserRole.STUDENT_AFFAIRS, UserRole.ADMIN]}
-              />
-            }
-          >
-            <Route path="/affairs/dashboard" element={<AffairsDashboard />} />
+          {/* Management Roles Layout - With Navbar + Sidebar */}
+          <Route element={<RoleBasedLayout />}>
+            {/* Common protected pages - Management roles only */}
             <Route
-              path="/affairs/notifications"
-              element={<NotificationManagement />}
-            />
-            <Route path="/affairs/clubs" element={<ClubManagement />} />
-            <Route
-              path="/affairs/engagement"
-              element={<EngagementDashboard />}
-            />
-          </Route>
+              element={
+                <RoleRoute
+                  allowedRoles={[
+                    UserRole.MENTOR,
+                    UserRole.ACADEMIC_STAFF,
+                    UserRole.STUDENT_AFFAIRS,
+                    UserRole.CLUB_COORDINATOR,
+                    UserRole.ADMIN,
+                  ]}
+                />
+              }
+            >
+              <Route path="/qa" element={<QA />} />
+              <Route path="/clubs" element={<Clubs />} />
+              <Route path="/handbook" element={<Handbook />} />
+              <Route path="/handbook/introduction" element={<Introduction />} />
+              <Route path="/handbook/admission" element={<Admission />} />
+              <Route path="/handbook/tuition" element={<Tuition />} />
+            </Route>
+            {/* Admin routes */}
+            <Route element={<RoleRoute allowedRoles={[UserRole.ADMIN]} />}>
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<UserManagement />} />
+              <Route path="/admin/config" element={<SystemConfig />} />
+              <Route path="/admin/logs" element={<AuditLogs />} />
+              <Route path="/admin/health" element={<SystemHealth />} />
+            </Route>
 
-          {/* Club Coordinator routes */}
-          <Route
-            element={
-              <RoleRoute
-                allowedRoles={[UserRole.CLUB_COORDINATOR, UserRole.ADMIN]}
+            {/* Mentor routes */}
+            <Route
+              element={
+                <RoleRoute allowedRoles={[UserRole.MENTOR, UserRole.ADMIN]} />
+              }
+            >
+              <Route path="/mentor/dashboard" element={<MentorDashboard />} />
+              <Route path="/mentor/analytics" element={<MentorAnalytics />} />
+              <Route path="/mentor/queue" element={<UnresolvedQueue />} />
+              <Route
+                path="/mentor/recommendations"
+                element={<ResourceRecommendation />}
               />
-            }
-          >
-            <Route path="/club/dashboard" element={<ClubList />} />
-            <Route path="/club/detail/:clubId" element={<ClubDetail />} />
+              <Route path="/mentor/posts" element={<MentorPosts />} />
+            </Route>
+
+            {/* Academic Staff routes */}
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[UserRole.ACADEMIC_STAFF, UserRole.ADMIN]}
+                />
+              }
+            >
+              <Route
+                path="/academic/dashboard"
+                element={<AcademicDashboard />}
+              />
+              <Route
+                path="/academic/handbook"
+                element={<HandbookManagement />}
+              />
+              <Route path="/academic/rebuild" element={<RebuildIndex />} />
+            </Route>
+
+            {/* Student Affairs routes */}
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[UserRole.STUDENT_AFFAIRS, UserRole.ADMIN]}
+                />
+              }
+            >
+              <Route path="/affairs/dashboard" element={<AffairsDashboard />} />
+              <Route
+                path="/affairs/notifications"
+                element={<NotificationManagement />}
+              />
+              <Route path="/affairs/clubs" element={<ClubManagement />} />
+              <Route
+                path="/affairs/engagement"
+                element={<EngagementDashboard />}
+              />
+            </Route>
+
+            {/* Club Coordinator routes */}
+            <Route
+              element={
+                <RoleRoute
+                  allowedRoles={[UserRole.CLUB_COORDINATOR, UserRole.ADMIN]}
+                />
+              }
+            >
+              <Route path="/club/dashboard" element={<ClubList />} />
+              <Route path="/club/detail/:clubId" element={<ClubDetail />} />
+            </Route>
           </Route>
-        </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </AntApp>
   );
 }
 
