@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button } from "antd";
+import { Card, Button, Modal, Input, Select, notification } from "antd";
 import {
   FileText,
   Send,
@@ -12,6 +12,8 @@ import {
   Calendar,
   Tag,
 } from "lucide-react";
+
+const { TextArea } = Input;
 
 // Mock data for demonstration
 const mockSuggestions = [
@@ -89,8 +91,27 @@ const ResourceRecommendation = () => {
     priority: "medium",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const categories = [
+    "Học bổng",
+    "Đăng ký môn học",
+    "Lịch thi",
+    "Học phí",
+    "Câu lạc bộ",
+    "Sự kiện",
+    "Thực tập",
+    "Tốt nghiệp",
+  ];
+
+  const handleSubmit = () => {
+    if (!formData.title || !formData.description || !formData.reason) {
+      notification.error({
+        message: "Lỗi",
+        description: "Vui lòng điền đầy đủ thông tin bắt buộc!",
+        placement: "topRight",
+      });
+      return;
+    }
+
     const newSuggestion = {
       id: suggestions.length + 1,
       ...formData,
@@ -98,6 +119,14 @@ const ResourceRecommendation = () => {
       createdAt: new Date().toISOString().split("T")[0],
     };
     setSuggestions([newSuggestion, ...suggestions]);
+
+    notification.success({
+      message: "Thành công",
+      description: "Đã tạo đề xuất tài liệu thành công!",
+      placement: "topRight",
+      duration: 3,
+    });
+
     setFormData({
       title: "",
       description: "",
@@ -115,6 +144,13 @@ const ResourceRecommendation = () => {
         s.id === id ? { ...s, status: newStatus as any } : s
       )
     );
+
+    notification.success({
+      message: "Thành công",
+      description: "Đã cập nhật trạng thái đề xuất!",
+      placement: "topRight",
+      duration: 3,
+    });
   };
 
   const filteredSuggestions = suggestions.filter((suggestion) => {
@@ -378,138 +414,122 @@ const ResourceRecommendation = () => {
         </div>
 
         {/* Create Form Modal */}
-        {showForm && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-md">
-              <div className="p-6">
-                <h2 className="text-xl font-semibold mb-2">Tạo đề xuất mới</h2>
-                <p className="text-gray-600 mb-6">
-                  Điền thông tin để tạo ticket tự động gửi đến Academic Office
-                </p>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Tiêu đề đề xuất
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.title}
-                      onChange={(e) =>
-                        setFormData({ ...formData, title: e.target.value })
-                      }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      placeholder="Nhập tiêu đề đề xuất..."
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Mô tả chi tiết
-                    </label>
-                    <textarea
-                      value={formData.description}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          description: e.target.value,
-                        })
-                      }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      rows={3}
-                      placeholder="Mô tả chi tiết về nội dung cần cập nhật..."
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Lý do đề xuất
-                    </label>
-                    <textarea
-                      value={formData.reason}
-                      onChange={(e) =>
-                        setFormData({ ...formData, reason: e.target.value })
-                      }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      rows={2}
-                      placeholder="Giải thích lý do cần cập nhật nội dung này..."
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      Nguồn tham khảo
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.reference}
-                      onChange={(e) =>
-                        setFormData({ ...formData, reference: e.target.value })
-                      }
-                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      placeholder="Ví dụ: Thông báo số 123/2024, Hướng dẫn từ IT Department..."
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Danh mục
-                      </label>
-                      <select
-                        value={formData.category}
-                        onChange={(e) =>
-                          setFormData({ ...formData, category: e.target.value })
-                        }
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                        required
-                      >
-                        <option value="">Chọn danh mục</option>
-                        <option value="Học bổng">Học bổng</option>
-                        <option value="Đăng ký môn học">Đăng ký môn học</option>
-                        <option value="Lịch thi">Lịch thi</option>
-                        <option value="Quy định">Quy định</option>
-                        <option value="Hỗ trợ sinh viên">
-                          Hỗ trợ sinh viên
-                        </option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        Mức độ ưu tiên
-                      </label>
-                      <select
-                        value={formData.priority}
-                        onChange={(e) =>
-                          setFormData({ ...formData, priority: e.target.value })
-                        }
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                      >
-                        <option value="low">Thấp</option>
-                        <option value="medium">Trung bình</option>
-                        <option value="high">Cao</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="flex justify-end gap-3 pt-4">
-                    <Button
-                      type="button"
-                      className="border border-gray-300"
-                      onClick={() => setShowForm(false)}
-                    >
-                      Hủy
-                    </Button>
-                    <Button
-                      type="submit"
-                      className="bg-orange-500 hover:bg-orange-600"
-                    >
-                      <Send className="w-4 h-4 mr-2" />
-                      Gửi đề xuất
-                    </Button>
-                  </div>
-                </form>
+        <Modal
+          title={<span className="text-xl font-semibold">Tạo đề xuất mới</span>}
+          open={showForm}
+          onCancel={() => setShowForm(false)}
+          onOk={handleSubmit}
+          okText="Gửi đề xuất"
+          cancelText="Hủy"
+          width={800}
+          okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+        >
+          <div className="space-y-4 py-4">
+            <p className="text-gray-600 mb-4">
+              Điền thông tin để tạo ticket tự động gửi đến Academic Office
+            </p>
+
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Tiêu đề đề xuất <span className="text-red-500">*</span>
+              </label>
+              <Input
+                placeholder="Nhập tiêu đề đề xuất..."
+                value={formData.title}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
+                size="large"
+              />
+            </div>
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Mô tả chi tiết <span className="text-red-500">*</span>
+              </label>
+              <TextArea
+                placeholder="Mô tả chi tiết về nội dung cần cập nhật..."
+                value={formData.description}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
+                rows={4}
+              />
+            </div>
+
+            {/* Reason */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Lý do đề xuất <span className="text-red-500">*</span>
+              </label>
+              <TextArea
+                placeholder="Giải thích lý do cần cập nhật nội dung này..."
+                value={formData.reason}
+                onChange={(e) =>
+                  setFormData({ ...formData, reason: e.target.value })
+                }
+                rows={3}
+              />
+            </div>
+
+            {/* Reference */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Nguồn tham khảo
+              </label>
+              <Input
+                placeholder="Ví dụ: Thông báo số 123/2024, Hướng dẫn từ IT Department..."
+                value={formData.reference}
+                onChange={(e) =>
+                  setFormData({ ...formData, reference: e.target.value })
+                }
+                size="large"
+              />
+            </div>
+
+            {/* Category and Priority */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Danh mục <span className="text-red-500">*</span>
+                </label>
+                <Select
+                  placeholder="Chọn danh mục"
+                  value={formData.category || undefined}
+                  onChange={(value) =>
+                    setFormData({ ...formData, category: value })
+                  }
+                  size="large"
+                  className="w-full"
+                  options={categories.map((cat) => ({
+                    label: cat,
+                    value: cat,
+                  }))}
+                />
               </div>
-            </Card>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Mức độ ưu tiên
+                </label>
+                <Select
+                  value={formData.priority}
+                  onChange={(value) =>
+                    setFormData({ ...formData, priority: value })
+                  }
+                  size="large"
+                  className="w-full"
+                  options={[
+                    { label: "Thấp", value: "low" },
+                    { label: "Trung bình", value: "medium" },
+                    { label: "Cao", value: "high" },
+                  ]}
+                />
+              </div>
+            </div>
           </div>
-        )}
+        </Modal>
       </div>
     </div>
   );

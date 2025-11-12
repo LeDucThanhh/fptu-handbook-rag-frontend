@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card } from "antd";
+import { Card, Modal, notification } from "antd";
 import { RefreshCw, CheckCircle, Clock, Database, Loader } from "lucide-react";
 
 export default function RebuildIndex() {
@@ -8,11 +8,24 @@ export default function RebuildIndex() {
   const [status, setStatus] = useState<
     "idle" | "processing" | "complete" | "error"
   >("idle");
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const handleRebuild = () => {
+  const handleRebuildClick = () => {
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmRebuild = () => {
+    setShowConfirmModal(false);
     setIsRebuilding(true);
     setProgress(0);
     setStatus("processing");
+
+    notification.info({
+      message: "Đang xử lý",
+      description: "Bắt đầu rebuild index...",
+      placement: "topRight",
+      duration: 3,
+    });
 
     // Simulate rebuild process
     const interval = setInterval(() => {
@@ -21,6 +34,12 @@ export default function RebuildIndex() {
           clearInterval(interval);
           setIsRebuilding(false);
           setStatus("complete");
+          notification.success({
+            message: "Thành công",
+            description: "Rebuild index hoàn tất!",
+            placement: "topRight",
+            duration: 3,
+          });
           return 100;
         }
         return prev + 10;
@@ -120,7 +139,7 @@ export default function RebuildIndex() {
                       khoảng 3-5 phút.
                     </p>
                     <button
-                      onClick={handleRebuild}
+                      onClick={handleRebuildClick}
                       className="bg-orange-500 text-white px-8 py-3 rounded-lg hover:bg-orange-600 transition font-semibold inline-flex items-center gap-2"
                     >
                       <RefreshCw className="w-5 h-5" />
@@ -212,6 +231,35 @@ export default function RebuildIndex() {
           </div>
         </Card>
       </div>
+
+      {/* Confirm Rebuild Modal */}
+      <Modal
+        title={
+          <span className="text-xl font-semibold">Xác nhận Rebuild Index</span>
+        }
+        open={showConfirmModal}
+        onCancel={() => setShowConfirmModal(false)}
+        onOk={handleConfirmRebuild}
+        okText="Bắt đầu Rebuild"
+        cancelText="Hủy"
+        width={600}
+        okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+      >
+        <div className="space-y-4 py-4">
+          <p className="text-gray-700">
+            <strong>Cảnh báo:</strong> Quá trình rebuild index sẽ ảnh hưởng đến
+            toàn bộ hệ thống.
+          </p>
+          <ul className="list-disc list-inside text-gray-600 space-y-2">
+            <li>Thời gian dự kiến: 3-5 phút</li>
+            <li>Hệ thống AI có thể hoạt động chậm trong quá trình rebuild</li>
+            <li>Tất cả dữ liệu handbook sẽ được đánh chỉ mục lại</li>
+          </ul>
+          <p className="text-gray-700 font-medium">
+            Bạn có chắc chắn muốn tiếp tục?
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 }

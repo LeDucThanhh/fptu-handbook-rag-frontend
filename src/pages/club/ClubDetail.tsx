@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Card, notification } from "antd";
 import {
   Users,
   Mail,
@@ -42,7 +42,12 @@ export default function ClubDetail() {
   const handleSave = () => {
     // TODO: Save to backend
     setIsEditing(false);
-    alert("Đã lưu thông tin CLB!");
+    notification.success({
+      message: "Thành công",
+      description: "Đã lưu thông tin CLB!",
+      placement: "topRight",
+      duration: 3,
+    });
   };
 
   return (

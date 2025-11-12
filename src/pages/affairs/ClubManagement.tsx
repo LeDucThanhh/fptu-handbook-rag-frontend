@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card, Button, Input, Modal, message } from "antd";
+import { Card, Button, Input, Modal, notification } from "antd";
 import {
   Users,
   CheckCircle,
@@ -12,11 +12,18 @@ import {
 } from "lucide-react";
 import { mockClubs } from "@/services/mock/mockData";
 
+const { TextArea } = Input;
+
 export default function ClubManagement() {
   const [clubs, setClubs] = useState(mockClubs);
   const [filter, setFilter] = useState<"all" | "active" | "pending">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClub, setSelectedClub] = useState<any>(null);
+  const [showApproveModal, setShowApproveModal] = useState(false);
+  const [showHideModal, setShowHideModal] = useState(false);
+  const [currentClubId, setCurrentClubId] = useState<string | null>(null);
+  const [approveNotes, setApproveNotes] = useState("");
+  const [hideReason, setHideReason] = useState("");
 
   const filteredClubs = clubs.filter((club) => {
     const matchesSearch = club.name
@@ -30,17 +37,52 @@ export default function ClubManagement() {
   });
 
   const handleApprove = (clubId: string) => {
+    setCurrentClubId(clubId);
+    setShowApproveModal(true);
+  };
+
+  const handleConfirmApprove = () => {
     setClubs(
-      clubs.map((c) => (c.id === clubId ? { ...c, isActive: true } : c))
+      clubs.map((c) => (c.id === currentClubId ? { ...c, isActive: true } : c))
     );
-    message.success("Đã duyệt câu lạc bộ!");
+    notification.success({
+      message: "Thành công",
+      description: "Đã duyệt câu lạc bộ!",
+      placement: "topRight",
+      duration: 3,
+    });
+    setShowApproveModal(false);
+    setApproveNotes("");
+    setCurrentClubId(null);
   };
 
   const handleHide = (clubId: string) => {
+    setCurrentClubId(clubId);
+    setShowHideModal(true);
+  };
+
+  const handleConfirmHide = () => {
+    if (!hideReason) {
+      notification.error({
+        message: "Lỗi",
+        description: "Vui lòng nhập lý do ẩn câu lạc bộ!",
+        placement: "topRight",
+      });
+      return;
+    }
+
     setClubs(
-      clubs.map((c) => (c.id === clubId ? { ...c, isActive: false } : c))
+      clubs.map((c) => (c.id === currentClubId ? { ...c, isActive: false } : c))
     );
-    message.success("Đã ẩn câu lạc bộ!");
+    notification.success({
+      message: "Thành công",
+      description: "Đã ẩn câu lạc bộ!",
+      placement: "topRight",
+      duration: 3,
+    });
+    setShowHideModal(false);
+    setHideReason("");
+    setCurrentClubId(null);
   };
 
   return (
@@ -391,6 +433,72 @@ export default function ClubManagement() {
               </div>
             </div>
           )}
+        </Modal>
+
+        {/* Approve Club Modal */}
+        <Modal
+          title={
+            <span className="text-xl font-semibold">Duyệt câu lạc bộ</span>
+          }
+          open={showApproveModal}
+          onCancel={() => {
+            setShowApproveModal(false);
+            setApproveNotes("");
+          }}
+          onOk={handleConfirmApprove}
+          okText="Duyệt"
+          cancelText="Hủy"
+          width={600}
+          okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+        >
+          <div className="space-y-4 py-4">
+            <p className="text-gray-600">
+              Bạn có chắc chắn muốn duyệt câu lạc bộ này không?
+            </p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ghi chú (tùy chọn)
+              </label>
+              <TextArea
+                placeholder="Nhập ghi chú về việc duyệt câu lạc bộ..."
+                value={approveNotes}
+                onChange={(e) => setApproveNotes(e.target.value)}
+                rows={4}
+              />
+            </div>
+          </div>
+        </Modal>
+
+        {/* Hide Club Modal */}
+        <Modal
+          title={<span className="text-xl font-semibold">Ẩn câu lạc bộ</span>}
+          open={showHideModal}
+          onCancel={() => {
+            setShowHideModal(false);
+            setHideReason("");
+          }}
+          onOk={handleConfirmHide}
+          okText="Ẩn"
+          cancelText="Hủy"
+          width={600}
+          okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+        >
+          <div className="space-y-4 py-4">
+            <p className="text-gray-600">
+              Bạn có chắc chắn muốn ẩn câu lạc bộ này không?
+            </p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Lý do <span className="text-red-500">*</span>
+              </label>
+              <TextArea
+                placeholder="Nhập lý do ẩn câu lạc bộ..."
+                value={hideReason}
+                onChange={(e) => setHideReason(e.target.value)}
+                rows={4}
+              />
+            </div>
+          </div>
         </Modal>
       </div>
     </div>

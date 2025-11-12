@@ -1,11 +1,60 @@
 import { useState } from "react";
-import { Card } from "antd";
+import { Card, Modal, Input, Select, notification } from "antd";
 import { FileText, Eye, ThumbsUp, Edit, Trash2, Plus } from "lucide-react";
 import { mockMentorPosts } from "@/services/mock/mockData";
+
+const { TextArea } = Input;
 
 export default function MentorPosts() {
   const [posts] = useState(mockMentorPosts);
   const [filter, setFilter] = useState<"all" | "public" | "draft">("all");
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    tags: [] as string[],
+    status: "draft" as "draft" | "public",
+  });
+
+  const availableTags = [
+    "Học tập",
+    "Thi cử",
+    "Đăng ký môn",
+    "Học phí",
+    "Câu lạc bộ",
+    "Sự kiện",
+    "Thực tập",
+    "Tốt nghiệp",
+  ];
+
+  const handleCreatePost = () => {
+    if (!formData.title || !formData.content) {
+      notification.error({
+        message: "Lỗi",
+        description: "Vui lòng điền đầy đủ tiêu đề và nội dung!",
+        placement: "topRight",
+      });
+      return;
+    }
+
+    // TODO: Call API to create post
+    notification.success({
+      message: "Thành công",
+      description: `Đã ${
+        formData.status === "public" ? "xuất bản" : "lưu nháp"
+      } bài viết!`,
+      placement: "topRight",
+      duration: 3,
+    });
+
+    setShowCreateModal(false);
+    setFormData({
+      title: "",
+      content: "",
+      tags: [],
+      status: "draft",
+    });
+  };
 
   const filteredPosts = posts.filter((post) => {
     if (filter === "all") return true;
@@ -60,7 +109,10 @@ export default function MentorPosts() {
           </div>
 
           {/* Create New Button */}
-          <button className="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition font-semibold flex items-center gap-2">
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 transition font-semibold flex items-center gap-2"
+          >
             <Plus className="w-4 h-4" />
             Tạo bài viết mới
           </button>
@@ -155,6 +207,83 @@ export default function MentorPosts() {
           </Card>
         )}
       </div>
+
+      {/* Create Post Modal */}
+      <Modal
+        title={<span className="text-xl font-semibold">Tạo bài viết mới</span>}
+        open={showCreateModal}
+        onCancel={() => setShowCreateModal(false)}
+        onOk={handleCreatePost}
+        okText={formData.status === "public" ? "Xuất bản" : "Lưu nháp"}
+        cancelText="Hủy"
+        width={800}
+        okButtonProps={{ className: "bg-orange-500 hover:bg-orange-600" }}
+      >
+        <div className="space-y-4 py-4">
+          {/* Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tiêu đề <span className="text-red-500">*</span>
+            </label>
+            <Input
+              placeholder="Nhập tiêu đề bài viết"
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
+              size="large"
+            />
+          </div>
+
+          {/* Content */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nội dung <span className="text-red-500">*</span>
+            </label>
+            <TextArea
+              placeholder="Nhập nội dung bài viết..."
+              value={formData.content}
+              onChange={(e) =>
+                setFormData({ ...formData, content: e.target.value })
+              }
+              rows={10}
+            />
+          </div>
+
+          {/* Tags */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Tags
+            </label>
+            <Select
+              mode="multiple"
+              placeholder="Chọn tags"
+              value={formData.tags}
+              onChange={(value) => setFormData({ ...formData, tags: value })}
+              size="large"
+              className="w-full"
+              options={availableTags.map((tag) => ({ label: tag, value: tag }))}
+            />
+          </div>
+
+          {/* Status */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Trạng thái
+            </label>
+            <Select
+              value={formData.status}
+              onChange={(value) => setFormData({ ...formData, status: value })}
+              size="large"
+              className="w-full"
+              options={[
+                { label: "Bản nháp", value: "draft" },
+                { label: "Công khai", value: "public" },
+              ]}
+            />
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
