@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Card, Button, Input, Modal, notification } from "antd";
+import { useState, useEffect } from "react";
+import { Card, Button, Input, Modal, notification, Spin } from "antd";
 import {
   Users,
   CheckCircle,
@@ -10,12 +10,14 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
+import { clubService } from "@/services/api";
 import { mockClubs } from "@/services/mock/mockData";
 
 const { TextArea } = Input;
 
 export default function ClubManagement() {
-  const [clubs, setClubs] = useState(mockClubs);
+  const [clubs, setClubs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "active" | "pending">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClub, setSelectedClub] = useState<any>(null);
@@ -24,6 +26,49 @@ export default function ClubManagement() {
   const [currentClubId, setCurrentClubId] = useState<string | null>(null);
   const [approveNotes, setApproveNotes] = useState("");
   const [hideReason, setHideReason] = useState("");
+
+  // Fetch clubs from API
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        if (!token) {
+          notification.error({
+            message: "Lỗi",
+            description: "Vui lòng đăng nhập lại",
+            placement: "topRight",
+          });
+          // Fallback to mock data
+          setClubs(mockClubs);
+          return;
+        }
+
+        const response = await clubService.getClubs(
+          {
+            page: 1,
+            pageSize: 100,
+          },
+          token
+        );
+        setClubs(response.items || []);
+      } catch (error: any) {
+        console.error("Error fetching clubs:", error);
+        notification.error({
+          message: "Lỗi",
+          description:
+            "Không thể tải danh sách câu lạc bộ. Sử dụng dữ liệu mẫu.",
+          placement: "topRight",
+        });
+        // Fallback to mock data
+        setClubs(mockClubs);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchClubs();
+  }, []);
 
   const filteredClubs = clubs.filter((club) => {
     const matchesSearch = club.name
@@ -84,6 +129,14 @@ export default function ClubManagement() {
     setHideReason("");
     setCurrentClubId(null);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8 flex items-center justify-center">
+        <Spin size="large" tip="Đang tải danh sách câu lạc bộ..." />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

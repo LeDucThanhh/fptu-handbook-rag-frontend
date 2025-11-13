@@ -17,7 +17,7 @@ export const authService = {
    */
   async login(credentials: LoginRequest): Promise<LoginResponse> {
     const response = await axios.post<ApiResponse<LoginResponse>>(
-      `${API_BASE_URL}/api/Auth/login`,
+      `${API_BASE_URL}/Auth/login`,
       credentials
     );
     return response.data.data;
@@ -31,7 +31,7 @@ export const authService = {
     preferredLanguage: string = "vi"
   ): Promise<LoginResponse> {
     const response = await axios.post<ApiResponse<LoginResponse>>(
-      `${API_BASE_URL}/api/Auth/google-login`,
+      `${API_BASE_URL}/Auth/google-login`,
       { idToken, preferredLanguage }
     );
     return response.data.data;
@@ -42,7 +42,7 @@ export const authService = {
    */
   async getCurrentUser(token: string): Promise<User> {
     const response = await axios.get<ApiResponse<User>>(
-      `${API_BASE_URL}/api/Auth/me`,
+      `${API_BASE_URL}/Auth/me`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -56,7 +56,7 @@ export const authService = {
   async validateToken(token: string): Promise<boolean> {
     try {
       const response = await axios.get<ApiResponse<boolean>>(
-        `${API_BASE_URL}/api/Auth/validate`,
+        `${API_BASE_URL}/Auth/validate`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -75,7 +75,7 @@ export const authService = {
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const response = await axios.post<
       ApiResponse<{ accessToken: string; refreshToken: string }>
-    >(`${API_BASE_URL}/api/Auth/refresh-token`, { refreshToken });
+    >(`${API_BASE_URL}/Auth/refresh-token`, { refreshToken });
     return response.data.data;
   },
 
@@ -84,7 +84,7 @@ export const authService = {
    */
   async revokeToken(refreshToken: string, token: string): Promise<void> {
     await axios.post(
-      `${API_BASE_URL}/api/Auth/revoke-token`,
+      `${API_BASE_URL}/Auth/revoke-token`,
       { refreshToken },
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -97,7 +97,7 @@ export const authService = {
    */
   async confirmEmail(userId: string, token: string): Promise<boolean> {
     const response = await axios.get<ApiResponse<boolean>>(
-      `${API_BASE_URL}/api/Auth/confirm-email`,
+      `${API_BASE_URL}/Auth/confirm-email`,
       {
         params: { userId, token },
       }
@@ -109,6 +109,6 @@ export const authService = {
    * Start Google OAuth flow (for web redirect flow)
    */
   getGoogleLoginUrl(language: string = "vi"): string {
-    return `${API_BASE_URL}/api/Auth/google-login-start?language=${language}`;
+    return `${API_BASE_URL}/Auth/google-login-start?language=${language}`;
   },
 };
