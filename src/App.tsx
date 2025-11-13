@@ -4,7 +4,8 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { App as AntApp } from "antd";
+import { App as AntApp, notification } from "antd";
+import { useEffect } from "react";
 import { RoleRoute } from "./routes";
 import RoleBasedLayout from "./components/RoleBasedLayout";
 import StudentLayout from "./components/StudentLayout";
@@ -58,6 +59,24 @@ import AuditLogs from "./pages/admin/AuditLogs";
 import SystemHealth from "./pages/admin/SystemHealth";
 
 function App() {
+  // Listen for demo mode warning
+  useEffect(() => {
+    const handleDemoWarning = () => {
+      notification.warning({
+        message: "🎭 Chế độ Demo",
+        description:
+          "Backend chưa sẵn sàng. Bạn đang sử dụng chế độ demo với dữ liệu mẫu. Một số tính năng có thể bị giới hạn.",
+        placement: "topRight",
+        duration: 5,
+      });
+    };
+
+    window.addEventListener("show-demo-warning", handleDemoWarning);
+    return () => {
+      window.removeEventListener("show-demo-warning", handleDemoWarning);
+    };
+  }, []);
+
   return (
     <AntApp>
       <Router>

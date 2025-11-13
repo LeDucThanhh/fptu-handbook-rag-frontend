@@ -1,11 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { User, LoginRequest, RegisterRequest } from "@/types";
-import type { UserRole as UserRoleType } from "@/types";
-import { UserRole } from "@/types";
+import type { User, LoginRequest, RegisterRequest, UserRole } from "@/types";
 import { authService } from "@/services/api/auth.service";
 import { auth, googleProvider } from "@/config/firebase.config";
-import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
+import { signInWithPopup, signOut } from "firebase/auth";
 
 interface AuthState {
   user: User | null;
@@ -23,8 +21,8 @@ interface AuthActions {
   logout: () => Promise<void>;
   refreshAuth: () => Promise<void>;
   setUser: (user: User) => void;
-  hasRole: (role: UserRoleType) => boolean;
-  hasAnyRole: (roles: UserRoleType[]) => boolean;
+  hasRole: (role: UserRole) => boolean;
+  hasAnyRole: (roles: UserRole[]) => boolean;
   clearError: () => void;
 }
 
@@ -78,65 +76,99 @@ export const useAuthStore = create<AuthStore>()(
           const idToken = await firebaseUser.getIdToken();
           console.log("🔑 Firebase ID Token obtained");
 
-          // Step 3: Send ID token to backend to get JWT
+          // Step 3: Try to send ID token to backend to get JWT
           console.log("📡 Sending ID token to backend...");
-          const response = await authService.loginWithGoogle(idToken, "vi");
-          console.log("✅ Backend response:", response);
 
-          // Step 4: Check if user has custom avatar in localStorage
-          const customAvatarKey = `avatar_${response.user.id}`;
-          const customAvatar = localStorage.getItem(customAvatarKey);
+          try {
+            const response = await authService.loginWithGoogle(idToken, "vi");
+            console.log("✅ Backend response:", response);
 
-          // Step 5: Update user with custom avatar if exists
-          const userWithAvatar = {
-            ...response.user,
-            avatarUrl:
-              customAvatar ||
-              response.user.avatarUrl ||
-              firebaseUser.photoURL ||
-              undefined,
-          };
+            // Step 4: Check if user has custom avatar in localStorage
+            const customAvatarKey = `avatar_${response.user.id}`;
+            const customAvatar = localStorage.getItem(customAvatarKey);
 
-          console.log("👤 User authenticated:", userWithAvatar);
+            // Step 5: Update user with custom avatar if exists
+            const userWithAvatar = {
+              ...response.user,
+              avatarUrl:
+                customAvatar ||
+                response.user.avatarUrl ||
+                firebaseUser.photoURL ||
+                undefined,
+            };
 
-          // Step 6: Store backend JWT tokens and user data
-          set({
-            user: userWithAvatar,
-            token: response.token,
-            refreshToken: response.refreshToken,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null,
-          });
+            console.log("👤 User authenticated:", userWithAvatar);
+
+            // Step 6: Store backend JWT tokens and user data
+            set({
+              user: userWithAvatar,
+              token: response.token,
+              refreshToken: response.refreshToken,
+              isAuthenticated: true,
+              isLoading: false,
+              error: null,
+            });
+          } catch (backendError: any) {
+            // FALLBACK STRATEGY: If backend fails (401, 500, etc.), create local user
+            console.warn(
+              "⚠️ Backend authentication failed, using fallback mode"
+            );
+            console.warn("Backend error:", backendError.response?.data);
+
+            // Create local user from Firebase data
+            const localUser: User = {
+              id: firebaseUser.uid,
+              email: firebaseUser.email || "",
+              fullName: firebaseUser.displayName || "User",
+              avatarUrl: firebaseUser.photoURL || undefined,
+              roles: ["Student"], // Default role for fallback
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            };
+
+            console.log("👤 Using local user (Demo Mode):", localUser);
+
+            // Store user without backend JWT tokens
+            set({
+              user: localUser,
+              token: null, // No backend token
+              refreshToken: null,
+              isAuthenticated: true,
+              isLoading: false,
+              error: null,
+            });
+
+            // Show warning notification
+            if (typeof window !== "undefined") {
+              // Use setTimeout to ensure notification shows after navigation
+              setTimeout(() => {
+                const event = new CustomEvent("show-demo-warning");
+                window.dispatchEvent(event);
+              }, 500);
+            }
+          }
         } catch (error: any) {
-          console.error("❌ Login error:", error);
+          console.error("❌ Firebase login error:", error);
+
+          const errorMessage = error.message || "Đăng nhập Google thất bại";
+
           set({
-            error:
-              error.response?.data?.message ||
-              error.message ||
-              "Đăng nhập Google thất bại",
+            error: errorMessage,
             isLoading: false,
           });
           throw error;
         }
       },
 
-      register: async (data: RegisterRequest) => {
+      register: async (_data: RegisterRequest) => {
         try {
           set({ isLoading: true, error: null });
-          const response = await authService.register(data);
-
-          set({
-            user: response.user,
-            token: response.token,
-            refreshToken: response.refreshToken,
-            isAuthenticated: true,
-            isLoading: false,
-            error: null,
-          });
+          // TODO: Backend doesn't have register endpoint yet
+          // For now, just show error
+          throw new Error("Chức năng đăng ký chưa được hỗ trợ");
         } catch (error: any) {
           set({
-            error: error.response?.data?.message || "Đăng ký thất bại",
+            error: error.message || "Đăng ký thất bại",
             isLoading: false,
           });
           throw error;
@@ -169,7 +201,7 @@ export const useAuthStore = create<AuthStore>()(
 
           const response = await authService.refreshToken(refreshToken);
           set({
-            token: response.token,
+            token: response.accessToken,
             refreshToken: response.refreshToken,
           });
         } catch (error) {
@@ -183,12 +215,12 @@ export const useAuthStore = create<AuthStore>()(
         set({ user });
       },
 
-      hasRole: (role: UserRoleType) => {
+      hasRole: (role: UserRole) => {
         const { user } = get();
         return user?.roles.includes(role) || false;
       },
 
-      hasAnyRole: (roles: UserRoleType[]) => {
+      hasAnyRole: (roles: UserRole[]) => {
         const { user } = get();
         if (!user) return false;
         return roles.some((role) => user.roles.includes(role));

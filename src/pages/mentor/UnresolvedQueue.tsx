@@ -6,10 +6,8 @@ import {
   Clock,
   CheckCircle,
   Search,
-  Eye,
   User,
   BookOpen,
-  Calendar,
   Plus,
 } from "lucide-react";
 
@@ -296,89 +294,76 @@ const UnresolvedQueue = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="shadow-md">
-            <div className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
+        {/* Compact Stats & Filters */}
+        <Card className="shadow-md">
+          <div className="p-4">
+            {/* Stats Row */}
+            <div className="flex items-center gap-4 mb-4 pb-4 border-b">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+                  <AlertTriangle className="w-4 h-4 text-red-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-lg font-bold">
                     {questions.filter((q) => q.status === "unresolved").length}
                   </p>
-                  <p className="text-sm text-gray-600">Chưa giải quyết</p>
+                  <p className="text-xs text-gray-500">Chưa giải quyết</p>
                 </div>
               </div>
-            </div>
-          </Card>
-          <Card className="shadow-md">
-            <div className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
-                  <Clock className="w-5 h-5 text-orange-600" />
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
+                  <Clock className="w-4 h-4 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-lg font-bold">
                     {
                       questions.filter((q) => q.status === "pending_review")
                         .length
                     }
                   </p>
-                  <p className="text-sm text-gray-600">Chờ xem xét</p>
+                  <p className="text-xs text-gray-500">Chờ xem xét</p>
                 </div>
               </div>
-            </div>
-          </Card>
-          <Card className="shadow-md">
-            <div className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">
+                  <p className="text-lg font-bold">
                     {questions.filter((q) => q.status === "resolved").length}
                   </p>
-                  <p className="text-sm text-gray-600">Đã giải quyết</p>
+                  <p className="text-xs text-gray-500">Đã giải quyết</p>
                 </div>
               </div>
-            </div>
-          </Card>
-          <Card className="shadow-md">
-            <div className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center">
-                  <MessageSquare className="w-5 h-5 text-orange-600" />
+
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-50 flex items-center justify-center">
+                  <MessageSquare className="w-4 h-4 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{questions.length}</p>
-                  <p className="text-sm text-gray-600">Tổng câu hỏi</p>
+                  <p className="text-lg font-bold">{questions.length}</p>
+                  <p className="text-xs text-gray-500">Tổng câu hỏi</p>
                 </div>
               </div>
             </div>
-          </Card>
-        </div>
 
-        {/* Filters */}
-        <Card className="shadow-md">
-          <div className="p-6">
-            <div className="flex flex-col lg:flex-row gap-4">
+            {/* Filters Row */}
+            <div className="flex flex-col lg:flex-row gap-3">
               <div className="flex-1">
                 <Input
                   placeholder="Tìm kiếm câu hỏi hoặc sinh viên..."
                   prefix={<Search className="w-4 h-4 text-gray-400" />}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  size="large"
                 />
               </div>
               <div className="flex gap-2">
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="px-3 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="all">Tất cả trạng thái</option>
                   <option value="unresolved">Chưa giải quyết</option>
@@ -388,7 +373,7 @@ const UnresolvedQueue = () => {
                 <select
                   value={filterPriority}
                   onChange={(e) => setFilterPriority(e.target.value)}
-                  className="px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="px-3 py-1.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="all">Tất cả mức độ</option>
                   <option value="high">Cao</option>
@@ -401,87 +386,95 @@ const UnresolvedQueue = () => {
         </Card>
 
         {/* Questions List */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Questions List */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Danh sách câu hỏi</h2>
-            {filteredQuestions.map((question) => (
-              <Card
-                key={question.id}
-                className={`cursor-pointer transition-all hover:shadow-md shadow-sm ${
-                  selectedQuestion === question.id
-                    ? "ring-2 ring-orange-500"
-                    : ""
-                }`}
-                onClick={() =>
-                  setSelectedQuestion(
-                    selectedQuestion === question.id ? null : question.id
-                  )
-                }
-              >
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex-1">
-                      <h3 className="font-medium text-sm mb-2 line-clamp-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Questions List - 1/3 width */}
+          <div className="lg:col-span-1">
+            <h2 className="text-xl font-semibold mb-4">Danh sách câu hỏi</h2>
+            <div
+              className="space-y-3 overflow-y-auto pr-3 border border-gray-200 rounded-lg p-4 bg-gray-50/50"
+              style={{
+                scrollbarWidth: "thin",
+                scrollbarColor: "#d1d5db #f3f4f6",
+                height: "calc(100vh - 200px)",
+              }}
+            >
+              {filteredQuestions.map((question) => (
+                <Card
+                  key={question.id}
+                  className={`cursor-pointer transition-all hover:shadow-md shadow-sm ${
+                    selectedQuestion === question.id
+                      ? "ring-2 ring-orange-500"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    setSelectedQuestion(
+                      selectedQuestion === question.id ? null : question.id
+                    )
+                  }
+                  styles={{ body: { padding: "12px" } }}
+                >
+                  <div className="space-y-2">
+                    {/* Title and Badges */}
+                    <div className="flex justify-between items-start gap-2">
+                      <h3 className="font-medium text-sm line-clamp-2 flex-1">
                         {question.question}
                       </h3>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                        <User className="w-3 h-3" />
-                        {question.studentName} ({question.studentId})
-                        <Calendar className="w-3 h-3 ml-2" />
-                        {question.timestamp}
+                      <div className="flex gap-1 flex-shrink-0">
+                        <span
+                          className={`px-1.5 py-0.5 rounded text-[10px] font-medium whitespace-nowrap ${
+                            statusConfig[question.status as StatusType].bg
+                          } ${
+                            statusConfig[question.status as StatusType].color
+                          }`}
+                        >
+                          {statusConfig[question.status as StatusType].label}
+                        </span>
+                        <span
+                          className={`px-1.5 py-0.5 rounded text-[10px] font-medium whitespace-nowrap ${
+                            priorityConfig[question.priority as PriorityType].bg
+                          } ${
+                            priorityConfig[question.priority as PriorityType]
+                              .color
+                          }`}
+                        >
+                          {
+                            priorityConfig[question.priority as PriorityType]
+                              .label
+                          }
+                        </span>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          statusConfig[question.status as StatusType].bg
-                        } ${statusConfig[question.status as StatusType].color}`}
-                      >
-                        {statusConfig[question.status as StatusType].label}
-                      </span>
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          priorityConfig[question.priority as PriorityType].bg
-                        } ${
-                          priorityConfig[question.priority as PriorityType]
-                            .color
-                        }`}
-                      >
-                        {
-                          priorityConfig[question.priority as PriorityType]
-                            .label
-                        }
-                      </span>
+
+                    {/* Student Info */}
+                    <div className="flex items-center gap-2 text-[11px] text-gray-500">
+                      <User className="w-3 h-3" />
+                      <span className="truncate">{question.studentName}</span>
+                      <span className="text-gray-400">•</span>
+                      <span>{question.timestamp.split(" ")[0]}</span>
+                    </div>
+
+                    {/* Footer Info */}
+                    <div className="flex items-center justify-between text-[11px]">
+                      <div className="flex items-center gap-1">
+                        <span className="text-gray-500">Tin cậy:</span>
+                        <span
+                          className={`font-medium ${getConfidenceColor(
+                            question.confidence
+                          )}`}
+                        >
+                          {getConfidenceLabel(question.confidence)}
+                        </span>
+                      </div>
+                      <span className="text-gray-500">{question.category}</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground">
-                        Độ tin cậy:
-                      </span>
-                      <span
-                        className={`text-xs font-medium ${getConfidenceColor(
-                          question.confidence
-                        )}`}
-                      >
-                        {getConfidenceLabel(question.confidence)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-muted-foreground">
-                        {question.category}
-                      </span>
-                      <Eye className="w-3 h-3 text-muted-foreground" />
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
 
-          {/* Question Details */}
-          <div className="space-y-4">
+          {/* Question Details - 2/3 width */}
+          <div className="space-y-4 lg:col-span-2">
             <h2 className="text-xl font-semibold">Chi tiết câu hỏi</h2>
             {selectedQuestion ? (
               (() => {
@@ -494,19 +487,19 @@ const UnresolvedQueue = () => {
                   <Card
                     className="shadow-md"
                     title={
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <div className="text-lg font-semibold">
+                      <div className="flex justify-between items-start gap-4 py-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="text-lg font-semibold line-clamp-2 leading-relaxed mb-2">
                             {question.question}
                           </div>
-                          <div className="text-sm text-gray-500 mt-1">
+                          <div className="text-sm text-gray-500 mt-2">
                             {question.studentName} ({question.studentId}) •{" "}
                             {question.timestamp}
                           </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2.5 flex-shrink-0 pt-1">
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap ${
                               statusConfig[question.status as StatusType].bg
                             } ${
                               statusConfig[question.status as StatusType].color
@@ -515,7 +508,7 @@ const UnresolvedQueue = () => {
                             {statusConfig[question.status as StatusType].label}
                           </span>
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap ${
                               priorityConfig[question.priority as PriorityType]
                                 .bg
                             } ${
@@ -631,13 +624,13 @@ const UnresolvedQueue = () => {
                       </div>
 
                       {/* Actions */}
-                      <div className="flex gap-2 pt-4 border-t">
+                      <div className="flex flex-wrap gap-2 pt-4 border-t">
                         <Button
                           onClick={() =>
                             handleStatusChange(question.id, "resolved")
                           }
                           disabled={question.status === "resolved"}
-                          className="bg-green-600 hover:bg-green-700 text-white"
+                          className="bg-green-600 hover:bg-green-700 text-white flex-shrink-0"
                         >
                           <CheckCircle className="w-4 h-4 mr-2" />
                           Đánh dấu đã giải quyết
@@ -645,6 +638,7 @@ const UnresolvedQueue = () => {
                         <Button
                           type="default"
                           onClick={() => handleCreateRecommendation(question)}
+                          className="flex-shrink-0"
                         >
                           <Plus className="w-4 h-4 mr-2" />
                           Tạo đề xuất
@@ -654,6 +648,7 @@ const UnresolvedQueue = () => {
                           onClick={() =>
                             handleStatusChange(question.id, "pending_review")
                           }
+                          className="flex-shrink-0"
                         >
                           <Clock className="w-4 h-4 mr-2" />
                           Chờ xem xét
