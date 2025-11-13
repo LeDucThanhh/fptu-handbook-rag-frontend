@@ -13,6 +13,17 @@ const API_BASE_URL =
 
 export const authService = {
   /**
+   * Login with email and password
+   */
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    const response = await axios.post<ApiResponse<LoginResponse>>(
+      `${API_BASE_URL}/api/Auth/login`,
+      credentials
+    );
+    return response.data.data;
+  },
+
+  /**
    * Login with Google OAuth
    */
   async loginWithGoogle(

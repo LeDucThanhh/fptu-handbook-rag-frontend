@@ -68,49 +68,53 @@ export const useAuthStore = create<AuthStore>()(
         try {
           set({ isLoading: true, error: null });
 
-          // Sign in with Google popup
+          // Step 1: Sign in with Google via Firebase
           const result = await signInWithPopup(auth, googleProvider);
           const firebaseUser = result.user;
 
           console.log("🔥 Firebase User:", firebaseUser);
-          console.log("📸 Photo URL:", firebaseUser.photoURL);
 
-          // Check if user has custom avatar in localStorage
-          const customAvatarKey = `avatar_${firebaseUser.uid}`;
+          // Step 2: Get Firebase ID token
+          const idToken = await firebaseUser.getIdToken();
+          console.log("🔑 Firebase ID Token obtained");
+
+          // Step 3: Send ID token to backend to get JWT
+          console.log("📡 Sending ID token to backend...");
+          const response = await authService.loginWithGoogle(idToken, "vi");
+          console.log("✅ Backend response:", response);
+
+          // Step 4: Check if user has custom avatar in localStorage
+          const customAvatarKey = `avatar_${response.user.id}`;
           const customAvatar = localStorage.getItem(customAvatarKey);
 
-          console.log("💾 Custom avatar from localStorage:", customAvatar);
-
-          // Create User object with Student role
-          const user: User = {
-            id: firebaseUser.uid,
-            email: firebaseUser.email || "",
-            fullName: firebaseUser.displayName || "User",
-            // Use custom avatar if exists, otherwise use Google avatar
-            avatarUrl: customAvatar || firebaseUser.photoURL || undefined,
-            roles: [UserRole.STUDENT], // Default role: Student
-            studentId: undefined, // Can be set later
-            department: undefined,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+          // Step 5: Update user with custom avatar if exists
+          const userWithAvatar = {
+            ...response.user,
+            avatarUrl:
+              customAvatar ||
+              response.user.avatarUrl ||
+              firebaseUser.photoURL ||
+              undefined,
           };
 
-          console.log("👤 Created User object:", user);
+          console.log("👤 User authenticated:", userWithAvatar);
 
-          // Get Firebase ID token
-          const token = await firebaseUser.getIdToken();
-
+          // Step 6: Store backend JWT tokens and user data
           set({
-            user,
-            token,
-            refreshToken: token, // Use same token for now
+            user: userWithAvatar,
+            token: response.token,
+            refreshToken: response.refreshToken,
             isAuthenticated: true,
             isLoading: false,
             error: null,
           });
         } catch (error: any) {
+          console.error("❌ Login error:", error);
           set({
-            error: error.message || "Đăng nhập Google thất bại",
+            error:
+              error.response?.data?.message ||
+              error.message ||
+              "Đăng nhập Google thất bại",
             isLoading: false,
           });
           throw error;
