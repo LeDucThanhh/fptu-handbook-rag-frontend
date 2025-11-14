@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { GoogleLogin } from "@react-oauth/google";
+import type { CredentialResponse } from "@react-oauth/google";
 import { useAuthStore } from "@/contexts/AuthContext";
 import { mockUsers } from "@/services/mock/mockAuth";
 import { getDashboardRoute } from "@/utils/roleUtils";
@@ -9,24 +11,79 @@ import { Chrome, Loader2 } from "lucide-react";
 
 const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [preferredLanguage, setPreferredLanguage] = useState<"vi" | "en">(
+    () => {
+      // Try to get from localStorage first
+      const saved = localStorage.getItem("preferredLanguage");
+      if (saved === "vi" || saved === "en") return saved;
+
+      // Try to detect from browser
+      const browserLang = navigator.language.toLowerCase();
+      if (browserLang.startsWith("vi")) return "vi";
+      if (browserLang.startsWith("en")) return "en";
+
+      // Default to Vietnamese
+      return "vi";
+    }
+  );
   const navigate = useNavigate();
   const { loginWithGoogle } = useAuthStore();
 
-  const handleGoogleLogin = async () => {
+  // Save language preference when changed
+  const handleLanguageChange = (lang: "vi" | "en") => {
+    setPreferredLanguage(lang);
+    localStorage.setItem("preferredLanguage", lang);
+  };
+
+  // Handle Google OAuth success
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
     try {
       setIsLoading(true);
-      await loginWithGoogle();
+      console.log("🔑 Google OAuth Success");
+      console.log("📦 Full credential response:", credentialResponse);
+
+      // Get ID token from credential response
+      const idToken = credentialResponse.credential;
+
+      if (!idToken) {
+        throw new Error("No ID token received from Google");
+      }
+
+      console.log(
+        "🎫 ID Token (first 50 chars):",
+        idToken.substring(0, 50) + "..."
+      );
+      console.log("🎫 ID Token length:", idToken.length);
+
+      // Send to backend with user's preferred language
+      await loginWithGoogle(idToken, preferredLanguage);
 
       toast.success("Đăng nhập thành công!");
 
       // Navigate to student dashboard
       navigate("/student");
     } catch (error: any) {
-      console.error("Google login error:", error);
+      console.error("❌ Backend login error:", error);
+
+      // Check if email confirmation is needed
+      if (error.needsEmailConfirmation) {
+        toast.info("Vui lòng kiểm tra email để xác nhận tài khoản");
+        navigate("/check-email", { state: { email: error.email } });
+        return;
+      }
+
       toast.error(error.message || "Đăng nhập thất bại!");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Handle Google OAuth error
+  const handleGoogleError = () => {
+    console.error("❌ Google OAuth Error");
+    toast.error("Đăng nhập Google thất bại!");
   };
 
   const handleDemoLogin = async (
@@ -199,39 +256,73 @@ const Login: React.FC = () => {
                   </p>
                 </div>
 
+                {/* Language Selector */}
+                <div className="flex justify-center gap-2 mb-6">
+                  <button
+                    onClick={() => handleLanguageChange("vi")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                      preferredLanguage === "vi"
+                        ? "bg-orange-500 text-white shadow-md"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                  >
+                    🇻🇳 Tiếng Việt
+                  </button>
+                  <button
+                    onClick={() => handleLanguageChange("en")}
+                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                      preferredLanguage === "en"
+                        ? "bg-orange-500 text-white shadow-md"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    }`}
+                  >
+                    🇬🇧 English
+                  </button>
+                </div>
+
                 {/* Student Login - Google Sign-In */}
                 <div className="space-y-4">
                   <div className="text-center">
                     <h3 className="text-lg font-bold text-gray-900 mb-1">
-                      👨‍🎓 Dành cho Sinh viên
+                      👨‍🎓{" "}
+                      {preferredLanguage === "vi"
+                        ? "Dành cho Sinh viên"
+                        : "For Students"}
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Đăng nhập bằng tài khoản Google
+                      {preferredLanguage === "vi"
+                        ? "Đăng nhập bằng tài khoản Google"
+                        : "Sign in with Google account"}
                     </p>
                   </div>
 
-                  <button
-                    onClick={handleGoogleLogin}
-                    disabled={isLoading}
-                    className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 font-semibold shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-5 h-5 animate-spin" />
-                        Đang đăng nhập...
-                      </>
-                    ) : (
-                      <>
-                        <Chrome className="w-5 h-5" />
-                        Đăng nhập bằng Google
-                      </>
-                    )}
-                  </button>
+                  {/* Google Login Button */}
+                  <div className="flex justify-center">
+                    <GoogleLogin
+                      onSuccess={handleGoogleSuccess}
+                      onError={handleGoogleError}
+                      useOneTap
+                      theme="filled_blue"
+                      size="large"
+                      text="signin_with"
+                      shape="rectangular"
+                      logo_alignment="left"
+                    />
+                  </div>
 
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                     <p className="text-xs text-blue-700 text-center">
-                      ✅ Tự động gán vai trò <strong>Sinh viên</strong> khi đăng
-                      nhập lần đầu
+                      {preferredLanguage === "vi" ? (
+                        <>
+                          ✅ Tự động gán vai trò <strong>Sinh viên</strong> khi
+                          đăng nhập lần đầu
+                        </>
+                      ) : (
+                        <>
+                          ✅ Automatically assigned <strong>Student</strong>{" "}
+                          role on first login
+                        </>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -243,7 +334,7 @@ const Login: React.FC = () => {
                   </div>
                   <div className="relative flex justify-center text-sm">
                     <span className="px-4 bg-white text-gray-500 font-medium">
-                      HOẶC
+                      {preferredLanguage === "vi" ? "HOẶC" : "OR"}
                     </span>
                   </div>
                 </div>
@@ -255,7 +346,9 @@ const Login: React.FC = () => {
                       🧪 Demo Mode
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Dành cho testing các vai trò khác
+                      {preferredLanguage === "vi"
+                        ? "Dành cho testing các vai trò khác"
+                        : "For testing other roles"}
                     </p>
                   </div>
 

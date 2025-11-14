@@ -50,6 +50,21 @@ export interface LoginResponse {
   refreshToken: string;
   user: User;
   expiresIn: number;
+  isEmailConfirmed?: boolean; // For Google login flow
+  isNewUser?: boolean; // For Google login flow
+}
+
+// Backend AuthResponseDTO (for Google Login)
+export interface AuthResponseDTO {
+  userId: string;
+  email: string;
+  fullName: string;
+  role: string;
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiration: string;
+  isEmailConfirmed: boolean;
+  isNewUser: boolean;
 }
 
 export interface RegisterRequest {

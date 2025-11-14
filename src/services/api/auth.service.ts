@@ -5,11 +5,12 @@ import type {
   RegisterRequest,
   User,
   ApiResponse,
+  AuthResponseDTO,
 } from "@/types";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://fptu-handbook-esgma9b2hzckcnce.southeastasia-01.azurewebsites.net";
+  "https://fptu-handbook-esgma9b2hzckcnce.southeastasia-01.azurewebsites.net/api";
 
 export const authService = {
   /**
@@ -30,11 +31,60 @@ export const authService = {
     idToken: string,
     preferredLanguage: string = "vi"
   ): Promise<LoginResponse> {
-    const response = await axios.post<ApiResponse<LoginResponse>>(
+    console.log("🌐 API Call to:", `${API_BASE_URL}/Auth/google-login`);
+    console.log("📦 Payload:", {
+      idToken: idToken.substring(0, 50) + "...",
+      idTokenLength: idToken.length,
+      preferredLanguage,
+    });
+
+    const response = await axios.post<ApiResponse<AuthResponseDTO>>(
       `${API_BASE_URL}/Auth/google-login`,
-      { idToken, preferredLanguage }
+      {
+        IdToken: idToken, // PascalCase for C# backend
+        PreferredLanguage: preferredLanguage,
+      }
     );
-    return response.data.data;
+
+    console.log("📥 API Response:", response.data);
+
+    // Convert AuthResponseDTO to LoginResponse
+    const authData = response.data.data;
+    return {
+      token: authData.accessToken,
+      refreshToken: authData.refreshToken,
+      user: {
+        id: authData.userId,
+        email: authData.email,
+        fullName: authData.fullName,
+        roles: [authData.role as any], // Backend returns single role, frontend expects array
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      expiresIn: 15 * 60, // 15 minutes in seconds
+      isEmailConfirmed: authData.isEmailConfirmed,
+      isNewUser: authData.isNewUser,
+    };
+  },
+
+  /**
+   * Confirm email with token
+   */
+  async confirmEmail(userId: string, token: string): Promise<void> {
+    console.log("🌐 API Call to:", `${API_BASE_URL}/Auth/confirm-email`);
+    console.log("📦 Query params:", {
+      userId,
+      token: token.substring(0, 20) + "...",
+    });
+
+    const response = await axios.get<ApiResponse<void>>(
+      `${API_BASE_URL}/Auth/confirm-email`,
+      {
+        params: { userId, token },
+      }
+    );
+
+    console.log("📥 API Response:", response.data);
   },
 
   /**
@@ -90,19 +140,6 @@ export const authService = {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-  },
-
-  /**
-   * Confirm email
-   */
-  async confirmEmail(userId: string, token: string): Promise<boolean> {
-    const response = await axios.get<ApiResponse<boolean>>(
-      `${API_BASE_URL}/Auth/confirm-email`,
-      {
-        params: { userId, token },
-      }
-    );
-    return response.data.data;
   },
 
   /**

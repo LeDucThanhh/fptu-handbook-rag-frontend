@@ -2,8 +2,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { User, LoginRequest, RegisterRequest, UserRole } from "@/types";
 import { authService } from "@/services/api/auth.service";
-import { auth, googleProvider } from "@/config/firebase.config";
-import { signInWithPopup, signOut } from "firebase/auth";
 
 interface AuthState {
   user: User | null;
@@ -16,7 +14,10 @@ interface AuthState {
 
 interface AuthActions {
   login: (credentials: LoginRequest) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
+  loginWithGoogle: (
+    idToken: string,
+    preferredLanguage?: string
+  ) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refreshAuth: () => Promise<void>;
@@ -62,101 +63,76 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
-      loginWithGoogle: async () => {
+      loginWithGoogle: async (
+        idToken: string,
+        preferredLanguage: string = "vi"
+      ) => {
         try {
           set({ isLoading: true, error: null });
 
-          // Step 1: Sign in with Google via Firebase
-          const result = await signInWithPopup(auth, googleProvider);
-          const firebaseUser = result.user;
+          console.log("� Sending ID token to backend...");
 
-          console.log("🔥 Firebase User:", firebaseUser);
+          // Send ID token to backend to get JWT
+          const response = await authService.loginWithGoogle(
+            idToken,
+            preferredLanguage
+          );
+          console.log("✅ Backend response:", response);
 
-          // Step 2: Get Firebase ID token
-          const idToken = await firebaseUser.getIdToken();
-          console.log("🔑 Firebase ID Token obtained");
+          // Check if email needs confirmation
+          if (response.isEmailConfirmed === false) {
+            console.log("📧 Email not confirmed, need to check email");
+            set({ isLoading: false, error: null });
 
-          // Step 3: Try to send ID token to backend to get JWT
-          console.log("📡 Sending ID token to backend...");
-
-          try {
-            const response = await authService.loginWithGoogle(idToken, "vi");
-            console.log("✅ Backend response:", response);
-
-            // Step 4: Check if user has custom avatar in localStorage
-            const customAvatarKey = `avatar_${response.user.id}`;
-            const customAvatar = localStorage.getItem(customAvatarKey);
-
-            // Step 5: Update user with custom avatar if exists
-            const userWithAvatar = {
-              ...response.user,
-              avatarUrl:
-                customAvatar ||
-                response.user.avatarUrl ||
-                firebaseUser.photoURL ||
-                undefined,
+            // Return special response to indicate email confirmation needed
+            throw {
+              needsEmailConfirmation: true,
+              email: response.user?.email || "",
+              message: "Vui lòng kiểm tra email để xác nhận tài khoản",
             };
-
-            console.log("👤 User authenticated:", userWithAvatar);
-
-            // Step 6: Store backend JWT tokens and user data
-            set({
-              user: userWithAvatar,
-              token: response.token,
-              refreshToken: response.refreshToken,
-              isAuthenticated: true,
-              isLoading: false,
-              error: null,
-            });
-          } catch (backendError: any) {
-            // FALLBACK STRATEGY: If backend fails (401, 500, etc.), create local user
-            console.warn(
-              "⚠️ Backend authentication failed, using fallback mode"
-            );
-            console.warn("Backend error:", backendError.response?.data);
-
-            // Create local user from Firebase data
-            const localUser: User = {
-              id: firebaseUser.uid,
-              email: firebaseUser.email || "",
-              fullName: firebaseUser.displayName || "User",
-              avatarUrl: firebaseUser.photoURL || undefined,
-              roles: ["Student"], // Default role for fallback
-              createdAt: new Date().toISOString(),
-              updatedAt: new Date().toISOString(),
-            };
-
-            console.log("👤 Using local user (Demo Mode):", localUser);
-
-            // Store user without backend JWT tokens
-            set({
-              user: localUser,
-              token: null, // No backend token
-              refreshToken: null,
-              isAuthenticated: true,
-              isLoading: false,
-              error: null,
-            });
-
-            // Show warning notification
-            if (typeof window !== "undefined") {
-              // Use setTimeout to ensure notification shows after navigation
-              setTimeout(() => {
-                const event = new CustomEvent("show-demo-warning");
-                window.dispatchEvent(event);
-              }, 500);
-            }
           }
-        } catch (error: any) {
-          console.error("❌ Firebase login error:", error);
 
-          const errorMessage = error.message || "Đăng nhập Google thất bại";
+          // Check if user has custom avatar in localStorage
+          const customAvatarKey = `avatar_${response.user.id}`;
+          const customAvatar = localStorage.getItem(customAvatarKey);
+
+          // Update user with custom avatar if exists
+          const userWithAvatar = {
+            ...response.user,
+            avatarUrl: customAvatar || response.user.avatarUrl || undefined,
+          };
+
+          console.log("👤 User authenticated:", userWithAvatar);
+
+          // Store backend JWT tokens and user data
+          set({
+            user: userWithAvatar,
+            token: response.token,
+            refreshToken: response.refreshToken,
+            isAuthenticated: true,
+            isLoading: false,
+            error: null,
+          });
+        } catch (error: any) {
+          // Check if this is email confirmation needed error
+          if (error.needsEmailConfirmation) {
+            throw error; // Re-throw to be handled by Login component
+          }
+
+          console.error("❌ Backend login error:", error);
+          console.error("❌ Response data:", error.response?.data);
+          console.error("❌ Response status:", error.response?.status);
+
+          const errorMessage =
+            error.response?.data?.message ||
+            error.message ||
+            "Đăng nhập Google thất bại";
 
           set({
             error: errorMessage,
             isLoading: false,
           });
-          throw error;
+          throw new Error(errorMessage);
         }
       },
 
@@ -177,11 +153,20 @@ export const useAuthStore = create<AuthStore>()(
 
       logout: async () => {
         try {
-          // Sign out from Firebase
-          await signOut(auth);
+          const { token, refreshToken } = get();
+
+          // Revoke refresh token on backend if available
+          if (token && refreshToken) {
+            try {
+              await authService.revokeToken(refreshToken, token);
+            } catch (error) {
+              console.error("Failed to revoke token:", error);
+            }
+          }
         } catch (error) {
           console.error("Logout error:", error);
         } finally {
+          // Clear local state
           set({
             user: null,
             token: null,
